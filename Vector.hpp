@@ -45,9 +45,9 @@ namespace ft
             {
                 size_type i;
 
-                this->m_array = new value_type[n]();
+                this->m_array = m_allocator.allocate(n);
 			    for (i = 0; i < n; i++)
-				    this->m_array[i] = val;
+                    m_allocator.construct(m_array + i, val);
             }
 
             Vector(iterator first, iterator last): m_array(nullptr), m_capacity(0), m_size(0) 
@@ -77,19 +77,34 @@ namespace ft
 
             void reserve(size_t lenght)
             {
-                value_type * tmp;
                 size_type i;
+                value_type *tmp;
 
                 if (this->m_capacity < lenght)
                 {
-                    tmp = new value_type[lenght];
-                    for (i = 0; i < lenght; i++)
-				        tmp[i] = this->m_array[i];
-                    delete [] this->m_array;
+                    tmp = this->m_allocator.allocate(lenght);
+                    for (i = 0; i < m_size; i++)
+                    {
+                        m_allocator.construct(tmp + i, this->m_array[i]);
+                    }
+                    //delete [] this->m_array;
                     this->m_array = tmp;
                     this->m_capacity = lenght;
                 }
             }
+
+            /*void		reserve(size_type new_cap)
+            {
+                value_type	*new_arr;
+
+                if (new_cap <= m_size)
+                    return ;
+                new_arr = m_allocator.allocate(new_cap);
+                for (size_t i = 0; i < m_size; i++)
+                    m_allocator.construct(new_arr + i, *(m_array + i));
+                m_size = new_cap;
+                m_array = new_arr;
+            }*/
 
             void assign(iterator first, iterator last) 
             {
@@ -100,17 +115,38 @@ namespace ft
                 if (length > this->m_capacity)
                     this->reserve(length);
                 i = 0;
-                while (first != last) {
+                while (first != last) 
+                {
                     if (i >= this->m_size)
                         this->copy_construct(i, *first);
                     else
-                        this->m_container[i] = *first;
+                        this->m_array[i] = *first;
                     ++first;
                     ++i;
                 }
                 while (i < this->m_size)
-                    this->m_container[i++].value_type::~value_type();
+                    this->m_array[i++].value_type::~value_type();
                 this->m_size = length;
+            }
+
+            void assign(size_type lenght, const_reference value) 
+            {
+                size_t i;
+
+                if (lenght > this->m_capacity)
+                    this->reserve(lenght);
+                i = 0;
+                while (i < lenght) 
+                {
+                    if (i >= this->m_size)
+                        this->copy_construct(i, value);
+                    else
+                        this->m_array[i] = value;
+                    ++i;
+                }
+                while (i < this->m_size)
+                    this->m_array[i++].value_type::~value_type();
+                this->m_size = lenght;
             }
 
       /*  public:

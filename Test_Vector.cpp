@@ -14,7 +14,7 @@ bool assertVectorEquals(ft::Vector<T> *ft, std::vector<T> *std, const std::strin
 	size_t i(0);
 	for (typename ft::Vector<T>::iterator it = ft->begin(); it != ft->end(); it++)
 	{
-
+		std::cout << " SHOW : at pos "<< i++ << " got " << *it << std::endl;
 		if (*it != *itSTL)
 		{
 			std::cout << testName << " FAIL : Expecting " << *itSTL << " at pos "<< i++ << " got " << *it << std::endl;
@@ -36,12 +36,12 @@ void ft_constructor(void)
 	ft::Vector<int> second (4,100);
 	std::vector<int> secondSTL (4,100);
 	assertVectorEquals(&second, &secondSTL, "Constructor - fill");
-/*
+
 	ft::Vector<int> third (second.begin(),second.end());
 	std::vector<int> thirdSTL (secondSTL.begin(),secondSTL.end());
 	assertVectorEquals(&third, &thirdSTL, "Constructor - Range");
 
-	ft::Vector<int> fourth (third);
+/*	ft::Vector<int> fourth (third);
 	std::vector<int> fourthSTL (thirdSTL);
 	assertVectorEquals(&fourth, &fourthSTL, "constructors fourth");
 */
