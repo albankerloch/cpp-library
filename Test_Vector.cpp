@@ -39,12 +39,11 @@ void ft_constructor(void)
 
 	ft::Vector<int> third (second.begin(),second.end());
 	std::vector<int> thirdSTL (secondSTL.begin(),secondSTL.end());
-	assertVectorEquals(&third, &thirdSTL, "Constructor - Range");
+	assertVectorEquals(&third, &thirdSTL, "Constructor - range");
 
-/*	ft::Vector<int> fourth (third);
+	ft::Vector<int> fourth (third);
 	std::vector<int> fourthSTL (thirdSTL);
-	assertVectorEquals(&fourth, &fourthSTL, "constructors fourth");
-*/
+	assertVectorEquals(&fourth, &fourthSTL, "Constructor - copy");
 
 }
 

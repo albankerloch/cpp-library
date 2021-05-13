@@ -21,8 +21,8 @@ namespace ft
         /*    typedef ConstVectorIterator<value_type>			const_iterator;
             typedef ReverseVectorIterator<value_type>		reverse_iterator;
             typedef ConstReverseVectorIterator<value_type>	const_reverse_iterator;*/
-            typedef std::ptrdiff_t							difference_type;
-            typedef size_t 									size_type;
+            typedef std::ptrdiff_t							    difference_type;
+            typedef size_t 									    size_type;
 
         private:
 
@@ -31,14 +31,9 @@ namespace ft
             size_type		m_capacity;
             size_type		m_size;
 
-            void copy_construct(size_type idx, const_reference val)
-            {
-		        new(&this->m_array[idx]) value_type(val);
-        	}
-
         public:
 
-            explicit Vector (const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_array(nullptr), m_capacity(0), m_size(0)
+            explicit Vector (const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_array(nullptr), m_capacity(0), m_size(0) 
             {}
 
             explicit Vector (size_type n, const value_type & val = value_type(), const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_capacity(n), m_size(n)
@@ -46,8 +41,12 @@ namespace ft
                 size_type i;
 
                 this->m_array = m_allocator.allocate(n);
-			    for (i = 0; i < n; i++)
+			    i = 0;
+                while(i < n)
+                {
                     m_allocator.construct(m_array + i, val);
+                    i++;
+                }
             }
 
             Vector(iterator first, iterator last): m_array(nullptr), m_capacity(0), m_size(0) 
@@ -55,14 +54,38 @@ namespace ft
                 this->assign(first, last);
             }
 
+            Vector (const Vector  & Vector_to_copy) : m_allocator(Vector_to_copy.m_allocator), m_array(nullptr), m_capacity(0), m_size(0)
+            {
+                *this = Vector_to_copy;
+            }
+
+            Vector & operator=(const Vector  & Vector_to_copy) 
+            {
+                size_t i;
+
+                i = 0;
+                while (i < Vector_to_copy.m_size)
+                {
+                    this->push_back(Vector_to_copy.m_array[i]);
+                    i++;
+                }
+                return *this;
+		    }
+
             ~Vector() 
             {
-                delete [] this->m_array;
+                this->clear();
+                m_allocator.deallocate(this->m_array, this->m_capacity);
             }
 
             size_type size() const 
             {
 			    return (this->m_size);
+		    }
+
+            size_type max_size() const 
+            {
+			    return (this->m_allocator.max_size());
 		    }
 
             iterator begin(void) 
@@ -75,36 +98,38 @@ namespace ft
 		        return (iterator(&(this->m_array[m_size])));
 	        }
 
-            void reserve(size_t lenght)
+            void clear()
+            {
+                while(this->m_size > 0)
+                {
+                    m_allocator.destroy(&this->m_array[m_size]);
+                    this->m_size--;
+                }
+            }
+
+            void reserve(size_t length)
             {
                 size_type i;
                 value_type *tmp;
 
-                if (this->m_capacity < lenght)
+                if (length > this->max_size())
+					throw (std::length_error("Vector : max size reached during reserve"));
+                else if (length > this->m_capacity)
                 {
-                    tmp = this->m_allocator.allocate(lenght);
-                    for (i = 0; i < m_size; i++)
+                    tmp = this->m_allocator.allocate(length);
+                    if (this->m_array)
                     {
-                        m_allocator.construct(tmp + i, this->m_array[i]);
+                        for (i = 0; i < m_size; i++)
+                        {
+                            m_allocator.construct(tmp + i, this->m_array[i]);
+                            m_allocator.destroy(&this->m_array + i);
+                        }
+                        m_allocator.deallocate(this->m_array, this->m_capacity);
                     }
-                    //delete [] this->m_array;
                     this->m_array = tmp;
-                    this->m_capacity = lenght;
+                    this->m_capacity = length;
                 }
             }
-
-            /*void		reserve(size_type new_cap)
-            {
-                value_type	*new_arr;
-
-                if (new_cap <= m_size)
-                    return ;
-                new_arr = m_allocator.allocate(new_cap);
-                for (size_t i = 0; i < m_size; i++)
-                    m_allocator.construct(new_arr + i, *(m_array + i));
-                m_size = new_cap;
-                m_array = new_arr;
-            }*/
 
             void assign(iterator first, iterator last) 
             {
@@ -117,63 +142,35 @@ namespace ft
                 i = 0;
                 while (first != last) 
                 {
-                    if (i >= this->m_size)
-                        this->copy_construct(i, *first);
-                    else
-                        this->m_array[i] = *first;
+                    m_allocator.construct(m_array + i, *first);
                     ++first;
                     ++i;
                 }
-                while (i < this->m_size)
-                    this->m_array[i++].value_type::~value_type();
                 this->m_size = length;
             }
 
-            void assign(size_type lenght, const_reference value) 
+            void assign(size_type length, const_reference value) 
             {
                 size_t i;
 
-                if (lenght > this->m_capacity)
-                    this->reserve(lenght);
+                if (length > this->m_capacity)
+                    this->reserve(length);
                 i = 0;
-                while (i < lenght) 
+                while (i < length) 
                 {
-                    if (i >= this->m_size)
-                        this->copy_construct(i, value);
-                    else
-                        this->m_array[i] = value;
+                    m_allocator.construct(m_array + i, value);
                     ++i;
                 }
-                while (i < this->m_size)
-                    this->m_array[i++].value_type::~value_type();
-                this->m_size = lenght;
+                this->m_size = length;
             }
 
-      /*  public:
-            Stack() : std::stack<T>() {};
-            Stack(Stack const & Stack_to_copy) : std::stack<T>(Stack_to_copy) {};
-            
-            Stack &operator=(Stack const & Stack_to_copy) 
+            void push_back(value_type value)
             {
-                if (this != &Stack_to_copy)
-                    this->c = Stack_to_copy.c;
-                return (*this);
-            };
-            
-            typedef typename std::stack<T>::container_type::iterator iterator;
-            
-            iterator begin() 
-            {
-                return (this->c.begin());
-            };
-
-            iterator end() 
-            {
-                return (this->c.end());
-            };
-            
-            virtual ~Stack() {};
-            */
+                if (this->m_size == this->m_capacity)
+                    this->reserve(1);
+                m_allocator.construct(&m_array[this->m_size], value);
+                this->m_size++;
+            }
     };
 }
 
