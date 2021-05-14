@@ -2,6 +2,7 @@
 # define DEF_VECTOR_HPP
 
 # include "Vector_Iterator.hpp"
+# include "Reverse_Iterator.hpp"
 # include <iostream>
 
 namespace ft 
@@ -18,9 +19,9 @@ namespace ft
             typedef typename allocator_type::pointer	    	pointer;
             typedef typename allocator_type::const_pointer    	const_pointer;
             typedef VectorIterator<value_type>          		iterator;
-        /*    typedef ConstVectorIterator<value_type>			const_iterator;
-            typedef ReverseVectorIterator<value_type>		reverse_iterator;
-            typedef ConstReverseVectorIterator<value_type>	const_reverse_iterator;*/
+            typedef VectorIterator<value_type const>			const_iterator;
+            typedef ReverseIterator<iterator>           		reverse_iterator;
+            typedef ReverseIterator<const_iterator>    	const_reverse_iterator;
             typedef std::ptrdiff_t							    difference_type;
             typedef size_t 									    size_type;
 
@@ -83,6 +84,18 @@ namespace ft
 			    return (this->m_size);
 		    }
 
+            size_type capacity() const 
+            {
+			    return (this->m_capacity);
+		    }
+
+            bool empty() const
+            {
+                if (this->m_size == 0)
+                    return (true);
+                return (false);
+            }
+
             size_type max_size() const 
             {
 			    return (this->m_allocator.max_size());
@@ -93,9 +106,39 @@ namespace ft
 		        return (iterator(this->m_array));
 	        }
 
+            const_iterator begin(void) const
+            {
+		        return (const_iterator(this->m_array));
+	        }
+
+            reverse_iterator rbegin(void) 
+            {
+		        return (reverse_iterator(this->m_array[m_size]));
+	        }
+
+            const_reverse_iterator rbegin(void) const
+            {
+		        return (const_reverse_iterator(this->m_array[m_size]));
+	        }
+
             iterator end(void) 
             {
 		        return (iterator(&(this->m_array[m_size])));
+	        }           
+
+            const_iterator end(void) const
+            {
+		        return (const_iterator(&(this->m_array[m_size])));
+	        }
+
+            reverse_iterator rend(void)
+            {
+		        return (reverse_iterator(&(this->m_array[m_size])));
+	        }           
+
+            const_reverse_iterator rend(void) const
+            {
+		        return (const_reverse_iterator(&(this->m_array[m_size])));
 	        }
 
             void clear()
@@ -143,8 +186,8 @@ namespace ft
                 while (first != last) 
                 {
                     m_allocator.construct(m_array + i, *first);
-                    ++first;
-                    ++i;
+                    first++;
+                    i++;
                 }
                 this->m_size = length;
             }
@@ -167,9 +210,134 @@ namespace ft
             void push_back(value_type value)
             {
                 if (this->m_size == this->m_capacity)
-                    this->reserve(1);
+                    this->reserve(this->m_capacity + 1);
                 m_allocator.construct(&m_array[this->m_size], value);
                 this->m_size++;
+            }
+
+            void pop_back(void)
+            {
+                m_allocator.destroy(&this->m_array + this->m_size);
+                this->m_size--;
+            }
+
+            void resize (size_type length, value_type value = value_type())
+            {
+                size_t i;
+
+                if (length < this->m_size)
+                {
+                    i = length;
+                    while (i < this->m_size)
+                    {
+                        this->m_allocator.destroy(&this->m_array[i]);
+                        i++;
+                    }
+                    this->m_size = length;
+                }
+                else if (length > this->m_size)
+                {
+                    if (length > this->m_capacity)
+                        this->reserve(length);
+                    i = this->m_size;
+                    while (i < length)
+                    {
+                        this->m_allocator.construct(this->m_array + i, value);
+                        i++;
+                    }
+                    this->m_size = length;
+                }
+            }
+
+            iterator erase (iterator position)
+            {
+                iterator temp(position);
+
+                temp++;
+                return (this->erase(position, temp));
+            }
+
+
+            iterator erase(iterator first, iterator last)
+            {
+                size_t i;
+
+                i = 0;
+                while (first != last)
+                {
+                    this->m_allocator.destroy(first);
+                    first++;
+                    this->m_size--;
+                    i++;
+                }
+                while (first != this->end())
+                {
+                    this->m_allocator.construct(first, first + i);
+                    first++;
+                    this->m_allocator.destroy(first);
+                }
+                first++;
+                return (first);
+            };
+
+            iterator insert (iterator position, const value_type& value)
+            {
+                return (this->insert(position, 1, value));
+            }
+
+            void insert (iterator position, size_type n, const value_type& value)
+            {
+                iterator it;
+
+                if (this->m_size + n > this->capacity)
+                    this->reserve(this->m_size + n);
+                it = this->end() + n;
+                while(it != position + n)
+                {
+                    m_allocator.construct(it, it - n);
+                    it--;
+                }
+                while(it != position)
+                {
+                    m_allocator.destroy(it);
+                    m_allocator.construct(it, value);
+                    it--;
+                }
+                return (position + n);
+            }
+
+            void insert (iterator position, iterator first, iterator last)
+            {
+                iterator it;
+                size_t n;
+
+                n = last - first;
+                if (this->m_size + n > this->capacity)
+                    this->reserve(this->m_size + n);
+                it = this->end() + n;
+                while(it != position + n)
+                {
+                    m_allocator.construct(it, it - n);
+                    it--;
+                }
+                while(it != position)
+                {
+                    m_allocator.destroy(it);
+                    m_allocator.construct(it, last);
+                    last--;
+                    it--;
+                }
+                return (first);
+            }
+
+            void swap(Vector & x)
+            {
+                iterator save_end(this->end());
+
+                this->insert(this->end(), x->begin(), x->end());
+                this->erase(x->begin(), x->end());
+                this->insert(x->begin(), this->begin(), save_end);
+                this->erase(this->begin(), save_end);              
             }
     };
 }
