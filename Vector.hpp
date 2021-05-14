@@ -50,7 +50,7 @@ namespace ft
                 }
             }
 
-            Vector(iterator first, iterator last): m_array(nullptr), m_capacity(0), m_size(0) 
+            explicit Vector(iterator first, iterator last): m_array(nullptr), m_capacity(0), m_size(0) 
             {
                 this->assign(first, last);
             }
@@ -58,6 +58,12 @@ namespace ft
             Vector (const Vector  & Vector_to_copy) : m_allocator(Vector_to_copy.m_allocator), m_array(nullptr), m_capacity(0), m_size(0)
             {
                 *this = Vector_to_copy;
+            }
+
+            ~Vector() 
+            {
+                this->clear();
+                m_allocator.deallocate(this->m_array, this->m_capacity);
             }
 
             Vector & operator=(const Vector  & Vector_to_copy) 
@@ -72,11 +78,49 @@ namespace ft
                 }
                 return *this;
 		    }
-
-            ~Vector() 
+                    
+            reference operator[](size_type idx) 
             {
-                this->clear();
-                m_allocator.deallocate(this->m_array, this->m_capacity);
+                return (this->m_array[idx]);
+            }
+
+            const_reference operator[](size_type idx) const 
+            {
+                return (this->m_array[idx]);
+            }
+
+            reference at(size_type idx) 
+            {
+                if (idx >= this->m_size)
+                    throw std::out_of_range("At : index out of range");
+                return (this->m_array[idx]);
+            }
+
+            const_reference at(size_type idx) const 
+            {
+                if (idx >= this->m_size)
+                    throw std::out_of_range("At : index out of range");
+                return (this->m_array[idx]);
+            }
+
+            reference front(void) 
+            {
+                return (this->m_array[0]);
+            }
+
+            const_reference front(void) const 
+            {
+                return (this->m_array[0]);
+            }
+
+            reference back(void) 
+            {
+                return (this->m_array[this->m_size - 1]);
+            }
+
+            const_reference back(void) const 
+            {
+                return (this->m_array[this->m_size - 1]);
             }
 
             size_type size() const 
@@ -339,6 +383,84 @@ namespace ft
                 this->insert(x->begin(), this->begin(), save_end);
                 this->erase(this->begin(), save_end);              
             }
+            
+    };
+
+    template<typename T>
+    void swap(Vector<T> &x, Vector<T> &y) 
+    {
+        x.swap(y);
+    };
+
+    template <class T, class Alloc>
+    bool operator== (const ft::Vector<T, Alloc>& lhs, const ft::Vector<T, Alloc>& rhs)
+    {
+        typename ft::Vector<T>::const_iterator it_lhs;
+        typename ft::Vector<T>::const_iterator it_rhs;
+
+        if (lhs.size() != rhs.size())
+            return (false);
+        it_lhs = lhs.begin();
+        it_rhs = rhs.begin();
+        while (it_lhs != lhs.end())
+        {
+            if (it_rhs == rhs.end() || *it_lhs != *it_rhs)
+                return (false);
+            it_lhs++;
+            it_rhs++;
+        }
+        return (true);
+    };
+
+    template <class T, class Alloc>
+    bool operator!= (const Vector<T, Alloc>& lhs, const Vector<T, Alloc>& rhs)
+    {
+        return (!(lhs == rhs));
+    };
+
+    template <class T, class Alloc>
+    bool operator<  (const Vector<T, Alloc>& lhs, const Vector<T, Alloc>& rhs)
+    {
+       	typename ft::Vector<T>::const_iterator it_lhs;
+        typename ft::Vector<T>::const_iterator it_rhs;
+
+        if (lhs == rhs)
+            return (false);
+        it_lhs = lhs.begin();
+        it_rhs = rhs.begin();
+        while (it_lhs != lhs.end() && it_rhs != rhs.end() &&
+                *it_lhs == *it_rhs)
+        {
+            it_lhs++;
+            it_rhs++;
+        }
+        if (it_rhs != rhs.end())
+            return (true);
+        return (false);
+    };
+
+    template <class T, class Alloc>
+    bool operator<= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs)
+    {
+        if (lhs == rhs)
+            return (true);
+        return (lhs < rhs);
+    };
+
+    template <class T, class Alloc>
+    bool operator>(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs)
+    {
+        if (lhs == rhs)
+            return (false);
+        return (!(lhs < rhs));
+    };
+
+    template <class T, class Alloc>
+    bool operator>= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs)
+    {
+        if (lhs == rhs)
+            return (true);
+        return (!(lhs < rhs));
     };
 }
 
