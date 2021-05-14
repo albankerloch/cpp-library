@@ -23,7 +23,7 @@ namespace ft
         pointer p;
 
     public:
-        VectorIterator(): p(nullptr) {}
+        VectorIterator(): p(0) {}
         VectorIterator(pointer p): p(p) {}
         VectorIterator(VectorIterator const &other): p(other.p) {}
         virtual ~VectorIterator() {}

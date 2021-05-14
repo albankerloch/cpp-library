@@ -8,7 +8,7 @@
 namespace ft 
 {
     template <typename T, typename Alloc = std::allocator<T> >
-    class Vector
+    class vector
     {
         public:
 
@@ -34,10 +34,10 @@ namespace ft
 
         public:
 
-            explicit Vector (const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_array(nullptr), m_capacity(0), m_size(0) 
+            explicit vector (const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_array(0), m_capacity(0), m_size(0) 
             {}
 
-            explicit Vector (size_type n, const value_type & val = value_type(), const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_capacity(n), m_size(n)
+            explicit vector (size_type n, const value_type & val = value_type(), const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_capacity(n), m_size(n)
             {
                 size_type i;
 
@@ -45,35 +45,35 @@ namespace ft
 			    i = 0;
                 while(i < n)
                 {
-                    m_allocator.construct(m_array + i, val);
+                    m_allocator.construct(&this->m_array[i], val);
                     i++;
                 }
             }
 
-            explicit Vector(iterator first, iterator last): m_array(nullptr), m_capacity(0), m_size(0) 
+            explicit vector(iterator first, iterator last): m_array(0), m_capacity(0), m_size(0) 
             {
                 this->assign(first, last);
             }
 
-            Vector (const Vector  & Vector_to_copy) : m_allocator(Vector_to_copy.m_allocator), m_array(nullptr), m_capacity(0), m_size(0)
+            vector (const vector  & vector_to_copy) : m_allocator(vector_to_copy.m_allocator), m_array(0), m_capacity(0), m_size(0)
             {
-                *this = Vector_to_copy;
+                *this = vector_to_copy;
             }
 
-            ~Vector() 
+            ~vector() 
             {
                 this->clear();
                 m_allocator.deallocate(this->m_array, this->m_capacity);
             }
 
-            Vector & operator=(const Vector  & Vector_to_copy) 
+            vector & operator=(const vector  & vector_to_copy) 
             {
                 size_t i;
 
                 i = 0;
-                while (i < Vector_to_copy.m_size)
+                while (i < vector_to_copy.m_size)
                 {
-                    this->push_back(Vector_to_copy.m_array[i]);
+                    this->push_back(vector_to_copy.m_array[i]);
                     i++;
                 }
                 return *this;
@@ -200,7 +200,7 @@ namespace ft
                 value_type *tmp;
 
                 if (length > this->max_size())
-					throw (std::length_error("Vector : max size reached during reserve"));
+					throw (std::length_error("vector : max size reached during reserve"));
                 else if (length > this->m_capacity)
                 {
                     tmp = this->m_allocator.allocate(length);
@@ -208,8 +208,8 @@ namespace ft
                     {
                         for (i = 0; i < m_size; i++)
                         {
-                            m_allocator.construct(tmp + i, this->m_array[i]);
-                            m_allocator.destroy(&this->m_array + i);
+                            m_allocator.construct(&tmp[i], this->m_array[i]);
+                            m_allocator.destroy(&this->m_array[i]);
                         }
                         m_allocator.deallocate(this->m_array, this->m_capacity);
                     }
@@ -229,7 +229,7 @@ namespace ft
                 i = 0;
                 while (first != last) 
                 {
-                    m_allocator.construct(m_array + i, *first);
+                    m_allocator.construct(&this->m_array[i], *first);
                     first++;
                     i++;
                 }
@@ -245,7 +245,7 @@ namespace ft
                 i = 0;
                 while (i < length) 
                 {
-                    m_allocator.construct(m_array + i, value);
+                    m_allocator.construct(&this->m_array[i], value);
                     ++i;
                 }
                 this->m_size = length;
@@ -261,7 +261,7 @@ namespace ft
 
             void pop_back(void)
             {
-                m_allocator.destroy(&this->m_array + this->m_size);
+                m_allocator.destroy(this->m_array + this->m_size);
                 this->m_size--;
             }
 
@@ -286,7 +286,7 @@ namespace ft
                     i = this->m_size;
                     while (i < length)
                     {
-                        this->m_allocator.construct(this->m_array + i, value);
+                        this->m_allocator.construct(&this->m_array[i], value);
                         i++;
                     }
                     this->m_size = length;
@@ -324,57 +324,84 @@ namespace ft
                 return (first);
             };
 
+            void print()
+            {
+                typename ft::vector<T>::iterator it;
+                size_t i;
+
+                it = this->begin();
+                i = 0;
+                while(it != this->end())
+                {
+                    std::cout << " SHOW -> at pos "<< i++ << " got " << *it << std::endl;
+                    it++;
+                }
+            }
+            
             iterator insert (iterator position, const value_type& value)
             {
-                return (this->insert(position, 1, value));
-            }
+                difference_type ret;
+                
+                ret = position - this->begin();
+                this->insert(position, 1, value);
+                return (iterator(this->begin() + ret));
+            }          
 
             void insert (iterator position, size_type n, const value_type& value)
             {
-                iterator it;
+                size_t begin_insert;
+                size_t i;
 
-                if (this->m_size + n > this->capacity)
+                begin_insert = position - this->begin();
+                if (this->m_size + n > this->capacity())
                     this->reserve(this->m_size + n);
-                it = this->end() + n;
-                while(it != position + n)
+                this->m_size = this->m_size + n;
+                i = this->size() - 1;
+                while(i != begin_insert + n - 1)
                 {
-                    m_allocator.construct(it, it - n);
-                    it--;
+                    m_allocator.construct(&this->m_array[i], this->m_array[i - n]);
+                    i--;
                 }
-                while(it != position)
+                while(i != begin_insert)
                 {
-                    m_allocator.destroy(it);
-                    m_allocator.construct(it, value);
-                    it--;
+                    m_allocator.destroy(&this->m_array[i]);
+                    m_allocator.construct(&this->m_array[i], value);
+                    i--;
                 }
-                return (position + n);
+                m_allocator.destroy(&this->m_array[i]);
+                m_allocator.construct(&this->m_array[i], value);
             }
 
             void insert (iterator position, iterator first, iterator last)
             {
                 iterator it;
+                size_t i;
                 size_t n;
+                size_t begin_insert;
 
                 n = last - first;
-                if (this->m_size + n > this->capacity)
+                begin_insert = position - this->begin();
+                if (this->m_size + n > this->capacity())
                     this->reserve(this->m_size + n);
-                it = this->end() + n;
-                while(it != position + n)
+                this->m_size = this->m_size + n;
+                i = this->size() - 1;
+                while(i != begin_insert + n - 1)
                 {
-                    m_allocator.construct(it, it - n);
-                    it--;
+                    m_allocator.construct(&this->m_array[i], this->m_array[i - n]);
+                    i--;
                 }
-                while(it != position)
+                while(i != begin_insert)
                 {
-                    m_allocator.destroy(it);
-                    m_allocator.construct(it, last);
+                    m_allocator.destroy(&this->m_array[i]);
+                    m_allocator.construct(&this->m_array[i], *(last - 1));
                     last--;
-                    it--;
+                    i--;
                 }
-                return (first);
+                m_allocator.destroy(&this->m_array[i]);
+                m_allocator.construct(&this->m_array[i], *(last - 1));
             }
 
-            void swap(Vector & x)
+            void swap(vector & x)
             {
                 iterator save_end(this->end());
 
@@ -387,16 +414,16 @@ namespace ft
     };
 
     template<typename T>
-    void swap(Vector<T> &x, Vector<T> &y) 
+    void swap(vector<T> &x, vector<T> &y) 
     {
         x.swap(y);
     };
 
     template <class T, class Alloc>
-    bool operator== (const ft::Vector<T, Alloc>& lhs, const ft::Vector<T, Alloc>& rhs)
+    bool operator== (const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs)
     {
-        typename ft::Vector<T>::const_iterator it_lhs;
-        typename ft::Vector<T>::const_iterator it_rhs;
+        typename ft::vector<T>::const_iterator it_lhs;
+        typename ft::vector<T>::const_iterator it_rhs;
 
         if (lhs.size() != rhs.size())
             return (false);
@@ -413,16 +440,16 @@ namespace ft
     };
 
     template <class T, class Alloc>
-    bool operator!= (const Vector<T, Alloc>& lhs, const Vector<T, Alloc>& rhs)
+    bool operator!= (const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
     {
         return (!(lhs == rhs));
     };
 
     template <class T, class Alloc>
-    bool operator<  (const Vector<T, Alloc>& lhs, const Vector<T, Alloc>& rhs)
+    bool operator<  (const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
     {
-       	typename ft::Vector<T>::const_iterator it_lhs;
-        typename ft::Vector<T>::const_iterator it_rhs;
+       	typename ft::vector<T>::const_iterator it_lhs;
+        typename ft::vector<T>::const_iterator it_rhs;
 
         if (lhs == rhs)
             return (false);
@@ -440,7 +467,7 @@ namespace ft
     };
 
     template <class T, class Alloc>
-    bool operator<= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs)
+    bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
     {
         if (lhs == rhs)
             return (true);
@@ -448,7 +475,7 @@ namespace ft
     };
 
     template <class T, class Alloc>
-    bool operator>(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs)
+    bool operator>(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
     {
         if (lhs == rhs)
             return (false);
@@ -456,7 +483,7 @@ namespace ft
     };
 
     template <class T, class Alloc>
-    bool operator>= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs)
+    bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
     {
         if (lhs == rhs)
             return (true);

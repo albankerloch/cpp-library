@@ -16,7 +16,7 @@ OBJS = ${SRCS:.cpp=.o}
 NAME = containers
 CXX = clang++
 RM = rm -rf
-CXXFLAGS = -Wall -Wextra -Werror -I.
+CXXFLAGS = -std=c++98 -Wall -Wextra -Werror -I.
 
 all : ${NAME}
 
