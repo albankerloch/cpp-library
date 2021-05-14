@@ -3,6 +3,7 @@
 
 # include "Vector_Iterator.hpp"
 # include "Reverse_Iterator.hpp"
+# include "Algo.hpp"
 # include <iostream>
 
 namespace ft 
@@ -157,12 +158,12 @@ namespace ft
 
             reverse_iterator rbegin(void) 
             {
-		        return (reverse_iterator(this->m_array[m_size]));
+		        return (reverse_iterator(&(this->m_array[m_size])));
 	        }
 
             const_reverse_iterator rbegin(void) const
             {
-		        return (const_reverse_iterator(this->m_array[m_size]));
+		        return (const_reverse_iterator(&(this->m_array[m_size])));
 	        }
 
             iterator end(void) 
@@ -177,12 +178,12 @@ namespace ft
 
             reverse_iterator rend(void)
             {
-		        return (reverse_iterator(&(this->m_array[m_size])));
+		        return (reverse_iterator(this->m_array));
 	        }           
 
             const_reverse_iterator rend(void) const
             {
-		        return (const_reverse_iterator(&(this->m_array[m_size])));
+		        return (const_reverse_iterator(this->m_array));
 	        }
 
             void clear()
@@ -466,8 +467,7 @@ namespace ft
             return (false);
         it_lhs = lhs.begin();
         it_rhs = rhs.begin();
-        while (it_lhs != lhs.end() && it_rhs != rhs.end() &&
-                *it_lhs == *it_rhs)
+        while (it_lhs != lhs.end() && it_rhs != rhs.end() && *it_lhs == *it_rhs)
         {
             it_lhs++;
             it_rhs++;
