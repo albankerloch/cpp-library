@@ -295,34 +295,32 @@ namespace ft
 
             iterator erase (iterator position)
             {
-                iterator temp(position);
+                iterator save_position(position);
 
-                temp++;
-                return (this->erase(position, temp));
+                while (position != this->end() - 1)
+                {
+                    this->m_allocator.construct(&(*position), *(position + 1));
+                    position++;
+                }
+                this->m_size--;
+                return (save_position);
             }
-
 
             iterator erase(iterator first, iterator last)
             {
-                size_t i;
+                iterator save_first(first);
+                size_t n;
 
-                i = 0;
-                while (first != last)
+                n = last - first;
+                while (last != this->end())
                 {
-                    this->m_allocator.destroy(first);
+                    this->m_allocator.construct(&(*first), *(last));
                     first++;
-                    this->m_size--;
-                    i++;
+                    last++;
                 }
-                while (first != this->end())
-                {
-                    this->m_allocator.construct(first, first + i);
-                    first++;
-                    this->m_allocator.destroy(first);
-                }
-                first++;
-                return (first);
-            };
+                this->m_size = this->m_size - n;
+                return (save_first);
+            }
 
             void print()
             {
@@ -403,12 +401,25 @@ namespace ft
 
             void swap(vector & x)
             {
-                iterator save_end(this->end());
+                T	*temp_array;
+                size_t temp_size;
+                size_t temp_capacity;
+                allocator_type	temp_allocator;
 
-                this->insert(this->end(), x->begin(), x->end());
-                this->erase(x->begin(), x->end());
-                this->insert(x->begin(), this->begin(), save_end);
-                this->erase(this->begin(), save_end);              
+                temp_array = x.m_array;
+                temp_size = x.m_size;
+                temp_capacity = x.m_capacity;
+                temp_allocator = x.m_allocator;
+
+                x.m_array = this->m_array;
+                x.m_size = this->m_size;
+                x.m_capacity = this->m_capacity;
+                x.m_allocator = this->m_allocator;
+
+                this->m_array = temp_array;
+                this->m_size = temp_size;
+                this->m_capacity = temp_capacity;
+                this->m_allocator = temp_allocator;
             }
             
     };

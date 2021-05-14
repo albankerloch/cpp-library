@@ -34,6 +34,19 @@ bool Comparevector(ft::vector<T> *ft, std::vector<T> *stl, const std::string &te
 	return true;
 }
 
+void ft_swap(void)
+{
+	std::vector<int> V1STL (3, 39);
+	ft::vector<int> V1 (3, 39);
+	std::vector<int> V2STL (2,50);
+	ft::vector<int> V2 (2,50);
+
+	V1STL.swap(V2STL);
+	V1.swap(V2);
+	Comparevector(&V1, &V1STL, "Swap - first element");
+	Comparevector(&V2, &V2STL, "Swap - second element");
+}
+
 void ft_insert_erase(void)
 {
 	std::vector<int> V1STL (3, 39);
@@ -52,6 +65,14 @@ void ft_insert_erase(void)
 	V1STL.insert(V1STL.begin(), V2STL.begin(), V2STL.end());
 	V1.insert(V1.begin(), V2.begin(), V2.end());
 	Comparevector(&V1, &V1STL, "Insert again - one range");
+
+	V1STL.erase(V1STL.begin());
+	V1.erase(V1.begin());
+	Comparevector(&V1, &V1STL, "Erase - one element");
+
+	V1STL.erase(V1STL.begin(), V1STL.begin() + 2);
+	V1.erase(V1.begin(), V1.begin() + 2);
+	Comparevector(&V1, &V1STL, "Erase - one range");
 }
 
 void ft_push_pop_back(void)
@@ -131,4 +152,5 @@ void ft_test_vector(void)
    ft_assign();
    ft_push_pop_back();
    ft_insert_erase();
+   ft_swap();
 }
