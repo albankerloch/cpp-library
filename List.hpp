@@ -3,6 +3,7 @@
 
 # include "List_Iterator.hpp"
 # include "Reverse_Iterator.hpp"
+# include "utils.hpp"
 # include "Node.hpp"
 
 namespace ft
@@ -20,7 +21,7 @@ namespace ft
             typedef typename allocator_type::const_pointer      	const_pointer;
             typedef Node<value_type>                                node_type;
             typedef ft::List_iterator<T> 							iterator;
-            typedef ft::List_iterator<T const> 						const_iterator;
+            typedef ft::List_const_iterator<T> 						const_iterator;
             typedef ReverseIterator<iterator>           		reverse_iterator;
             typedef ReverseIterator<const_iterator>    	        const_reverse_iterator;
             typedef std::ptrdiff_t							        difference_type;
@@ -35,7 +36,7 @@ namespace ft
 			type_node_allocator		node_allocator;
 			Node<T>	*m_last_node;
 
-			node_pointer ft_add_node(const T& data, Node<T> * m_previous = NULL, Node<T> * m_next = NULL)
+			node_pointer ft_add_node(const T & data, Node<T> * m_previous = NULL, Node<T> * m_next = NULL)
 			{
 				node_pointer new_node = node_allocator.allocate(1);
 				node_allocator.construct(new_node, Node<T>(data));
@@ -65,26 +66,26 @@ namespace ft
 				this->insert(this->begin(), n, val);
 			}
 
-			
-			template <class InputIterator>
-			list (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : m_allocator(alloc)
+			list (iterator first, iterator last, const allocator_type& alloc = allocator_type()) : m_allocator(alloc)
 			{
 				this->ft_init_node();
 				this->insert(this->begin(), first, last);
 			}
 
-			/*
-			list (const list& x) : m_allocator(x.m_allocator)
+			list (const list & x) : m_allocator(x.m_allocator)
 			{
 				const_iterator begin;
-				const_iterator end;
+				const_iterator end ;
 				
 				begin = x.begin();
 				end = x.end();
 				this->ft_init_node();
 				while (begin != end)
-					this->_insertBefore(m_last_node, _createNode((begin++)._node->data));
-			}*/
+				{
+					this->insert(this->begin(), begin._node->data);
+					begin++;
+				}
+			}
 		
 			~list()
 			{
@@ -95,13 +96,21 @@ namespace ft
 
 			list& operator= (const list & x)
 			{
+				const_iterator begin;
+				const_iterator end ;
+				
+				begin = x.begin();
+				end = x.end();
 				if (&x == this)
 					return (*this);
 				this->clear();
-				this->insert(this->begin(), x.begin(), x.end());
+				while (begin != end)
+				{
+					this->insert(this->begin(), begin._node->data);
+					begin++;
+				}
 				return (*this);
 			}
-
 		
 			iterator begin() 
 			{ 
@@ -128,7 +137,7 @@ namespace ft
 				return (_listSize()); 
 			}
 
-			iterator insert (iterator position, const value_type& val)
+			iterator insert (iterator position, const value_type & val)
 			{ 
 				node_pointer new_node;
 

@@ -371,13 +371,13 @@ void ft_constructor(void)
 	ft::list<int> V3 (V2.begin(),V2.end());
 	CompareList(&V3, &V3STL, "Constructor - range");
 
-	/*std::list<int> V4STL (V3STL);
+	std::list<int> V4STL (V3STL);
 	ft::list<int> V4(V3);
 	CompareList(&V4, &V4STL, "Constructor - copy");
 
 	V1_STL = V4STL;
 	V1 = V4;
-	CompareList(&V1, &V1_STL, "Constructor - operator = ");*/
+	CompareList(&V1, &V1_STL, "Constructor - operator = ");
 }
 
 void ft_test_list(void)
