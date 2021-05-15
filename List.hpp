@@ -21,7 +21,7 @@ namespace ft
             typedef typename allocator_type::const_pointer      const_pointer;
             typedef Node<value_type>                            node_type;
             typedef List_iterator<value_type, node_type>		iterator;
-            typedef List_const_iterator<T> 						const_iterator;
+            typedef List_iterator<value_type const, node_type const> 						const_iterator;
             typedef ReverseIterator<iterator>           		reverse_iterator;
             typedef ReverseIterator<const_iterator>    	        const_reverse_iterator;
             typedef std::ptrdiff_t							    difference_type;
