@@ -68,6 +68,7 @@ namespace ft
 			void ft_delete(Node<T> *node)
 			{
 				ft_disconnect(node);
+				m_last_node->data--;
 				node_allocator.destroy(node);
 				node_allocator.deallocate(node, 1);
 			}
@@ -173,16 +174,7 @@ namespace ft
 
 			size_type size() const 
 			{ 
-				size_type count;
-				node_pointer tmp = m_last_node->m_next;
-				
-				count = 0;
-				while (tmp != m_last_node)
-				{
-					tmp = tmp->m_next;
-					count++;
-				}
-				return (count);
+				return (this->m_last_node->data);
 			}
 
 			iterator insert (iterator position, const value_type & val)
@@ -220,6 +212,16 @@ namespace ft
 				}
 			}
 
+			void push_front (const value_type& val)
+			{
+				this->insert(this->m_last_node->m_next, val);
+			}
+
+			void push_back (const value_type& val)
+			{
+				this->insert(this->m_last_node, val);
+			}
+
 			void clear()
 			{
 				Node<T> *tmp = m_last_node->m_next;
@@ -232,10 +234,15 @@ namespace ft
 				}
 			}
 
-		private :
+			void pop_front()
+			{
+				ft_delete(m_last_node->m_next);
+			}	
 
-			
-		
+			void pop_back()
+			{
+				ft_delete(m_last_node->m_previous);
+			}
 	};
 }
 

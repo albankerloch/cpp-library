@@ -13,7 +13,7 @@ void STLPrintList(std::list<T> *stl)
 	std::cout << " SIZES : STL = "<< stl->size() << std::endl;
 	it_stl = stl->begin();
 	i = 0;
-	while(i < 17)
+	while(i < stl->size())
 	{
 		std::cout << " Value : STL = " << *it_stl << " at position " << i++ << std::endl;
 		it_stl++;
@@ -30,7 +30,7 @@ void PrintList(ft::list<T> *stl)
 	std::cout << " SIZES : FT = "<< stl->size() << std::endl;
 	it_stl = stl->begin();
 	i = 0;
-	while(i < 17)
+	while(i < stl->size())
 	{
 		std::cout << " Value : FT = " << *it_stl << " at position " << i++ << std::endl;
 		it_stl++;
@@ -153,14 +153,16 @@ void ft_begin_end()
 {
 	std::list<int> V1STL (3, 39);
 	ft::list<int> V1 (3, 39);
-	/*V1.push_back(3);
+	V1.push_back(3);
 	V1STL.push_back(3);
 	V1.push_front(12);
 	V1STL.push_front(12);
 	V1.push_front(11);
 	V1STL.push_front(11);
 	V1.push_front(13);
-	V1STL.push_front(13);*/
+	V1STL.push_front(13);
+	V1.pop_front();
+	V1STL.pop_front();
 
 	//STLPrintList(&V1STL);
 	//PrintList(&V1);
@@ -329,7 +331,7 @@ void ft_insert_erase(void)
 	V1.erase(V1.begin(), V1.begin() + 2);
 	CompareList(&V1, &V1STL, "Erase - one range");
 }
-
+*/
 void ft_push_pop_back(void)
 {
 	std::list<int> V1STL (3, 39);
@@ -353,7 +355,7 @@ void ft_push_pop_back(void)
 	V1.pop_back();
 	CompareList(&V1, &V1STL, "Pop_back again - default");
 }
-
+/*
 void ft_assign(void)
 {
 	std::list<int> V1STL (3, 39);
@@ -410,13 +412,12 @@ void ft_constructor(void)
 void ft_test_list(void)
 {
    ft_constructor();
-   /*ft_assign();
+   //ft_assign();
    ft_push_pop_back();
-   ft_insert_erase();
+   /*ft_insert_erase();
    ft_swap();
    ft_clear();
    ft_access();
    ft_relationnal_operator();*/
    ft_begin_end();
-/*   ft_capacity();*/
 }
