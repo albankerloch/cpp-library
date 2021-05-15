@@ -363,7 +363,7 @@ void ft_constructor(void)
 	std::list<char> VCHAR2_STL(5, 'A');
 	CompareList(&VCHAR2, &VCHAR2_STL, "Constructor - default with char");
 
-	/*std::list<int> V2STL (3, 39);
+	std::list<int> V2STL (3, 39);
 	ft::list<int> V2 (3, 39);
 	CompareList(&V2, &V2STL, "Constructor - fill");
 
@@ -371,7 +371,7 @@ void ft_constructor(void)
 	ft::list<int> V3 (V2.begin(),V2.end());
 	CompareList(&V3, &V3STL, "Constructor - range");
 
-	std::list<int> V4STL (V3STL);
+	/*std::list<int> V4STL (V3STL);
 	ft::list<int> V4(V3);
 	CompareList(&V4, &V4STL, "Constructor - copy");
 

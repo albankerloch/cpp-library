@@ -28,12 +28,21 @@ namespace ft
 
 		private :
 
-			typedef typename allocator_type::template 		rebind<Node<T> >::other nodem_allocatorator;
-			typedef typename nodem_allocatorator::pointer	_node_pointer;
+			typedef typename allocator_type::template 		rebind<Node<T> >::other type_node_allocator;
+			typedef typename type_node_allocator::pointer	node_pointer;
 
 			allocator_type 			m_allocator;
-			nodem_allocatorator		node_allocator;
+			type_node_allocator		node_allocator;
 			Node<T>	*m_last_node;
+
+			node_pointer ft_add_node(const T& data, Node<T> * m_previous = NULL, Node<T> * m_next = NULL)
+			{
+				node_pointer new_node = node_allocator.allocate(1);
+				node_allocator.construct(new_node, Node<T>(data));
+				new_node->m_previous = m_previous;
+				new_node->m_next = m_next;
+				return (new_node);
+			}
 
 			void ft_init_node(void)
 			{
@@ -56,7 +65,7 @@ namespace ft
 				this->insert(this->begin(), n, val);
 			}
 
-			/*
+			
 			template <class InputIterator>
 			list (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : m_allocator(alloc)
 			{
@@ -64,6 +73,7 @@ namespace ft
 				this->insert(this->begin(), first, last);
 			}
 
+			/*
 			list (const list& x) : m_allocator(x.m_allocator)
 			{
 				const_iterator begin;
@@ -120,24 +130,38 @@ namespace ft
 
 			iterator insert (iterator position, const value_type& val)
 			{ 
-				return (_insertBefore(position._node, _createNode(val))); 
+				node_pointer new_node;
+
+				new_node = ft_add_node(val);
+				new_node->m_next = position._node;
+				if (position._node->m_previous == this->m_last_node)
+				{
+					new_node->m_previous = this->m_last_node;
+					this->m_last_node->m_next = new_node;
+				}
+				else
+				{
+					new_node->m_previous = position._node->m_previous;
+					position._node->m_previous->m_next = new_node;
+				}
+				position._node->m_previous = new_node;
+				return (iterator(position._node->m_previous));
 			}
 
 			void insert (iterator position, size_type n, const value_type& val)
 			{
 				while (n--)
-					_insertBefore(position._node, _createNode(val));
+					this->insert(position, val);
 			}
-
-			/*template <class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last)
+	
+			void insert (iterator position, iterator first, iterator last)
 			{
 				while (first != last)
 				{
-					this->insert(position, *(&first));
+					this->insert(position, *first);
 					first++;
 				}
-			}*/
+			}
 
 			void clear()
 			{
@@ -153,29 +177,28 @@ namespace ft
 
 		private :
 
-			_node_pointer _createNode(const T& data, Node<T> * m_previous = NULL, Node<T> * m_next = NULL)
+			node_pointer _createNode(const T& data, Node<T> * m_previous = NULL, Node<T> * m_next = NULL)
 			{
-				_node_pointer new_node = node_allocator.allocate(1);
+				node_pointer new_node = node_allocator.allocate(1);
 				node_allocator.construct(new_node, Node<T>(data));
 				new_node->m_previous = m_previous;
 				new_node->m_next = m_next;
 				return (new_node);
 			}
 
-			_node_pointer _copyNode(const Node<T> * node)
+			node_pointer _copyNode(const Node<T> * node)
 			{
-				_node_pointer new_node = node_allocator.allocate(1);
+				node_pointer new_node = node_allocator.allocate(1);
 				node_allocator.construct(new_node, Node<T>(node->data));
 				new_node->m_previous = node->m_previous;
 				new_node->m_next = node->m_next;
 				return (new_node);
 			}
-
 		
 			size_type _listSize(void) const
 			{
 				size_type count = 0;
-				_node_pointer tmp = m_last_node->m_next;
+				node_pointer tmp = m_last_node->m_next;
 
 				while (tmp != m_last_node)
 				{
