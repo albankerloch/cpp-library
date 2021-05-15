@@ -18,7 +18,7 @@ namespace ft
 		return (rtn);
 	}
 
-	template <typename T>
+	template <typename T, typename N>
 	class List_iterator : IteratorTrait
 	{
 		public:
@@ -29,6 +29,8 @@ namespace ft
 			typedef value_type&			reference;
 			typedef value_type const &	const_reference;
 			typedef std::ptrdiff_t 		difference_type;
+			typedef N 					node_type;
+			typedef node_type* 			node_pointer;
 
 			Node<T> *_node;
 
@@ -84,11 +86,15 @@ namespace ft
 				return (rtn);
 			}
 
-			friend bool operator==(const List_iterator<T>& lhs, const List_iterator<T>& rhs)
-			{ return (lhs._node == rhs._node); }
+			bool operator==(List_iterator const &other) const 
+			{
+				return (this->_node  == other._node);
+			}
 
-			friend bool operator!=(const List_iterator<T>& lhs, const List_iterator<T>& rhs)
-			{ return (lhs._node != rhs._node); }
+			bool operator!=(List_iterator const &other) const 
+			{
+				return (this->_node != other._node );
+			}
 
 	};	
 
@@ -118,7 +124,7 @@ namespace ft
 				_node(x._node)
 			{}
 
-			List_const_iterator(const List_iterator<T>& x)
+			List_const_iterator(const List_iterator<T, Node<T> >& x)
 			:
 				_node(x._node)
 			{}

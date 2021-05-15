@@ -13,19 +13,19 @@ namespace ft
 	{
 		public :
 
-			typedef T	    							    	    value_type;
-            typedef Alloc   	    					        	allocator_type;
-            typedef typename allocator_type::reference            reference;
-            typedef typename allocator_type::const_reference       const_reference;
-            typedef typename allocator_type::pointer	        	pointer;
-            typedef typename allocator_type::const_pointer      	const_pointer;
-            typedef Node<value_type>                                node_type;
-            typedef ft::List_iterator<T> 							iterator;
-            typedef ft::List_const_iterator<T> 						const_iterator;
+			typedef T	    							    	value_type;
+            typedef Alloc   	    					        allocator_type;
+            typedef typename allocator_type::reference          reference;
+            typedef typename allocator_type::const_reference	const_reference;
+            typedef typename allocator_type::pointer	        pointer;
+            typedef typename allocator_type::const_pointer      const_pointer;
+            typedef Node<value_type>                            node_type;
+            typedef List_iterator<value_type, node_type>		iterator;
+            typedef List_const_iterator<T> 						const_iterator;
             typedef ReverseIterator<iterator>           		reverse_iterator;
             typedef ReverseIterator<const_iterator>    	        const_reverse_iterator;
-            typedef std::ptrdiff_t							        difference_type;
-            typedef size_t 								    	    size_type;
+            typedef std::ptrdiff_t							    difference_type;
+            typedef size_t 								    	size_type;
 
 		private :
 
@@ -36,6 +36,14 @@ namespace ft
 			type_node_allocator		node_allocator;
 			Node<T>	*m_last_node;
 
+			void ft_init_node(void)
+			{
+				this->m_last_node = node_allocator.allocate(1);
+				node_allocator.construct(m_last_node, Node<T>());
+				this->m_last_node->m_previous = this->m_last_node;
+				this->m_last_node->m_next = this->m_last_node;
+			}
+
 			node_pointer ft_add_node(const T & data, Node<T> * m_previous = NULL, Node<T> * m_next = NULL)
 			{
 				node_pointer new_node = node_allocator.allocate(1);
@@ -45,12 +53,23 @@ namespace ft
 				return (new_node);
 			}
 
-			void ft_init_node(void)
+			void ft_disconnect(Node<T> *node)
 			{
-				this->m_last_node = node_allocator.allocate(1);
-				node_allocator.construct(m_last_node, Node<T>());
-				this->m_last_node->m_previous = this->m_last_node;
-				this->m_last_node->m_next = this->m_last_node;
+				if (node->m_previous == m_last_node)
+					m_last_node->m_next = node->m_next;
+				else
+					node->m_previous->m_next = node->m_next;
+				if (node->m_next == m_last_node)
+					m_last_node->m_previous = node->m_previous;
+				else
+					node->m_next->m_previous = node->m_previous;	
+			}
+
+			void ft_delete(Node<T> *node)
+			{
+				ft_disconnect(node);
+				node_allocator.destroy(node);
+				node_allocator.deallocate(node, 1);
 			}
 		
 		public :
@@ -134,7 +153,16 @@ namespace ft
 
 			size_type size() const 
 			{ 
-				return (_listSize()); 
+				size_type count;
+				node_pointer tmp = m_last_node->m_next;
+				
+				count = 0;
+				while (tmp != m_last_node)
+				{
+					tmp = tmp->m_next;
+					count++;
+				}
+				return (count);
 			}
 
 			iterator insert (iterator position, const value_type & val)
@@ -179,79 +207,14 @@ namespace ft
 				while (tmp != m_last_node)
 				{
 					m_next_tmp = tmp->m_next;
-					_delete(tmp);
+					ft_delete(tmp);
 					tmp = m_next_tmp;
 				}
 			}
 
 		private :
 
-			node_pointer _createNode(const T& data, Node<T> * m_previous = NULL, Node<T> * m_next = NULL)
-			{
-				node_pointer new_node = node_allocator.allocate(1);
-				node_allocator.construct(new_node, Node<T>(data));
-				new_node->m_previous = m_previous;
-				new_node->m_next = m_next;
-				return (new_node);
-			}
-
-			node_pointer _copyNode(const Node<T> * node)
-			{
-				node_pointer new_node = node_allocator.allocate(1);
-				node_allocator.construct(new_node, Node<T>(node->data));
-				new_node->m_previous = node->m_previous;
-				new_node->m_next = node->m_next;
-				return (new_node);
-			}
-		
-			size_type _listSize(void) const
-			{
-				size_type count = 0;
-				node_pointer tmp = m_last_node->m_next;
-
-				while (tmp != m_last_node)
-				{
-					tmp = tmp->m_next;
-					count++;
-				}
-				return (count);
-			}
 			
-			iterator _insertBefore(Node<T> *m_next,  Node<T> *new_node)
-			{
-				new_node->m_next = m_next;
-				if (m_next->m_previous == m_last_node)
-				{
-					new_node->m_previous = m_last_node;
-					m_last_node->m_next = new_node;
-				}
-				else
-				{
-					new_node->m_previous = m_next->m_previous;
-					m_next->m_previous->m_next = new_node;
-				}
-				m_next->m_previous = new_node;
-				return (iterator(m_next->m_previous));
-			}
-
-			void _delete(Node<T> *node)
-			{
-				_disconnect(node);
-				node_allocator.destroy(node);
-				node_allocator.deallocate(node, 1);
-			}
-
-			void _disconnect(Node<T> *node)
-			{
-				if (node->m_previous == m_last_node)
-					m_last_node->m_next = node->m_next;
-				else
-					node->m_previous->m_next = node->m_next;
-				if (node->m_next == m_last_node)
-					m_last_node->m_previous = node->m_previous;
-				else
-					node->m_next->m_previous = node->m_previous;	
-			}
 		
 	};
 }
