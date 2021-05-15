@@ -13,7 +13,8 @@
 #ifndef LIST_ITERATOR_HPP
 # define LIST_ITERATOR_HPP
 
-#include "utils.hpp"
+# include "utils.hpp"
+# include "Node.hpp"
 
 namespace ft
 {
@@ -115,7 +116,7 @@ namespace ft
 			*/
 			List_iterator& operator++(void)
 			{
-				this->_node = this->_node->next;
+				this->_node = this->_node->m_next;
 				return (*this);
 			}
 
@@ -142,7 +143,7 @@ namespace ft
 			*/
 			List_iterator& operator--(void)
 			{
-				this->_node = this->_node->prev;
+				this->_node = this->_node->m_previous;
 				return (*this);
 			}
 
@@ -272,7 +273,7 @@ namespace ft
 			*/
 			List_const_iterator& operator++(void)
 			{
-				this->_node = this->_node->next;
+				this->_node = this->_node->m_next;
 				return (*this);
 			}
 

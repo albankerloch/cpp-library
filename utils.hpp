@@ -1183,59 +1183,6 @@ namespace ft
     };
 
     /* List Node : */
-    template <class Data_T>
-    class Doubly_Linked_Node 
-    {
-        public :
-
-            Doubly_Linked_Node  *prev;
-            Doubly_Linked_Node  *next;
-            Data_T              data;
-
-            /*
-            ** @brief Default:
-            ** Create a node with next and prev
-            ** value that pointing to u_nullptr.
-            ** data is unitialized.
-            */
-            Doubly_Linked_Node()
-            :
-                prev(u_nullptr),
-                next(u_nullptr)
-            {}
-
-            /*
-            ** @brief Data init:
-            ** Create a node with next and prev
-            ** value that pointing to u_nullptr.
-            ** data is itialized to "val".
-            **
-            ** @param val the data of this node.
-            */
-            Doubly_Linked_Node(const Data_T& val)
-            :
-                prev(u_nullptr),
-                next(u_nullptr),
-                data(val)
-            {}
-
-            /*
-            ** @brief Init:
-            ** Create a node with next and prev
-            ** value that pointing to parameters "prev" & "next".
-            ** data is itialized to "val".
-            **
-            ** @param val the data of this node.
-            ** @param prev,next the previous and next node. 
-            */
-            Doubly_Linked_Node(const Data_T& val,
-                Doubly_Linked_Node *prev, Doubly_Linked_Node *next)
-            :
-                prev(prev),
-                next(next),
-                data(val)
-            {}
-    };
 
 
 } /* End of namespace */
