@@ -3,35 +3,32 @@
 
 # include "utils.hpp"
 # include "Node.hpp"
+# include "Algo.hpp"
 
 namespace ft
 {
-	template <typename T>
-	class List_iterator : public ft::iterator<ft::bidirectional_iterator_tag, T>
+		template <typename T>
+	class List_iterator : IteratorTrait
 	{
 		public:
+
+			typedef T 					value_type;
+			typedef value_type* 		pointer;
+			typedef value_type const	*const_pointer;
+			typedef value_type&			reference;
+			typedef value_type const &	const_reference;
+			typedef std::ptrdiff_t 		difference_type;
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::iterator_category     iterator_category;
-			typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::value_type            value_type;
-			typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::difference_type       difference_type;
-			typedef T*  pointer;
-			typedef T&  reference;
 
-			List_iterator()
-			:
-				_node(u_nullptr)
-			{}
+			Node<T> *_node;
 
-			List_iterator(Node<T> *init_node)
-			:
-				_node(init_node)
-			{}
+			List_iterator() : _node(u_nullptr) {}
 
-			List_iterator(const List_iterator& x)
-			:
-				_node(x._node)
-			{}
+			List_iterator(Node<T> *init_node) : _node(init_node) {}
 
-			List_iterator &operator= (const List_iterator& x)
+			List_iterator(const List_iterator& x) : _node(x._node) {}
+
+			List_iterator &operator= (const List_iterator& x) 
 			{
 				if (&x == this)
 					return (*this);
@@ -41,9 +38,14 @@ namespace ft
 
 			virtual ~List_iterator() {}
 
-			reference operator* (void) { return (_node->data); }
+			reference operator* (void) 
+			{ return (_node->data); 
+			}
 
-			pointer operator->(void) { return &(this->operator*()); }
+			pointer operator->(void) 
+			{
+				return &(this->operator*()); 
+			}
 	
 			List_iterator& operator++(void)
 			{
@@ -77,7 +79,6 @@ namespace ft
 			friend bool operator!=(const List_iterator<T>& lhs, const List_iterator<T>& rhs)
 			{ return (lhs._node != rhs._node); }
 
-			Node<T> *_node;
 	};
 	
 	template <typename T>
