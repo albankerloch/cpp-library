@@ -22,7 +22,7 @@ namespace ft
             typedef VectorIterator<value_type>          		iterator;
             typedef VectorIterator<value_type const>			const_iterator;
             typedef ReverseIterator<iterator>           		reverse_iterator;
-            typedef ReverseIterator<const_iterator>    	const_reverse_iterator;
+            typedef ReverseIterator<const_iterator>    	        const_reverse_iterator;
             typedef std::ptrdiff_t							    difference_type;
             typedef size_t 									    size_type;
 

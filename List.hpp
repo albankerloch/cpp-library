@@ -1,20 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   list.hpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/03 22:01:32 by rchallie          #+#    #+#             */
-/*   Updated: 2020/12/10 17:41:09 by rchallie         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-/*
-** Documentation :
-** (en) https://en.wikipedia.org/wiki/Doubly_linked_list
-*/
-
 #ifndef LIST_HPP
 #define LIST_HPP
 
@@ -51,51 +34,46 @@ namespace ft
 			allocator_type 			m_allocator;
 			nodem_allocatorator		node_allocator;
 			Node<T>	*m_last_node;
+
+			void ft_init_node(void)
+			{
+				this->m_last_node = node_allocator.allocate(1);
+				node_allocator.construct(m_last_node, Node<T>());
+				this->m_last_node->m_previous = this->m_last_node;
+				this->m_last_node->m_next = this->m_last_node;
+			}
 		
 		public :
 		
 			explicit list (const allocator_type& alloc = allocator_type()) : m_allocator(alloc)
 			{
-				m_last_node = node_allocator.allocate(1);
-				node_allocator.construct(m_last_node, Node<T>());
-				m_last_node->m_previous = m_last_node;
-				m_last_node->m_next = m_last_node;
+				this->ft_init_node();
 			}
 
 			explicit list (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : m_allocator(alloc)
 			{
-				m_last_node = node_allocator.allocate(1);
-				node_allocator.construct(m_last_node, Node<T>());
-				m_last_node->m_previous = m_last_node;
-				m_last_node->m_next = m_last_node;
-				this->insert(end(), n, val);
+				this->ft_init_node();
+				this->insert(this->begin(), n, val);
 			}
 
 			
 			template <class InputIterator>
 			list (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : m_allocator(alloc)
 			{
-				m_last_node = node_allocator.allocate(1);
-				node_allocator.construct(m_last_node, Node<T>());
-				m_last_node->m_previous = m_last_node;
-				m_last_node->m_next = m_last_node;
-				this->insert(end(), first, last);
+				this->ft_init_node();
+				this->insert(this->begin(), first, last);
 			}
 
-			list (const list& x)
-			:
-				m_allocator(x.m_allocator)
+			list (const list& x) : m_allocator(x.m_allocator)
 			{
-				m_last_node = node_allocator.allocate(1);
-				node_allocator.construct(m_last_node, Node<T>());
-				m_last_node->m_previous = m_last_node;
-				m_last_node->m_next = m_last_node;
+				const_iterator begin;
+				const_iterator end;
 				
-				const_iterator beg = x.begin();
-				const_iterator end = x.end();
-
-				while (beg != end)
-					this->_insertBefore(m_last_node, _createNode((beg++)._node->data));
+				begin = x.begin();
+				end = x.end();
+				this->ft_init_node();
+				while (begin != end)
+					this->_insertBefore(m_last_node, _createNode((begin++)._node->data));
 			}
 		
 			~list()
@@ -115,18 +93,35 @@ namespace ft
 			}
 
 		
-			iterator begin() { return (iterator(m_last_node->m_next)); }
+			iterator begin() 
+			{ 
+				return (iterator(m_last_node->m_next)); 
+			}
 
-			const_iterator begin() const { return (const_iterator(m_last_node->m_next)); }
+			const_iterator begin() const 
+			{
+				return (const_iterator(m_last_node->m_next)); 
+			}
 
-			iterator end() { return (iterator(m_last_node)); }
+			iterator end()
+			{ 
+				return (iterator(m_last_node)); 
+			}
 
-			const_iterator end() const { return (const_iterator(m_last_node)); }
+			const_iterator end() const 
+			{ 
+				return (const_iterator(m_last_node)); 
+			}
 
-			size_type size() const { return (_listSize()); }
+			size_type size() const 
+			{ 
+				return (_listSize()); 
+			}
 
 			iterator insert (iterator position, const value_type& val)
-			{ return (_insertBefore(position._node, _createNode(val))); }
+			{ 
+				return (_insertBefore(position._node, _createNode(val))); 
+			}
 
 			void insert (iterator position, size_type n, const value_type& val)
 			{
@@ -170,9 +165,6 @@ namespace ft
 				return (new_node);
 			}
 
-			/*
-			** @brief Copy a node.
-			*/
 			_node_pointer _copyNode(const Node<T> * node)
 			{
 				_node_pointer new_node = node_allocator.allocate(1);
@@ -195,18 +187,7 @@ namespace ft
 				}
 				return (count);
 			}
-
-		
-		
-			void _insertEnd(Node<T>	*new_node)
-			{
-				if (m_last_node->m_next == m_last_node)
-					_insertBeginning(new_node);
-				else
-					_insertAfter(m_last_node->m_previous, new_node);
-			}
-
-		
+			
 			iterator _insertBefore(Node<T> *m_next,  Node<T> *new_node)
 			{
 				new_node->m_next = m_next;
