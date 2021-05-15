@@ -42,58 +42,41 @@ namespace ft
             typedef ft::reverse_iterator<const_iterator> 			const_reverse_iterator;
             typedef std::ptrdiff_t							        difference_type;
             typedef size_t 								    	    size_type;
+
+		private :
+
+			typedef typename allocator_type::template 		rebind<Node<T> >::other nodem_allocatorator;
+			typedef typename nodem_allocatorator::pointer	_node_pointer;
+
+			allocator_type 			m_allocator;
+			nodem_allocatorator		node_allocator;
+			Node<T>	*m_last_node;
+		
+		public :
 		
 			explicit list (const allocator_type& alloc = allocator_type()) : m_allocator(alloc)
 			{
-				m_last_node = m_nodeallocator.allocate(1);
-				m_nodeallocator.construct(m_last_node, Doubly_Linked_Node<T>());
+				m_last_node = node_allocator.allocate(1);
+				node_allocator.construct(m_last_node, Node<T>());
 				m_last_node->m_previous = m_last_node;
 				m_last_node->m_next = m_last_node;
 			}
 
-			/*
-			** @brief Init :
-			** Construct list container object of size "n".
-			** If "val" is not defined, default value of container
-			** is used tu initialize the values. 
-			**
-			** @param n the size of the list.
-			** @param the values of data of the list.
-			** @param alloc the Allocator type.
-			*/
-			explicit list (size_type n, const value_type& val = value_type(),
-											const allocator_type& alloc = allocator_type())
-			:
-				m_allocator(alloc)
+			explicit list (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : m_allocator(alloc)
 			{
-				m_last_node = m_nodeallocator.allocate(1);
-				m_nodeallocator.construct(m_last_node, Doubly_Linked_Node<T>());
+				m_last_node = node_allocator.allocate(1);
+				node_allocator.construct(m_last_node, Node<T>());
 				m_last_node->m_previous = m_last_node;
 				m_last_node->m_next = m_last_node;
 				this->insert(end(), n, val);
 			}
 
-			/*
-			** @brief Iterator:
-			** Construct a list container, of size last-first containing
-			** value of [first, last).
-			**
-			** @param first,last the range of content.
-			** @param alloc the allocator type.
-			*/
+			
 			template <class InputIterator>
-					list (InputIterator first, InputIterator last,
-					const allocator_type& alloc = allocator_type(),
-					typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = u_nullptr)
-			:
-				m_allocator(alloc)
+			list (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : m_allocator(alloc)
 			{
-				bool is_valid;
-				if (!(is_valid = ft::is_input_iterator_tagged<typename ft::iterator_traits<InputIterator>::iterator_category >::value))
-					throw (ft::InvalidIteratorException<typename ft::is_input_iterator_tagged<typename ft::iterator_traits<InputIterator>::iterator_category >::type>());
-
-				m_last_node = m_nodeallocator.allocate(1);
-				m_nodeallocator.construct(m_last_node, Doubly_Linked_Node<T>());
+				m_last_node = node_allocator.allocate(1);
+				node_allocator.construct(m_last_node, Node<T>());
 				m_last_node->m_previous = m_last_node;
 				m_last_node->m_next = m_last_node;
 				this->insert(end(), first, last);
@@ -109,8 +92,8 @@ namespace ft
 			:
 				m_allocator(x.m_allocator)
 			{
-				m_last_node = m_nodeallocator.allocate(1);
-				m_nodeallocator.construct(m_last_node, Doubly_Linked_Node<T>());
+				m_last_node = node_allocator.allocate(1);
+				node_allocator.construct(m_last_node, Node<T>());
 				m_last_node->m_previous = m_last_node;
 				m_last_node->m_next = m_last_node;
 				
@@ -128,8 +111,8 @@ namespace ft
 			~list()
 			{
 				this->clear();
-				m_nodeallocator.destroy(m_last_node);
-				m_nodeallocator.deallocate(m_last_node, 1);
+				node_allocator.destroy(m_last_node);
+				node_allocator.deallocate(m_last_node, 1);
 			}
 
 			/*
@@ -307,7 +290,7 @@ namespace ft
 			** element are.
 			*/
 			template <class InputIterator>
-					void assign (InputIterator first, InputIterator last)
+			void assign (InputIterator first, InputIterator last)
 			{
 				this->clear();
 				this->insert(this->end(), first, last);
@@ -448,24 +431,6 @@ namespace ft
 			**
 			** @param x the container to swap.
 			*/
-			void swap (list& x)
-			{
-				if (x == *this)
-					return;
-
-				allocator_type 			savem_allocator = x.m_allocator;
-				nodem_allocatorator			savem_nodeallocator = x.m_nodeallocator;
-				Doubly_Linked_Node<T>	*savem_last_node = x.m_last_node;
-
-				x.m_allocator = this->m_allocator;
-				x.m_nodeallocator = this->m_nodeallocator;
-				x.m_last_node = this->m_last_node;
-
-				this->m_allocator = savem_allocator;
-				this->m_nodeallocator = savem_nodeallocator;
-				this->m_last_node = savem_last_node;
-			}
-
 			/*
 			** @brief Resizes the container so that it contain "n"
 			** element. If "n" is smaller than the actual size
@@ -498,8 +463,8 @@ namespace ft
 			*/
 			void clear()
 			{
-				Doubly_Linked_Node<T> *tmp = m_last_node->m_next;
-				Doubly_Linked_Node<T> *m_next_tmp;
+				Node<T> *tmp = m_last_node->m_next;
+				Node<T> *m_next_tmp;
 				while (tmp != m_last_node)
 				{
 					m_next_tmp = tmp->m_next;
@@ -721,8 +686,8 @@ namespace ft
 			{
 				m_last_node->m_next = _mergeSort(m_last_node->m_next, ft::less<T>());
 
-				Doubly_Linked_Node<T> * tmp = m_last_node->m_next;
-				Doubly_Linked_Node<T> * m_previous_last;
+				Node<T> * tmp = m_last_node->m_next;
+				Node<T> * m_previous_last;
 
 				while (tmp != m_last_node)
 				{
@@ -743,8 +708,8 @@ namespace ft
 			{
 				m_last_node->m_next = _mergeSort(m_last_node->m_next, comp);
 
-				Doubly_Linked_Node<T> * tmp = m_last_node->m_next;
-				Doubly_Linked_Node<T> * m_previous_last;
+				Node<T> * tmp = m_last_node->m_next;
+				Node<T> * m_previous_last;
 
 				while (tmp != m_last_node)
 				{
@@ -761,8 +726,8 @@ namespace ft
 			*/
 			void reverse()
 			{
-				Doubly_Linked_Node<T> * tmp = m_last_node->m_next;
-				Doubly_Linked_Node<T> * save_m_next;
+				Node<T> * tmp = m_last_node->m_next;
+				Node<T> * save_m_next;
 
 				save_m_next = m_last_node->m_next;
 				m_last_node->m_next = m_last_node->m_previous;
@@ -778,21 +743,10 @@ namespace ft
 
 		private :
 
-			typedef typename allocator_type::template
-				rebind<Doubly_Linked_Node<T> >::other nodem_allocatorator;
-			typedef typename nodem_allocatorator::pointer	_node_pointer;
-
-			allocator_type 			m_allocator;
-			nodem_allocatorator			m_nodeallocator;
-			Doubly_Linked_Node<T>	*m_last_node;
-
-			/*
-			** @brief Create new node.
-			*/
-			_node_pointer _createNode(const T& data, Doubly_Linked_Node<T> * m_previous = u_nullptr, Doubly_Linked_Node<T> * m_next = u_nullptr)
+			_node_pointer _createNode(const T& data, Node<T> * m_previous = u_nullptr, Node<T> * m_next = u_nullptr)
 			{
-				_node_pointer new_node = m_nodeallocator.allocate(1);
-				m_nodeallocator.construct(new_node, Doubly_Linked_Node<T>(data));
+				_node_pointer new_node = node_allocator.allocate(1);
+				node_allocator.construct(new_node, Node<T>(data));
 				new_node->m_previous = m_previous;
 				new_node->m_next = m_next;
 				return (new_node);
@@ -801,10 +755,10 @@ namespace ft
 			/*
 			** @brief Copy a node.
 			*/
-			_node_pointer _copyNode(const Doubly_Linked_Node<T> * node)
+			_node_pointer _copyNode(const Node<T> * node)
 			{
-				_node_pointer new_node = m_nodeallocator.allocate(1);
-				m_nodeallocator.construct(new_node, Doubly_Linked_Node<T>(node->data));
+				_node_pointer new_node = node_allocator.allocate(1);
+				node_allocator.construct(new_node, Node<T>(node->data));
 				new_node->m_previous = node->m_previous;
 				new_node->m_next = node->m_next;
 				return (new_node);
@@ -836,7 +790,7 @@ namespace ft
 			**
 			** @param new_node the new node.
 			*/
-			void _insertBeginning(Doubly_Linked_Node<T>	*new_node)
+			void _insertBeginning(Node<T>	*new_node)
 			{
 				if (m_last_node->m_next == m_last_node)
 				{
@@ -856,7 +810,7 @@ namespace ft
 			**
 			** @param new_node the new node.
 			*/
-			void _insertEnd(Doubly_Linked_Node<T>	*new_node)
+			void _insertEnd(Node<T>	*new_node)
 			{
 				if (m_last_node->m_next == m_last_node)
 					_insertBeginning(new_node);
@@ -873,7 +827,7 @@ namespace ft
 			** @param m_previous the m_previousious node before the new one.
 			** @param new_node the new node to insert.
 			*/
-			iterator _insertAfter(Doubly_Linked_Node<T> *m_previous, Doubly_Linked_Node<T> *new_node)
+			iterator _insertAfter(Node<T> *m_previous, Node<T> *new_node)
 			{
 				new_node->m_previous = m_previous;
 				if (m_previous->m_next == m_last_node)
@@ -899,7 +853,7 @@ namespace ft
 			** @param m_next the m_next node after the new one.
 			** @param new_node the new node to insert.
 			*/
-			iterator _insertBefore(Doubly_Linked_Node<T> *m_next,  Doubly_Linked_Node<T> *new_node)
+			iterator _insertBefore(Node<T> *m_next,  Node<T> *new_node)
 			{
 				new_node->m_next = m_next;
 				if (m_next->m_previous == m_last_node)
@@ -922,11 +876,11 @@ namespace ft
 			**
 			** @param the node to delete.
 			*/
-			void _delete(Doubly_Linked_Node<T> *node)
+			void _delete(Node<T> *node)
 			{
 				_disconnect(node);
-				m_nodeallocator.destroy(node);
-				m_nodeallocator.deallocate(node, 1);
+				node_allocator.destroy(node);
+				node_allocator.deallocate(node, 1);
 			}
 
 			/*
@@ -935,7 +889,7 @@ namespace ft
 			**
 			** @param node the node to disconnect.
 			*/
-			void _disconnect(Doubly_Linked_Node<T> *node)
+			void _disconnect(Node<T> *node)
 			{
 				if (node->m_previous == m_last_node)
 					m_last_node->m_next = node->m_next;
@@ -956,7 +910,7 @@ namespace ft
 			** @return a pointer to the second part of the
 			** part of the list splited.
 			*/
-			_node_pointer _split(Doubly_Linked_Node<T> *head)
+			_node_pointer _split(Node<T> *head)
 			{
 				_node_pointer fast = head;
 				_node_pointer slow = head;
@@ -984,7 +938,7 @@ namespace ft
 			** @return a pointer to the two part merged.
 			*/
 			template <class Compare>
-			_node_pointer _merge(Doubly_Linked_Node<T> *first, Doubly_Linked_Node<T> *second, Compare comp)
+			_node_pointer _merge(Node<T> *first, Node<T> *second, Compare comp)
 			{
 				if (first == m_last_node)
 					return (second);
@@ -1017,7 +971,7 @@ namespace ft
 			** @return a pointer to the head of the sorted part.
 			*/
 			template <class Compare>
-			_node_pointer _mergeSort(Doubly_Linked_Node<T> *head, Compare comp)
+			_node_pointer _mergeSort(Node<T> *head, Compare comp)
 			{
 				if (head == m_last_node || head->m_next == m_last_node)
 					return (head);

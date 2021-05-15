@@ -53,7 +53,7 @@ namespace ft
 			**
 			** @param elem the pointer to the element to iterate. 
 			*/
-			List_iterator(Doubly_Linked_Node<T> *init_node)
+			List_iterator(Node<T> *init_node)
 			:
 				_node(init_node)
 			{}
@@ -167,7 +167,7 @@ namespace ft
 			friend bool operator!=(const List_iterator<T>& lhs, const List_iterator<T>& rhs)
 			{ return (lhs._node != rhs._node); }
 
-			Doubly_Linked_Node<T> *_node;
+			Node<T> *_node;
 	};
 	
 	template <typename T>
@@ -205,7 +205,7 @@ namespace ft
 			**
 			** @param elem the pointer to the element to iterate. 
 			*/
-			List_const_iterator(Doubly_Linked_Node<T> *init_node)
+			List_const_iterator(Node<T> *init_node)
 			:
 				_node(init_node)
 			{}
@@ -324,7 +324,7 @@ namespace ft
 			friend bool operator!=(const List_const_iterator<T>& lhs, const List_const_iterator<T>& rhs)
 			{ return (lhs._node != rhs._node); }
 
-			Doubly_Linked_Node<T> *_node;
+			Node<T> *_node;
 	};
 	// /*
 	// ** @brief Check if the pointer of "lhs"
