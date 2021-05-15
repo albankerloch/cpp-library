@@ -1,44 +1,88 @@
-#ifndef DEF_VECTOR_HPP
-# define DEF_VECTOR_HPP
+#ifndef DEF_LIST_HPP
+# define DEF_LIST_HPP
 
-# include "Vector_Iterator.hpp"
-# include "Reverse_Iterator.hpp"
 # include "Algo.hpp"
+# include "List_Iterator.hpp"
+# include "Node.hpp"
+# include "Reverse_Iterator.hpp"
 # include <iostream>
 
 namespace ft 
 {
-    template <typename T, typename Alloc = std::allocator<T> >
-    class vector
+    template < class T, class Alloc = std::allocator<T> > 
+    class list
     {
         public:
 
-		    typedef T	    							    	value_type;
-            typedef Alloc   	    					    	allocator_type;
-            typedef typename allocator_type::reference          reference;
-            typedef typename allocator_type::const_reference    const_reference;
-            typedef typename allocator_type::pointer	    	pointer;
-            typedef typename allocator_type::const_pointer    	const_pointer;
-            typedef VectorIterator<value_type>          		iterator;
-            typedef VectorIterator<value_type const>			const_iterator;
-            typedef ReverseIterator<iterator>           		reverse_iterator;
-            typedef ReverseIterator<const_iterator>    	const_reverse_iterator;
-            typedef std::ptrdiff_t							    difference_type;
-            typedef size_t 									    size_type;
+		    typedef T	    							    	    value_type;
+            typedef Alloc   	    					        	allocator_type;
+            typedef typename allocator_type::reference            reference;
+            typedef typename allocator_type::const_reference       const_reference;
+            typedef typename allocator_type::pointer	        	pointer;
+            typedef typename allocator_type::const_pointer      	const_pointer;
+            typedef Node<value_type>                                node_type;
+            typedef ListIterator<value_type>           	            iterator;/*
+            typedef ListIterator<value_type const>                  const_iterator;
+            typedef ReverseIterator<iterator>           	    	reverse_iterator;
+            typedef ReverseIterator<const_iterator>             	const_reverse_iterator;*/
+            typedef std::ptrdiff_t							        difference_type;
+            typedef size_t 								    	    size_type;
 
         private:
 
             allocator_type	m_allocator;
-            T *      		m_array;
-            size_type		m_capacity;
-            size_type		m_size;
+			Node<T>	        *m_last_node;
+           
+            typedef typename allocator_type::template rebind< Node<T> >::other node_allocator;
+			typedef typename node_allocator::pointer	node_pointer;
+
+			node_allocator	m_node_allocator;
 
         public:
 
-            explicit vector (const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_array(0), m_capacity(0), m_size(0) 
-            {}
+            explicit list (const allocator_type& alloc = allocator_type()) : m_allocator(alloc)
+            {
+                m_last_node = m_node_allocator.allocate(1);
+				m_node_allocator.construct(m_last_node, Node<T>());
+				m_last_node->m_previous = m_last_node;
+				m_last_node->m_next = m_last_node;
+            }
 
-            explicit vector (size_type n, const value_type & val = value_type(), const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_capacity(n), m_size(n)
+            iterator begin(void) 
+            {
+		        return (iterator(this->m_last_node->m_next));
+	        }
+
+            iterator end(void) 
+            {
+		        return (iterator(this->m_last_node));
+	        }
+
+            size_type size() const 
+            {
+                size_t      i;
+                iterator    it;
+
+                if (!(this->begin()))
+                    return (0);
+                it = this->begin() + 1;
+                i = 1;
+                while (it != this->begin())
+                    it++;
+			    return (i);
+		    }
+
+            /*explicit list (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : m_allocator(alloc)
+            {
+                m_last_node = m_node_allocator.allocate(1);
+				m_node_allocator.construct(m_last_node, Node<T>());
+				m_last_node->prev = m_last_node;
+				m_last_node->next = m_last_node;
+            }*/
+
+           /* explicit list (const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_array(0), m_capacity(0), m_size(0) {}
+
+            explicit list (size_type n, const value_type & val = value_type(), const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_capacity(n), m_size(n)
             {
                 size_type i;
 
@@ -51,30 +95,30 @@ namespace ft
                 }
             }
 
-            explicit vector(iterator first, iterator last): m_array(0), m_capacity(0), m_size(0) 
+            explicit list(iterator first, iterator last): m_array(0), m_capacity(0), m_size(0) 
             {
                 this->assign(first, last);
             }
 
-            vector (const vector  & vector_to_copy) : m_allocator(vector_to_copy.m_allocator), m_array(0), m_capacity(0), m_size(0)
+            list (const list  & list_to_copy) : m_allocator(list_to_copy.m_allocator), m_array(0), m_capacity(0), m_size(0)
             {
-                *this = vector_to_copy;
+                *this = list_to_copy;
             }
 
-            ~vector() 
+            ~list() 
             {
                 this->clear();
                 m_allocator.deallocate(this->m_array, this->m_capacity);
             }
 
-            vector & operator=(const vector  & vector_to_copy) 
+            list & operator=(const list  & list_to_copy) 
             {
                 size_t i;
 
                 i = 0;
-                while (i < vector_to_copy.m_size)
+                while (i < list_to_copy.m_size)
                 {
-                    this->push_back(vector_to_copy.m_array[i]);
+                    this->push_back(list_to_copy.m_array[i]);
                     i++;
                 }
                 return *this;
@@ -124,15 +168,6 @@ namespace ft
                 return (this->m_array[this->m_size - 1]);
             }
 
-            size_type size() const 
-            {
-			    return (this->m_size);
-		    }
-
-            size_type capacity() const 
-            {
-			    return (this->m_capacity);
-		    }
 
             bool empty() const
             {
@@ -146,10 +181,7 @@ namespace ft
 			    return (this->m_allocator.max_size());
 		    }
 
-            iterator begin(void) 
-            {
-		        return (iterator(this->m_array));
-	        }
+            
 
             const_iterator begin(void) const
             {
@@ -201,7 +233,7 @@ namespace ft
                 value_type *tmp;
 
                 if (length > this->max_size())
-					throw (std::length_error("vector : max size reached during reserve"));
+					throw (std::length_error("list : max size reached during reserve"));
                 else if (length > this->m_capacity)
                 {
                     tmp = this->m_allocator.allocate(length);
@@ -325,7 +357,7 @@ namespace ft
 
             void print()
             {
-                typename ft::vector<T>::iterator it;
+                typename ft::list<T>::iterator it;
                 size_t i;
 
                 it = this->begin();
@@ -400,7 +432,7 @@ namespace ft
                 m_allocator.construct(&this->m_array[i], *(last - 1));
             }
 
-            void swap(vector & x)
+            void swap(list & x)
             {
                 T	*temp_array;
                 size_t temp_size;
@@ -426,16 +458,16 @@ namespace ft
     };
 
     template<typename T>
-    void swap(vector<T> &x, vector<T> &y) 
+    void swap(list<T> &x, list<T> &y) 
     {
         x.swap(y);
     };
 
     template <class T, class Alloc>
-    bool operator== (const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs)
+    bool operator== (const ft::list<T, Alloc>& lhs, const ft::list<T, Alloc>& rhs)
     {
-        typename ft::vector<T>::const_iterator it_lhs;
-        typename ft::vector<T>::const_iterator it_rhs;
+        typename ft::list<T>::const_iterator it_lhs;
+        typename ft::list<T>::const_iterator it_rhs;
 
         if (lhs.size() != rhs.size())
             return (false);
@@ -452,16 +484,16 @@ namespace ft
     };
 
     template <class T, class Alloc>
-    bool operator!= (const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
+    bool operator!= (const list<T, Alloc>& lhs, const list<T, Alloc>& rhs)
     {
         return (!(lhs == rhs));
     };
 
     template <class T, class Alloc>
-    bool operator<  (const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs)
+    bool operator<  (const list<T, Alloc>& lhs, const list<T, Alloc>& rhs)
     {
-       	typename ft::vector<T>::const_iterator it_lhs;
-        typename ft::vector<T>::const_iterator it_rhs;
+       	typename ft::list<T>::const_iterator it_lhs;
+        typename ft::list<T>::const_iterator it_rhs;
 
         if (lhs == rhs)
             return (false);
@@ -478,7 +510,7 @@ namespace ft
     };
 
     template <class T, class Alloc>
-    bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    bool operator<= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
     {
         if (lhs == rhs)
             return (true);
@@ -486,7 +518,7 @@ namespace ft
     };
 
     template <class T, class Alloc>
-    bool operator>(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    bool operator>(const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
     {
         if (lhs == rhs)
             return (false);
@@ -494,11 +526,11 @@ namespace ft
     };
 
     template <class T, class Alloc>
-    bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+    bool operator>= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
     {
         if (lhs == rhs)
             return (true);
-        return (!(lhs < rhs));
+        return (!(lhs < rhs));*/
     };
 }
 

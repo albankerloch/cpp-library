@@ -11,7 +11,7 @@
 #******************************************************************************#
 
 SRCS =	main.cpp \
-        Test_Vector.cpp
+        Test_List.cpp
 OBJS = ${SRCS:.cpp=.o}
 NAME = containers
 CXX = clang++
