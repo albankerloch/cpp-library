@@ -555,6 +555,8 @@ namespace ft
         /* Type of a reference where iterator point, from Iterator. */
         typedef typename Iterator::reference             reference;
 
+        /* The iterator category from Iterator. */
+        typedef typename Iterator::iterator_category     iterator_category;
     };
     
     /*
@@ -612,7 +614,18 @@ namespace ft
     ** @param last The last iterator.
     ** @return The difference.
     */
-
+    template<class InputIterator>
+        typename ft::iterator_traits<InputIterator>::difference_type
+            distance (InputIterator first, InputIterator last)
+        {
+            typename ft::iterator_traits<InputIterator>::difference_type rtn = 0;
+            while (first != last)
+            {
+                first++;
+                rtn++;
+            }
+            return (rtn);
+        }
 
     /*
     ** @brief Base class for iterator, not really usefull, but type
@@ -1015,7 +1028,7 @@ namespace ft
     ** @param first2, last2 the start and the end of the second range.
     ** @return true if the first range compares lexicographically less
     ** than the second, false otherwise.
-    
+    */
     template <class InputIterator1, class InputIterator2>
         bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1,
                                         InputIterator2 first2, InputIterator2 last2)
@@ -1029,7 +1042,6 @@ namespace ft
             }
             return (first2 != last2);
         }
-    */
 
     /*
     ** @brief Return true if the range [first1, last2) compare
@@ -1170,6 +1182,59 @@ namespace ft
     };
 
     /* List Node : */
+    template <class Data_T>
+    class Doubly_Linked_Node 
+    {
+        public :
+
+            Doubly_Linked_Node  *prev;
+            Doubly_Linked_Node  *next;
+            Data_T              data;
+
+            /*
+            ** @brief Default:
+            ** Create a node with next and prev
+            ** value that pointing to u_nullptr.
+            ** data is unitialized.
+            */
+            Doubly_Linked_Node()
+            :
+                prev(u_nullptr),
+                next(u_nullptr)
+            {}
+
+            /*
+            ** @brief Data init:
+            ** Create a node with next and prev
+            ** value that pointing to u_nullptr.
+            ** data is itialized to "val".
+            **
+            ** @param val the data of this node.
+            */
+            Doubly_Linked_Node(const Data_T& val)
+            :
+                prev(u_nullptr),
+                next(u_nullptr),
+                data(val)
+            {}
+
+            /*
+            ** @brief Init:
+            ** Create a node with next and prev
+            ** value that pointing to parameters "prev" & "next".
+            ** data is itialized to "val".
+            **
+            ** @param val the data of this node.
+            ** @param prev,next the previous and next node. 
+            */
+            Doubly_Linked_Node(const Data_T& val,
+                Doubly_Linked_Node *prev, Doubly_Linked_Node *next)
+            :
+                prev(prev),
+                next(next),
+                data(val)
+            {}
+    };
 
 
 } /* End of namespace */

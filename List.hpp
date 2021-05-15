@@ -3,7 +3,6 @@
 
 # include "List_Iterator.hpp"
 # include "Reverse_Iterator.hpp"
-# include "utils.hpp"
 # include "Node.hpp"
 
 namespace ft
@@ -29,17 +28,17 @@ namespace ft
 
 		private :
 
+			allocator_type 		m_allocator;
+			Node<T>				*m_last_node;
+
 			typedef typename allocator_type::template 		rebind<Node<T> >::other type_node_allocator;
 			typedef typename type_node_allocator::pointer	node_pointer;
-
-			allocator_type 			m_allocator;
-			type_node_allocator		node_allocator;
-			Node<T>	*m_last_node;
+			type_node_allocator								node_allocator;
 
 			void ft_init_node(void)
 			{
 				this->m_last_node = node_allocator.allocate(1);
-				node_allocator.construct(m_last_node, Node<T>());
+				node_allocator.construct(m_last_node, Node<T>(0));
 				this->m_last_node->m_previous = this->m_last_node;
 				this->m_last_node->m_next = this->m_last_node;
 			}
@@ -50,6 +49,7 @@ namespace ft
 				node_allocator.construct(new_node, Node<T>(data));
 				new_node->m_previous = m_previous;
 				new_node->m_next = m_next;
+				m_last_node->data++;
 				return (new_node);
 			}
 
@@ -101,7 +101,7 @@ namespace ft
 				this->ft_init_node();
 				while (begin != end)
 				{
-					this->insert(this->begin(), begin._node->data);
+					this->insert(this->begin(), begin.p->data);
 					begin++;
 				}
 			}
@@ -125,7 +125,7 @@ namespace ft
 				this->clear();
 				while (begin != end)
 				{
-					this->insert(this->begin(), begin._node->data);
+					this->insert(this->begin(), begin.p->data);
 					begin++;
 				}
 				return (*this);
@@ -141,6 +141,16 @@ namespace ft
 				return (const_iterator(m_last_node->m_next)); 
 			}
 
+			reverse_iterator rbegin() 
+			{ 
+				return (reverse_iterator(m_last_node)); 
+			}
+
+			const_reverse_iterator rbegin() const 
+			{
+				return (const_reverse_iterator(m_last_node)); 
+			}
+
 			iterator end()
 			{ 
 				return (iterator(m_last_node)); 
@@ -149,6 +159,16 @@ namespace ft
 			const_iterator end() const 
 			{ 
 				return (const_iterator(m_last_node)); 
+			}
+
+			reverse_iterator rend()
+			{ 
+				return (reverse_iterator(m_last_node->m_next)); 
+			}
+
+			const_reverse_iterator rend() const 
+			{
+				return (const_reverse_iterator(m_last_node->m_next)); 
 			}
 
 			size_type size() const 
@@ -170,19 +190,19 @@ namespace ft
 				node_pointer new_node;
 
 				new_node = ft_add_node(val);
-				new_node->m_next = position._node;
-				if (position._node->m_previous == this->m_last_node)
+				new_node->m_next = position.p;
+				if (position.p->m_previous == this->m_last_node)
 				{
 					new_node->m_previous = this->m_last_node;
 					this->m_last_node->m_next = new_node;
 				}
 				else
 				{
-					new_node->m_previous = position._node->m_previous;
-					position._node->m_previous->m_next = new_node;
+					new_node->m_previous = position.p->m_previous;
+					position.p->m_previous->m_next = new_node;
 				}
-				position._node->m_previous = new_node;
-				return (iterator(position._node->m_previous));
+				position.p->m_previous = new_node;
+				return (iterator(position.p->m_previous));
 			}
 
 			void insert (iterator position, size_type n, const value_type& val)

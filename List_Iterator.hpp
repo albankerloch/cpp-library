@@ -32,19 +32,19 @@ namespace ft
 			typedef N 					node_type;
 			typedef node_type* 			node_pointer;
 
-			node_pointer _node;
+			node_pointer p;
 
-			List_iterator() : _node(NULL) {}
+			List_iterator() : p(NULL) {}
 
-			List_iterator(node_pointer init_node) : _node(init_node) {}
+			List_iterator(node_pointer initp) : p(initp) {}
 
-			List_iterator(List_iterator const & x) : _node(x._node) {}
+			List_iterator(List_iterator const & x) : p(x.p) {}
 
 			List_iterator &operator= (const List_iterator& x) 
 			{
 				if (&x == this)
 					return (*this);
-				this->_node = x._node;
+				this->p = x.p;
 				return (*this);
 			}
 
@@ -52,7 +52,7 @@ namespace ft
 
 			reference operator*(void)
 			{
-				return (_node->data); 
+				return (p->data); 
 			}
 
 			pointer operator->(void) 
@@ -62,7 +62,7 @@ namespace ft
 	
 			List_iterator& operator++(void)
 			{
-				this->_node = this->_node->m_next;
+				this->p = this->p->m_next;
 				return (*this);
 			}
 
@@ -75,7 +75,7 @@ namespace ft
 
 			List_iterator& operator--(void)
 			{
-				this->_node = this->_node->m_previous;
+				this->p = this->p->m_previous;
 				return (*this);
 			}
 
@@ -88,12 +88,12 @@ namespace ft
 
 			bool operator==(List_iterator const &other) const 
 			{
-				return (this->_node  == other._node);
+				return (this->p  == other.p);
 			}
 
 			bool operator!=(List_iterator const &other) const 
 			{
-				return (this->_node != other._node);
+				return (this->p != other.p);
 			}
 	};	
 }

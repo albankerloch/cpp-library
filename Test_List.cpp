@@ -13,11 +13,29 @@ void STLPrintList(std::list<T> *stl)
 	std::cout << " SIZES : STL = "<< stl->size() << std::endl;
 	it_stl = stl->begin();
 	i = 0;
-	while(it_stl != stl->end())
+	while(i < 17)
 	{
 		std::cout << " Value : STL = " << *it_stl << " at position " << i++ << std::endl;
 		it_stl++;
 	}
+	std::cout << " STL BEGIN : "<< *stl->begin() << " STL END : "<< *stl->end() << std::endl;
+}
+
+template <typename T>
+void PrintList(ft::list<T> *stl) 
+{
+	typename ft::list<T>::iterator it_stl;
+	size_t i;
+
+	std::cout << " SIZES : FT = "<< stl->size() << std::endl;
+	it_stl = stl->begin();
+	i = 0;
+	while(i < 17)
+	{
+		std::cout << " Value : FT = " << *it_stl << " at position " << i++ << std::endl;
+		it_stl++;
+	}
+	std::cout << " FT BEGIN : "<< *stl->begin() << " STL END : "<< *stl->end() << std::endl;
 }
 
 template <typename T>
@@ -130,13 +148,22 @@ void ft_capacity()
 		std::cout << " Fail - Resize " <<  V1.capacity() << " vs " << V1STL.capacity() <<  std::endl;
 	CompareList(&V1, &V1STL, "Resize - 11");
 }
-
+*/
 void ft_begin_end()
 {
 	std::list<int> V1STL (3, 39);
 	ft::list<int> V1 (3, 39);
-	V1.push_back(3);
+	/*V1.push_back(3);
 	V1STL.push_back(3);
+	V1.push_front(12);
+	V1STL.push_front(12);
+	V1.push_front(11);
+	V1STL.push_front(11);
+	V1.push_front(13);
+	V1STL.push_front(13);*/
+
+	//STLPrintList(&V1STL);
+	//PrintList(&V1);
 
 	if (*V1.begin() == *V1STL.begin())
 		std::cout << " Success - Begin " <<  *V1.begin() << " vs " << *V1STL.begin() << std::endl;
@@ -148,17 +175,17 @@ void ft_begin_end()
 	else
 		std::cout << " Fail - rBegin " <<  *V1.rbegin() << " vs " << *V1STL.rbegin() <<  std::endl;
 
-	if (*(V1.end() - 1) == *(V1STL.end() - 1))
-		std::cout << " Success - End " <<  *(V1.end() - 1)<< " vs " << *(V1STL.end() - 1) << std::endl;
+	if (*(V1.end()--) == *(V1STL.end()--))
+		std::cout << " Success - End " <<  *(V1.end()--)<< " vs " << *(V1STL.end()--) << std::endl;
 	else
-		std::cout << " Fail - End " <<  *(V1.end() - 1)<< " vs " << *(V1STL.end() - 1) << std::endl;
+		std::cout << " Fail - End " <<  *(V1.end()--)<< " vs " << *(V1STL.end()--) << std::endl;
 
 	if (*V1.rend() == *V1STL.rend())
 		std::cout << " Success - rEnd " <<  *V1.rend() << " vs " << *V1STL.rend() << std::endl;
 	else
 		std::cout << " Fail - rEnd " <<  *V1.rend() << " vs " << *V1STL.rend() <<  std::endl;
 }
-
+/*
 void ft_relationnal_operator(void)
 {
 	std::list<int> V1STL (3, 39);
@@ -389,7 +416,7 @@ void ft_test_list(void)
    ft_swap();
    ft_clear();
    ft_access();
-   ft_relationnal_operator();
+   ft_relationnal_operator();*/
    ft_begin_end();
-   ft_capacity();*/
+/*   ft_capacity();*/
 }
