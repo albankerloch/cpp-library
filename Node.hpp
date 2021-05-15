@@ -30,7 +30,6 @@ namespace ft
 				this->data = Node_to_Copy.data;
 				this->m_next = Node_to_Copy.m_next;
 				this->m_previous = Node_to_Copy.m_previous;
-
 				return (*this);
 			};
 			
