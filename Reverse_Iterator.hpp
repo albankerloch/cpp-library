@@ -10,19 +10,19 @@ namespace ft
 	{
 		public:
 
-			using typename It::value_type;
-			using typename It::pointer;
-			using typename It::const_pointer;
-			using typename It::reference;
-			using typename It::const_reference;
-			using typename It::difference_type;
+			using typename Iterator::value_type;
+			using typename Iterator::pointer;
+			using typename Iterator::const_pointer;
+			using typename Iterator::reference;
+			using typename Iterator::const_reference;
+			using typename Iterator::difference_type;
 
 		public:
-			ReverseIterator(): It() {}
+			ReverseIterator(): Iterator() {}
 
-			ReverseIterator(It const &it): It(it) {}
+			ReverseIterator(Iterator const &it): Iterator(it) {}
 
-			ReverseIterator(ReverseIterator const &other): It(other.p) {}
+			ReverseIterator(ReverseIterator const &other): Iterator(other.p) {}
 
 			ReverseIterator &operator=(ReverseIterator const &other) 
 			{
@@ -32,25 +32,25 @@ namespace ft
 
 			reference operator*() 
 			{
-				It tmp(*this);
+				Iterator tmp(*this);
 				return (*--tmp);
 			}
 
 			const_reference operator*() const 
 			{
-				It tmp(*this);
+				Iterator tmp(*this);
 				return (*--tmp);
 			}
 
 			pointer operator->() 
 			{
-				It tmp(*this);
+				Iterator tmp(*this);
 				return (&*--tmp);
 			}
 
 			const_pointer operator->() const 
 			{
-				It tmp(*this);
+				Iterator tmp(*this);
 				return (&*--tmp);
 			}
 
@@ -61,9 +61,9 @@ namespace ft
 				return (tmp);
 			}
 
-			It &operator++() 
+			Iterator &operator++() 
 			{
-				return (this->It::operator--());
+				return (this->Iterator::operator--());
 			}
 			
 			ReverseIterator operator--(int) 
@@ -73,9 +73,9 @@ namespace ft
 				return (tmp);
 			}
 
-			It &operator--() 
+			Iterator &operator--() 
 			{
-				return (this->It::operator++());
+				return (this->Iterator::operator++());
 			}
 	};
 }

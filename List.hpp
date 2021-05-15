@@ -2,6 +2,7 @@
 #define LIST_HPP
 
 # include "List_Iterator.hpp"
+# include "Reverse_Iterator.hpp"
 # include "Node.hpp"
 
 namespace ft
@@ -19,9 +20,9 @@ namespace ft
             typedef typename allocator_type::const_pointer      	const_pointer;
             typedef Node<value_type>                                node_type;
             typedef ft::List_iterator<T> 							iterator;
-            typedef ft::List_const_iterator<T> 						const_iterator;
-            /*typedef ft::reverse_iterator<iterator> 					reverse_iterator;
-            typedef ft::reverse_iterator<const_iterator> 			const_reverse_iterator;*/
+            typedef ft::List_iterator<T const> 						const_iterator;
+            typedef ReverseIterator<iterator>           		reverse_iterator;
+            typedef ReverseIterator<const_iterator>    	        const_reverse_iterator;
             typedef std::ptrdiff_t							        difference_type;
             typedef size_t 								    	    size_type;
 
