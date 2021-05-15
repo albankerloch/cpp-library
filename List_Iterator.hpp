@@ -1,13 +1,24 @@
 #ifndef LIST_ITERATOR_HPP
 # define LIST_ITERATOR_HPP
 
-# include "utils.hpp"
 # include "Node.hpp"
 # include "Algo.hpp"
 
 namespace ft
 {
-		template <typename T>
+	template<class InputIterator>
+	typename std::ptrdiff_t  distance (InputIterator first, InputIterator last)
+	{
+		typename std::ptrdiff_t  rtn = 0;
+		while (first != last)
+		{
+			first++;
+			rtn++;
+		}
+		return (rtn);
+	}
+
+	template <typename T>
 	class List_iterator : IteratorTrait
 	{
 		public:
@@ -18,11 +29,10 @@ namespace ft
 			typedef value_type&			reference;
 			typedef value_type const &	const_reference;
 			typedef std::ptrdiff_t 		difference_type;
-			typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::iterator_category     iterator_category;
 
 			Node<T> *_node;
 
-			List_iterator() : _node(u_nullptr) {}
+			List_iterator() : _node(NULL) {}
 
 			List_iterator(Node<T> *init_node) : _node(init_node) {}
 
@@ -38,7 +48,7 @@ namespace ft
 
 			virtual ~List_iterator() {}
 
-			reference operator* (void) 
+			reference operator*(void)
 			{ return (_node->data); 
 			}
 
@@ -82,18 +92,19 @@ namespace ft
 	};
 	
 	template <typename T>
-	class List_const_iterator : public ft::iterator<ft::bidirectional_iterator_tag, T>
+	class List_const_iterator : IteratorTrait
 	{
 		public:
-			typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::iterator_category     iterator_category;
-			typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::value_type            value_type;
-			typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::difference_type       difference_type;
-			typedef const T*  pointer;
-			typedef const T&  reference;
+			typedef T 					value_type;
+			typedef value_type* 		pointer;
+			typedef value_type const	*const_pointer;
+			typedef value_type&			reference;
+			typedef value_type const &	const_reference;
+			typedef std::ptrdiff_t 		difference_type;
 
 			List_const_iterator()
 			:
-				_node(u_nullptr)
+				_node(NULL)
 			{}
 
 			List_const_iterator(Node<T> *init_node)

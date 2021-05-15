@@ -1,7 +1,6 @@
 #ifndef LIST_HPP
 #define LIST_HPP
 
-# include "utils.hpp"
 # include "List_Iterator.hpp"
 # include "Node.hpp"
 
@@ -21,8 +20,8 @@ namespace ft
             typedef Node<value_type>                                node_type;
             typedef ft::List_iterator<T> 							iterator;
             typedef ft::List_const_iterator<T> 						const_iterator;
-            typedef ft::reverse_iterator<iterator> 					reverse_iterator;
-            typedef ft::reverse_iterator<const_iterator> 			const_reverse_iterator;
+            /*typedef ft::reverse_iterator<iterator> 					reverse_iterator;
+            typedef ft::reverse_iterator<const_iterator> 			const_reverse_iterator;*/
             typedef std::ptrdiff_t							        difference_type;
             typedef size_t 								    	    size_type;
 
@@ -56,7 +55,7 @@ namespace ft
 				this->insert(this->begin(), n, val);
 			}
 
-			
+			/*
 			template <class InputIterator>
 			list (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : m_allocator(alloc)
 			{
@@ -74,7 +73,7 @@ namespace ft
 				this->ft_init_node();
 				while (begin != end)
 					this->_insertBefore(m_last_node, _createNode((begin++)._node->data));
-			}
+			}*/
 		
 			~list()
 			{
@@ -129,18 +128,15 @@ namespace ft
 					_insertBefore(position._node, _createNode(val));
 			}
 
-			template <class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last,
-				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = u_nullptr)
+			/*template <class InputIterator>
+			void insert (iterator position, InputIterator first, InputIterator last)
 			{
-				bool is_valid;
-				if (!(is_valid = ft::is_input_iterator_tagged<typename ft::iterator_traits<InputIterator>::iterator_category >::value))
-					throw (ft::InvalidIteratorException<typename ft::is_input_iterator_tagged<typename ft::iterator_traits<InputIterator>::iterator_category >::type>());
-
-				difference_type n = ft::distance(first, last);
-				while (n--)
-					_insertBefore(position._node, _copyNode((first++)._node));
-			}
+				while (first != last)
+				{
+					this->insert(position, *(&first));
+					first++;
+				}
+			}*/
 
 			void clear()
 			{
@@ -156,7 +152,7 @@ namespace ft
 
 		private :
 
-			_node_pointer _createNode(const T& data, Node<T> * m_previous = u_nullptr, Node<T> * m_next = u_nullptr)
+			_node_pointer _createNode(const T& data, Node<T> * m_previous = NULL, Node<T> * m_next = NULL)
 			{
 				_node_pointer new_node = node_allocator.allocate(1);
 				node_allocator.construct(new_node, Node<T>(data));

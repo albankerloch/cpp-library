@@ -555,8 +555,6 @@ namespace ft
         /* Type of a reference where iterator point, from Iterator. */
         typedef typename Iterator::reference             reference;
 
-        /* The iterator category from Iterator. */
-        typedef typename Iterator::iterator_category     iterator_category;
     };
     
     /*
@@ -614,18 +612,7 @@ namespace ft
     ** @param last The last iterator.
     ** @return The difference.
     */
-    template<class InputIterator>
-        typename ft::iterator_traits<InputIterator>::difference_type
-            distance (InputIterator first, InputIterator last)
-        {
-            typename ft::iterator_traits<InputIterator>::difference_type rtn = 0;
-            while (first != last)
-            {
-                first++;
-                rtn++;
-            }
-            return (rtn);
-        }
+
 
     /*
     ** @brief Base class for iterator, not really usefull, but type
