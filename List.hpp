@@ -309,6 +309,29 @@ namespace ft
 				return (first);
 			}
 
+			void resize (size_type length, value_type val = value_type())
+			{
+				size_t i;
+
+                i = this->m_size;
+                if (length < this->m_size)
+                {
+                    while (i > length)
+                    {
+                        this->pop_back();
+                        i--;
+                    }
+                }
+                else if (length > this->m_size)
+                {
+                    while (i < length)
+                    {
+                        this->push_back(val);
+                        i++;
+                    }
+                }
+			}
+
 			void pop_front()
 			{
 				ft_delete(m_last_node->m_next);

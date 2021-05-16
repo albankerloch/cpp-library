@@ -74,46 +74,47 @@ bool CompareList(ft::list<T> *ft, std::list<T> *stl, const std::string &testName
 	return true;
 }
 
-/*
+
 void ft_resize()
 {
 	std::list<int> V1STL (3, 39);
 	ft::list<int> V1 (3, 39);
-	std::list<int> V2STL;
-	ft::list<int> V2;
 	
 	V1.resize(100);
 	V1STL.resize(100);
-	if (V1.capacity() == V1STL.capacity())
-		std::cout << " Success - Resize " <<  V1.capacity() << " vs " << V1STL.capacity() << std::endl;
+	if (V1.size() == V1STL.size())
+		std::cout << " Success - Resize " <<  V1.size() << " vs " << V1STL.size() << std::endl;
 	else
-		std::cout << " Fail - Resize " <<  V1.capacity() << " vs " << V1STL.capacity() <<  std::endl;
+		std::cout << " Fail - Resize " <<  V1.size() << " vs " << V1STL.size() <<  std::endl;
+	CompareList(&V1, &V1STL, "Resize - 1");
 	
 	V1.resize(2);
 	V1STL.resize(2);
-	if (V1.capacity() == V1STL.capacity())
-		std::cout << " Success - Resize " <<  V1.capacity() << " vs " << V1STL.capacity() << std::endl;
+	if (V1.size() == V1STL.size())
+		std::cout << " Success - Resize " <<  V1.size() << " vs " << V1STL.size() << std::endl;
 	else
-		std::cout << " Fail - Resize " <<  V1.capacity() << " vs " << V1STL.capacity() <<  std::endl;
+		std::cout << " Fail - Resize " <<  V1.size() << " vs " << V1STL.size() <<  std::endl;
+
 	CompareList(&V1, &V1STL, "Resize - 2");
 
 	V1.resize(11);
 	V1STL.resize(11);
-	if (V1.capacity() == V1STL.capacity())
-		std::cout << " Success - Resize " <<  V1.capacity() << " vs " << V1STL.capacity() << std::endl;
+	if (V1.size() == V1STL.size())
+		std::cout << " Success - Resize " <<  V1.size() << " vs " << V1STL.size() << std::endl;
 	else
-		std::cout << " Fail - Resize " <<  V1.capacity() << " vs " << V1STL.capacity() <<  std::endl;
+		std::cout << " Fail - Resize " <<  V1.size() << " vs " << V1STL.size() <<  std::endl;
+
 	CompareList(&V1, &V1STL, "Resize - 11");
 
 	V1.resize(15, 666);
 	V1STL.resize(15, 666);
-	if (V1.capacity() == V1STL.capacity())
-		std::cout << " Success - Resize " <<  V1.capacity() << " vs " << V1STL.capacity() << std::endl;
+	if (V1.size() == V1STL.size())
+		std::cout << " Success - Resize " <<  V1.size() << " vs " << V1STL.size() << std::endl;
 	else
-		std::cout << " Fail - Resize " <<  V1.capacity() << " vs " << V1STL.capacity() <<  std::endl;
+		std::cout << " Fail - Resize " <<  V1.size() << " vs " << V1STL.size() <<  std::endl;
 	CompareList(&V1, &V1STL, "Resize - 11");
 }
-*/
+
 void ft_begin_end()
 {
 	std::list<int> V1STL (3, 39);
@@ -142,7 +143,7 @@ void ft_begin_end()
 	else
 		std::cout << " Fail - rBegin " <<  *V1.rbegin() << " vs " << *V1STL.rbegin() <<  std::endl;
 
-	if (*(V1.end()--) == *(V1STL.end()--))
+	/*if (*(V1.end()--) == *(V1STL.end()--))
 		std::cout << " Success - End " <<  *(V1.end()--)<< " vs " << *(V1STL.end()--) << std::endl;
 	else
 		std::cout << " Fail - End " <<  *(V1.end()--)<< " vs " << *(V1STL.end()--) << std::endl;
@@ -150,9 +151,9 @@ void ft_begin_end()
 	if (*V1.rend() == *V1STL.rend())
 		std::cout << " Success - rEnd " <<  *V1.rend() << " vs " << *V1STL.rend() << std::endl;
 	else
-		std::cout << " Fail - rEnd " <<  *V1.rend() << " vs " << *V1STL.rend() <<  std::endl;
+		std::cout << " Fail - rEnd " <<  *V1.rend() << " vs " << *V1STL.rend() <<  std::endl;*/
 }
-/*
+
 void ft_relationnal_operator(void)
 {
 	std::list<int> V1STL (3, 39);
@@ -202,7 +203,7 @@ void ft_relationnal_operator(void)
 		std::cout << " Fail- Operator >= " <<  (V1 >= V2) << " vs " << (V1STL >= V2STL) << std::endl;
 	else
 		std::cout << " Success - Operator >= " <<  (V1 >= V2) << " vs " << (V1STL >= V2STL) <<  std::endl;
-}*/
+}
 
 void ft_access(void)
 {
@@ -379,9 +380,10 @@ void ft_test_list(void)
    ft_assign();
    ft_push_pop_back();
    ft_insert_erase();
+   ft_resize();
    ft_swap();
    ft_clear();
    ft_access();
-   //ft_relationnal_operator();
+   ft_relationnal_operator();
    ft_begin_end();
 }
