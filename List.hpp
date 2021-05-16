@@ -308,6 +308,76 @@ namespace ft
 			}
 	};
 
+	 template <class T, class Alloc>
+    bool operator== (const ft::list<T, Alloc>& lhs, const ft::list<T, Alloc>& rhs)
+    {
+        typename ft::list<T>::const_iterator it_lhs;
+        typename ft::list<T>::const_iterator it_rhs;
+
+        if (lhs.size() != rhs.size())
+            return (false);
+        it_lhs = lhs.begin();
+        it_rhs = rhs.begin();
+        while (it_lhs != lhs.end())
+        {
+            if (it_rhs == rhs.end() || *it_lhs != *it_rhs)
+                return (false);
+            it_lhs++;
+            it_rhs++;
+        }
+        return (true);
+    };
+
+    template <class T, class Alloc>
+    bool operator!= (const list<T, Alloc>& lhs, const list<T, Alloc>& rhs)
+    {
+        return (!(lhs == rhs));
+    };
+
+    template <class T, class Alloc>
+    bool operator<  (const list<T, Alloc>& lhs, const list<T, Alloc>& rhs)
+    {
+       	typename ft::list<T>::const_iterator it_lhs;
+        typename ft::list<T>::const_iterator it_rhs;
+
+        if (lhs == rhs)
+            return (false);
+        it_lhs = lhs.begin();
+        it_rhs = rhs.begin();
+        while (it_lhs != lhs.end() && it_rhs != rhs.end() && *it_lhs == *it_rhs)
+        {
+            it_lhs++;
+            it_rhs++;
+        }
+        if (it_rhs != rhs.end())
+            return (true);
+        return (false);
+    };
+
+    template <class T, class Alloc>
+    bool operator<= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+    {
+        if (lhs == rhs)
+            return (true);
+        return (lhs < rhs);
+    };
+
+    template <class T, class Alloc>
+    bool operator>(const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+    {
+        if (lhs == rhs)
+            return (false);
+        return (!(lhs < rhs));
+    };
+
+    template <class T, class Alloc>
+    bool operator>= (const list<T,Alloc>& lhs, const list<T,Alloc>& rhs)
+    {
+        if (lhs == rhs)
+            return (true);
+        return (!(lhs < rhs));
+    };
+
 	template<typename T>
     void swap(list<T> &x, list<T> &y) 
     {

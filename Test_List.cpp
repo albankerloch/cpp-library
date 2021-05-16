@@ -147,7 +147,7 @@ void ft_begin_end()
 	else
 		std::cout << " Fail - rEnd " <<  *V1.rend() << " vs " << *V1STL.rend() <<  std::endl;
 }
-/*
+
 void ft_relationnal_operator(void)
 {
 	std::list<int> V1STL (3, 39);
@@ -198,7 +198,7 @@ void ft_relationnal_operator(void)
 	else
 		std::cout << " Success - Operator >= " <<  (V1 >= V2) << " vs " << (V1STL >= V2STL) <<  std::endl;
 }
-*/
+
 void ft_access(void)
 {
 	std::list<int> V1STL (3, 39);
@@ -375,6 +375,6 @@ void ft_test_list(void)
    ft_swap();
    ft_clear();
    ft_access();
-//   ft_relationnal_operator();
+   ft_relationnal_operator();
    ft_begin_end();
 }
