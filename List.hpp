@@ -188,6 +188,13 @@ namespace ft
 				return (reference(m_last_node->m_previous->data));
 			}
 
+			bool empty() const 
+            {
+				if (m_last_node->data == 0)
+					return (true);
+				return (false);
+		    }
+
 			size_type max_size() const 
             {
 			    return (type_node_allocator().max_size());

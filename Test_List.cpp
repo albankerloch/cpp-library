@@ -90,15 +90,7 @@ void ft_capacity()
 	else
 		std::cout << " Fail - Capacity " <<  V1.capacity() << " vs " << V1STL.capacity() <<  std::endl;
 	
-	if (V1.empty() == V1STL.empty())
-		std::cout << " Success - Empty " <<  V1.empty() << " vs " << V1STL.empty()<< std::endl;
-	else
-		std::cout << " Fail - Empty " <<  V1.empty()<< " vs " << V1STL.empty()<<  std::endl;
-
-	if (V2.empty() == V2STL.empty())
-		std::cout << " Success - Empty " <<  V2.empty() << " vs " << V2STL.empty()<< std::endl;
-	else
-		std::cout << " Fail - Empty " <<  V2.empty()<< " vs " << V2STL.empty()<<  std::endl;
+	i
 
 	V1.reserve(50);
 	V1STL.reserve(50);
@@ -240,7 +232,6 @@ void ft_access(void)
 {
 	std::list<int> V1STL (3, 39);
 	ft::list<int> V1 (3, 39);
-
 	V1.push_back(5);
 	V1STL.push_back(5);
 
@@ -261,6 +252,19 @@ void ft_access(void)
 		std::cout << " Success - max_Size " <<  V1.max_size() << " vs " << V1STL.max_size() << std::endl;
 	else
 		std::cout << " Fail - max_Size " <<  V1.max_size() << " vs " << V1STL.max_size() <<  std::endl;
+
+	if (V1.empty() == V1STL.empty())
+		std::cout << " Success - Empty " <<  V1.empty() << " vs " << V1STL.empty()<< std::endl;
+	else
+		std::cout << " Fail - Empty " <<  V1.empty()<< " vs " << V1STL.empty()<<  std::endl;
+
+	std::list<int> V2STL;
+	ft::list<int> V2;
+
+	if (V2.empty() == V2STL.empty())
+		std::cout << " Success - Empty " <<  V2.empty() << " vs " << V2STL.empty()<< std::endl;
+	else
+		std::cout << " Fail - Empty " <<  V2.empty()<< " vs " << V2STL.empty()<<  std::endl;
 }
 /*
 void ft_clear(void)
