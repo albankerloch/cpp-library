@@ -14,9 +14,9 @@ namespace ft
 			Node				*m_next;
 			T					data;
 
-			Node(): m_previous(0), m_next(0) {}
+			Node(): m_previous(NULL), m_next(NULL) {}
 			
-			Node(T const & elem): m_previous(0), m_next(0), data(elem) {}
+			Node(T const & elem): m_previous(NULL), m_next(NULL), data(elem) {}
 
 			Node(T const & elem, Node *previous, Node *m_next): m_previous(previous), m_next(m_next), data(elem) {}
 
@@ -32,8 +32,6 @@ namespace ft
 				this->m_previous = Node_to_Copy.m_previous;
 				return (*this);
 			};
-			
-			virtual ~Node() {}
 	};
 }
 

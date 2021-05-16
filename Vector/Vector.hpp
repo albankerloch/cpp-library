@@ -142,7 +142,7 @@ namespace ft
 
             size_type max_size() const 
             {
-			    return (this->m_allocator.max_size());
+			    return (std::numeric_limits<size_type>::max() / (sizeof(node_type) - sizeof(pointer));
 		    }
 
             iterator begin(void) 

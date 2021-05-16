@@ -83,10 +83,7 @@ void ft_capacity()
 	else
 		std::cout << " Fail - Size " <<  V1.size() << " vs " << V1STL.size() <<  std::endl;
 
-	if (V1.max_size() == V1STL.max_size())
-		std::cout << " Success - max_Size " <<  V1.max_size() << " vs " << V1STL.max_size() << std::endl;
-	else
-		std::cout << " Fail - max_Size " <<  V1.max_size() << " vs " << V1STL.max_size() <<  std::endl;
+	
 
 	if (V1.capacity() == V1STL.capacity())
 		std::cout << " Success - Capacity " <<  V1.capacity() << " vs " << V1STL.capacity() << std::endl;
@@ -238,7 +235,7 @@ void ft_relationnal_operator(void)
 	else
 		std::cout << " Success - Operator >= " <<  (V1 >= V2) << " vs " << (V1STL >= V2STL) <<  std::endl;
 }
-
+*/
 void ft_access(void)
 {
 	std::list<int> V1STL (3, 39);
@@ -247,40 +244,25 @@ void ft_access(void)
 	V1.push_back(5);
 	V1STL.push_back(5);
 
-	CompareList(&V1, &V1STL, "Operator - default");
-
-	if (V1[3] != V1STL[3])
-		std::cout << " FAIL - Operator [] error : STL " << V1STL[3] << " vs FT " << V1[3]  << std::endl;
-	else
-		std::cout << " Success - Operator [] : " << V1STL[3] << " at 3"  << std::endl;
-
-	if (V1[0] != V1STL[0])
-		std::cout << " FAIL - Operator [] error : STL " << V1STL[0] << " vs FT " << V1[0]  << std::endl;
-	else
-		std::cout << " Success - Operator [] : " << V1STL[0] << " at 0"  << std::endl;
-
-	if (V1.at(0) != V1STL.at(0))
-		std::cout << " FAIL - Operator at error : STL " << V1STL.at(0) << " vs FT " << V1.at(0)  << std::endl;
-	else
-		std::cout << " Success - Operator at : " <<  V1STL.at(0) << " at 0"  << std::endl;
-
-	if (V1.at(3) != V1STL.at(3))
-		std::cout << " FAIL - Operator at error : STL " << V1STL.at(3) << " vs FT " << V1.at(3)  << std::endl;
-	else
-		std::cout << " Success - Operator at : " << V1STL[3] << " at 3"  << std::endl;
+	//STLPrintList(&V1STL);
+	//PrintList(&V1);
 
 	if (V1.front() != V1STL.front())
-		std::cout << " FAIL - Operator front error : STL " << V1STL.front() << " vs FT " << V1.front()  << std::endl;
+		std::cout << " FAIL - Front : STL " << V1.front() << " vs FT " << V1STL.front()  << std::endl;
 	else
-		std::cout << " Success - Operator front : " <<  V1STL.front() << " at 0"  << std::endl;
+		std::cout << " Success - Front : " << V1.front() << " vs FT " << V1STL.front()  << std::endl;
 
 	if (V1.back() != V1STL.back())
-		std::cout << " FAIL - Operator back error : STL " << V1STL.back() << " vs FT " << V1.back()  << std::endl;
+		std::cout << " FAIL - back error : STL " << V1STL.back() << " vs FT " << V1.back()  << std::endl;
 	else
-		std::cout << " Success - Operator back : " <<  V1STL.back() << " at 0"  << std::endl;
+		std::cout << " Success - back : STL " << V1STL.back() << " vs FT " << V1.back()  << std::endl;
  
+ 	if (V1.max_size() == V1STL.max_size())
+		std::cout << " Success - max_Size " <<  V1.max_size() << " vs " << V1STL.max_size() << std::endl;
+	else
+		std::cout << " Fail - max_Size " <<  V1.max_size() << " vs " << V1STL.max_size() <<  std::endl;
 }
-
+/*
 void ft_clear(void)
 {
 	std::list<int> V1STL (3, 39);
@@ -386,7 +368,7 @@ void ft_constructor(void)
 	ft::list<int> V1;
 	CompareList(&V1, &V1_STL, "Constructor - default");
 
-	//STLPrintList(&V1_STL);
+	//PrintList(&V1_STL);
 
 	ft::list<char> VCHAR2(5,'A');
 	std::list<char> VCHAR2_STL(5, 'A');
@@ -416,8 +398,8 @@ void ft_test_list(void)
    ft_push_pop_back();
    /*ft_insert_erase();
    ft_swap();
-   ft_clear();
+   ft_clear();*/
    ft_access();
-   ft_relationnal_operator();*/
+//   ft_relationnal_operator();
    ft_begin_end();
 }

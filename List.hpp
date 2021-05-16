@@ -4,6 +4,7 @@
 # include "List_Iterator.hpp"
 # include "Reverse_Iterator.hpp"
 # include "Node.hpp"
+# include "utils.hpp"
 
 namespace ft
 {
@@ -176,6 +177,21 @@ namespace ft
 			{ 
 				return (this->m_last_node->data);
 			}
+
+			reference front()
+			{ 
+				return (m_last_node->m_next->data); 
+			}
+
+			reference back()
+			{ 
+				return (reference(m_last_node->m_previous->data));
+			}
+
+			size_type max_size() const 
+            {
+			    return (type_node_allocator().max_size());
+		    }
 
 			iterator insert (iterator position, const value_type & val)
 			{ 

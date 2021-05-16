@@ -1028,7 +1028,7 @@ namespace ft
     ** @param first2, last2 the start and the end of the second range.
     ** @return true if the first range compares lexicographically less
     ** than the second, false otherwise.
-    */
+
     template <class InputIterator1, class InputIterator2>
         bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1,
                                         InputIterator2 first2, InputIterator2 last2)
@@ -1043,7 +1043,7 @@ namespace ft
             return (first2 != last2);
         }
 
-    /*
+    
     ** @brief Return true if the range [first1, last2) compare
     ** lexicographically lest than the range [first2, last2).
     ** The comparision is effectued by "comp".
