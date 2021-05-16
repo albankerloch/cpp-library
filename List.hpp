@@ -392,6 +392,19 @@ namespace ft
 					it++;
 				}
 			}
+
+			template <class Predicate>
+			void remove_if (Predicate pred)
+			{iterator it;
+
+				it = this->begin();
+				while (it != this->end())
+				{
+					if pred(*it) 	
+						ft_delete(it);
+					it++;
+				}
+			}
 	};
 
 	 template <class T, class Alloc>
