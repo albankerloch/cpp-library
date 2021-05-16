@@ -361,6 +361,24 @@ namespace ft
                 this->m_allocator = temp_allocator;
                 this->m_size = temp_size;
 			}
+
+			void splice (iterator position, list& x)
+			{
+				this->insert(position, x.begin(), x.end());
+				x.clear();
+			}
+
+			void splice (iterator position, list& x, iterator i)
+			{
+				x.ft_disconnect(i);
+				this->insert(position, i);
+			}
+
+			void splice (iterator position, list& x, iterator first, iterator last)
+			{
+				this->insert(position, first, last);
+				x.erase(first, last);
+			}
 	};
 
 	 template <class T, class Alloc>
