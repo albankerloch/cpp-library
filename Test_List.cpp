@@ -70,42 +70,13 @@ bool CompareList(ft::list<T> *ft, std::list<T> *stl, const std::string &testName
 }
 
 /*
-void ft_capacity()
+void ft_resize()
 {
 	std::list<int> V1STL (3, 39);
 	ft::list<int> V1 (3, 39);
 	std::list<int> V2STL;
 	ft::list<int> V2;
 	
-
-	if (V1.size() == V1STL.size())
-		std::cout << " Success - Size " <<  V1.size() << " vs " << V1STL.size() << std::endl;
-	else
-		std::cout << " Fail - Size " <<  V1.size() << " vs " << V1STL.size() <<  std::endl;
-
-	
-
-	if (V1.capacity() == V1STL.capacity())
-		std::cout << " Success - Capacity " <<  V1.capacity() << " vs " << V1STL.capacity() << std::endl;
-	else
-		std::cout << " Fail - Capacity " <<  V1.capacity() << " vs " << V1STL.capacity() <<  std::endl;
-	
-	i
-
-	V1.reserve(50);
-	V1STL.reserve(50);
-	if (V1.capacity() == V1STL.capacity())
-		std::cout << " Success - Reserve " <<  V1.capacity() << " vs " << V1STL.capacity() << std::endl;
-	else
-		std::cout << " Fail - Reserve " <<  V1.capacity() << " vs " << V1STL.capacity() <<  std::endl;
-
-	V1.reserve(5);
-	V1STL.reserve(5);
-	if (V1.capacity() == V1STL.capacity())
-		std::cout << " Success - Reserve " <<  V1.capacity() << " vs " << V1STL.capacity() << std::endl;
-	else
-		std::cout << " Fail - Reserve " <<  V1.capacity() << " vs " << V1STL.capacity() <<  std::endl;
-
 	V1.resize(100);
 	V1STL.resize(100);
 	if (V1.capacity() == V1STL.capacity())
@@ -266,7 +237,7 @@ void ft_access(void)
 	else
 		std::cout << " Fail - Empty " <<  V2.empty()<< " vs " << V2STL.empty()<<  std::endl;
 }
-/*
+
 void ft_clear(void)
 {
 	std::list<int> V1STL (3, 39);
@@ -295,8 +266,8 @@ void ft_insert_erase(void)
 	std::list<int> V1STL (3, 39);
 	ft::list<int> V1 (3, 39);
 
-	V1STL.insert(V1STL.begin() + 1, 5);
-	V1.insert(V1.begin() + 1, 5);
+	V1STL.insert(V1STL.begin()++, 5);
+	V1.insert(V1.begin()++, 5);
 	CompareList(&V1, &V1STL, "Insert - one element");
 
 	V1STL.insert(V1STL.end(), 6);
@@ -313,11 +284,11 @@ void ft_insert_erase(void)
 	V1.erase(V1.begin());
 	CompareList(&V1, &V1STL, "Erase - one element");
 
-	V1STL.erase(V1STL.begin(), V1STL.begin() + 2);
-	V1.erase(V1.begin(), V1.begin() + 2);
+	V1STL.erase(V1STL.begin(), (V1STL.begin()++)++);
+	V1.erase(V1.begin(), (V1.begin()++)++);
 	CompareList(&V1, &V1STL, "Erase - one range");
 }
-*/
+
 void ft_push_pop_back(void)
 {
 	std::list<int> V1STL (3, 39);
@@ -400,9 +371,9 @@ void ft_test_list(void)
    ft_constructor();
    //ft_assign();
    ft_push_pop_back();
-   /*ft_insert_erase();
+   ft_insert_erase();
    ft_swap();
-   ft_clear();*/
+   ft_clear();
    ft_access();
 //   ft_relationnal_operator();
    ft_begin_end();

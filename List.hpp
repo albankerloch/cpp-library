@@ -257,6 +257,30 @@ namespace ft
 				}
 			}
 
+			iterator erase (iterator position)
+			{
+				iterator tmp;
+
+				tmp = position;
+				tmp++;
+				ft_delete(position.p);
+				return (tmp);		
+			}
+
+			iterator erase (iterator first, iterator last)
+			{
+				iterator tmp;
+
+				while(first != last)
+				{
+					tmp = first;
+					tmp++;
+					ft_delete(first.p);
+					first = tmp;
+				}
+				return (first);
+			}
+
 			void pop_front()
 			{
 				ft_delete(m_last_node->m_next);
@@ -266,7 +290,29 @@ namespace ft
 			{
 				ft_delete(m_last_node->m_previous);
 			}
+
+			void swap (list& x)
+			{
+
+				Node<T>			*temp_last_node;
+                allocator_type	temp_allocator;
+
+                temp_last_node = x.m_last_node;
+                temp_allocator = x.m_allocator;
+
+                x.m_last_node = this->m_last_node;
+                x.m_allocator = this->m_allocator;
+
+                this->m_last_node = temp_last_node;
+                this->m_allocator = temp_allocator;
+			}
 	};
+
+	template<typename T>
+    void swap(list<T> &x, list<T> &y) 
+    {
+        x.swap(y);
+    };
 }
 
 
