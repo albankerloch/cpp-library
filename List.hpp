@@ -4,7 +4,7 @@
 # include "List_Iterator.hpp"
 # include "Reverse_Iterator.hpp"
 # include "Node.hpp"
-# include "utils.hpp"
+# include <cstring>
 
 namespace ft
 {
@@ -31,6 +31,7 @@ namespace ft
 
 			allocator_type 		m_allocator;
 			Node<T>				*m_last_node;
+			size_t				m_size;
 
 			typedef typename allocator_type::template 		rebind<Node<T> >::other type_node_allocator;
 			typedef typename type_node_allocator::pointer	node_pointer;
@@ -39,18 +40,19 @@ namespace ft
 			void ft_init_node(void)
 			{
 				this->m_last_node = node_allocator.allocate(1);
-				node_allocator.construct(m_last_node, Node<T>(0));
+				node_allocator.construct(m_last_node, Node<T>());
 				this->m_last_node->m_previous = this->m_last_node;
 				this->m_last_node->m_next = this->m_last_node;
+				this->m_size = 0;
 			}
 
-			node_pointer ft_add_node(const T & data, Node<T> * m_previous = NULL, Node<T> * m_next = NULL)
+			node_pointer ft_add_node(const T & data, Node<T> * m_previous = u_nullptr, Node<T> * m_next = u_nullptr)
 			{
 				node_pointer new_node = node_allocator.allocate(1);
 				node_allocator.construct(new_node, Node<T>(data));
 				new_node->m_previous = m_previous;
 				new_node->m_next = m_next;
-				m_last_node->data++;
+				this->m_size = this->m_size  + 1;
 				return (new_node);
 			}
 
@@ -69,7 +71,7 @@ namespace ft
 			void ft_delete(Node<T> *node)
 			{
 				ft_disconnect(node);
-				m_last_node->data--;
+				this->m_size = this->m_size  - 1;
 				node_allocator.destroy(node);
 				node_allocator.deallocate(node, 1);
 			}
@@ -175,7 +177,7 @@ namespace ft
 
 			size_type size() const 
 			{ 
-				return (this->m_last_node->data);
+				return (this->m_size);
 			}
 
 			reference front()
@@ -190,7 +192,7 @@ namespace ft
 
 			bool empty() const 
             {
-				if (m_last_node->data == 0)
+				if (this->m_size == 0)
 					return (true);
 				return (false);
 		    }
@@ -235,14 +237,40 @@ namespace ft
 				}
 			}
 
-			void push_front (const value_type& val)
+			void push_front(const value_type& val)
 			{
 				this->insert(this->m_last_node->m_next, val);
 			}
 
-			void push_back (const value_type& val)
+			void push_back(const value_type& val)
 			{
 				this->insert(this->m_last_node, val);
+			}
+
+			void assign (size_type n, const value_type& val)
+			{
+				this->clear();
+				while (n--)
+					this->push_front(val);
+			}
+
+ 			void assign (iterator first, iterator last)
+			{
+				this->clear();
+				while (first != last)
+				{
+					this->push_back(*first);
+					first++;
+				}
+			}
+ 			void assign (const_iterator const first, const_iterator const last)
+			{
+				this->clear();
+				while (first != last)
+				{
+					this->push_back(*first);
+					first++;
+				}
 			}
 
 			void clear()
@@ -296,15 +324,19 @@ namespace ft
 
 				Node<T>			*temp_last_node;
                 allocator_type	temp_allocator;
+				size_t			temp_size;
 
                 temp_last_node = x.m_last_node;
                 temp_allocator = x.m_allocator;
+                temp_size = x.m_size;
 
                 x.m_last_node = this->m_last_node;
                 x.m_allocator = this->m_allocator;
+                x.m_size = this->m_size;
 
                 this->m_last_node = temp_last_node;
                 this->m_allocator = temp_allocator;
+                this->m_size = temp_size;
 			}
 	};
 

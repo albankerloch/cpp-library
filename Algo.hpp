@@ -1,6 +1,12 @@
 #ifndef DEF_ALGO_HPP
 # define DEF_ALGO_HPP
 
+# include <cstddef>
+# include <limits>
+# include <sstream>
+# include <typeinfo>
+# include <iostream>
+
 namespace ft 
 {
     struct IteratorTrait {};
@@ -19,6 +25,22 @@ namespace ft
 		}
 		return (first2 != last2);
 	}
+
+	static class nullptr_t
+	{
+		public:
+		
+			template<class T>
+			operator T*() const { return (0); }
+
+			template<class C, class T>
+			operator T C::*() const { return (0); }
+
+		private:
+			
+			void operator&() const;
+
+	} u_nullptr = {};
 
 }
 

@@ -13,12 +13,15 @@ void STLPrintList(std::list<T> *stl)
 	std::cout << " SIZES : STL = "<< stl->size() << std::endl;
 	it_stl = stl->begin();
 	i = 0;
-	while(i < stl->size())
+	while(it_stl != stl->end())
 	{
-		std::cout << " Value : STL = " << *it_stl << " at position " << i++ << std::endl;
+		std::cout << " Value : STL = " << *it_stl << " at position " << i << std::endl;
 		it_stl++;
+		i++;
 	}
-	std::cout << " STL BEGIN : "<< *stl->begin() << " STL END : "<< *stl->end() << std::endl;
+	std::cout << " STL BEGIN : "<< *stl->begin() << std::endl;
+	//std::cout << " STL BEGIN : "<< *stl->begin() << " STL END : "<< *stl->end() << std::endl;
+	std::cout << " STL FRONT : "<< stl->front() << " STL BACK : "<< stl->back() << std::endl;
 }
 
 template <typename T>
@@ -35,7 +38,9 @@ void PrintList(ft::list<T> *stl)
 		std::cout << " Value : FT = " << *it_stl << " at position " << i++ << std::endl;
 		it_stl++;
 	}
-	std::cout << " FT BEGIN : "<< *stl->begin() << " STL END : "<< *stl->end() << std::endl;
+	std::cout << " STL BEGIN : "<< *stl->begin() << std::endl;
+	//std::cout << " STL BEGIN : "<< *stl->begin() << " STL END : "<< *stl->end() << std::endl;
+	std::cout << " STL FRONT : "<< stl->front() << " STL BACK : "<< stl->back() << std::endl;
 }
 
 template <typename T>
@@ -147,7 +152,7 @@ void ft_begin_end()
 	else
 		std::cout << " Fail - rEnd " <<  *V1.rend() << " vs " << *V1STL.rend() <<  std::endl;
 }
-
+/*
 void ft_relationnal_operator(void)
 {
 	std::list<int> V1STL (3, 39);
@@ -197,7 +202,7 @@ void ft_relationnal_operator(void)
 		std::cout << " Fail- Operator >= " <<  (V1 >= V2) << " vs " << (V1STL >= V2STL) << std::endl;
 	else
 		std::cout << " Success - Operator >= " <<  (V1 >= V2) << " vs " << (V1STL >= V2STL) <<  std::endl;
-}
+}*/
 
 void ft_access(void)
 {
@@ -312,7 +317,7 @@ void ft_push_pop_back(void)
 	V1.pop_back();
 	CompareList(&V1, &V1STL, "Pop_back again - default");
 }
-/*
+
 void ft_assign(void)
 {
 	std::list<int> V1STL (3, 39);
@@ -328,14 +333,16 @@ void ft_assign(void)
 	V1.assign(7, 21);
 	CompareList(&V1, &V1STL, "Assign - with value");
 
-	ft::list<std::string> VCHAR2(1,"Test");
-	std::list<std::string> VCHAR2_STL(1, "Test");
+	std::list<std::string> VCHAR2_STL(3, "At");
+	//STLPrintList(&VCHAR2_STL);
+	ft::list<std::string> VCHAR2(3, "At");
+	//PrintList(&VCHAR2);
 	CompareList(&VCHAR2, &VCHAR2_STL, "Assign - with string value");
 
 	ft::list<std::string> VCHAR3(0,"Test");
 	std::list<std::string> VCHAR3_STL(0, "Test");
 	CompareList(&VCHAR3, &VCHAR3_STL, "Assign - with size at 0");
-}*/
+}
 
 void ft_constructor(void)
 {
@@ -369,12 +376,12 @@ void ft_constructor(void)
 void ft_test_list(void)
 {
    ft_constructor();
-   //ft_assign();
+   ft_assign();
    ft_push_pop_back();
    ft_insert_erase();
    ft_swap();
    ft_clear();
    ft_access();
-   ft_relationnal_operator();
+   //ft_relationnal_operator();
    ft_begin_end();
 }
