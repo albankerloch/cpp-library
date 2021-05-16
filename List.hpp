@@ -395,14 +395,48 @@ namespace ft
 
 			template <class Predicate>
 			void remove_if (Predicate pred)
-			{iterator it;
+			{
+				iterator it;
 
 				it = this->begin();
 				while (it != this->end())
 				{
-					if pred(*it) 	
+					if (pred(*it))	
 						ft_delete(it);
 					it++;
+				}
+			}
+
+			void unique()
+			{
+				iterator prev;
+				iterator it;
+
+				prev = this->begin();
+				it = this->begin()++;
+				while (it != this->end())
+				{
+					if (*it == *prev)	
+						ft_delete(it);
+					it++;
+					prev++;
+				}
+			}
+
+			template <class BinaryPredicate>
+  			void unique (BinaryPredicate binary_pred)
+			{
+				iterator prev;
+				iterator it;
+
+				prev = this->begin();
+				it = this->begin()++;
+				while (it != this->end())
+				{
+					if (binary_pred(*it, *prev))
+						ft_delete(it);
+					it++;
+					prev++;
 				}
 			}
 	};
