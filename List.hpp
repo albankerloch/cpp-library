@@ -13,19 +13,19 @@ namespace ft
 	{
 		public :
 
-			typedef T	    							    	value_type;
-            typedef Alloc   	    					        allocator_type;
-            typedef typename allocator_type::reference          reference;
-            typedef typename allocator_type::const_reference	const_reference;
-            typedef typename allocator_type::pointer	        pointer;
-            typedef typename allocator_type::const_pointer      const_pointer;
-            typedef Node<value_type>                            node_type;
-            typedef List_iterator<value_type, node_type>		iterator;
-            typedef List_iterator<value_type const, node_type const> 						const_iterator;
-            typedef ReverseIterator<iterator>           		reverse_iterator;
-            typedef ReverseIterator<const_iterator>    	        const_reverse_iterator;
-            typedef std::ptrdiff_t							    difference_type;
-            typedef size_t 								    	size_type;
+			typedef T	    							    			value_type;
+            typedef Alloc   	    					     		  	allocator_type;
+            typedef typename allocator_type::reference        		  	reference;
+            typedef typename allocator_type::const_reference			const_reference;
+            typedef typename allocator_type::pointer	     		 	pointer;
+            typedef typename allocator_type::const_pointer   		   	const_pointer;
+            typedef Node<value_type>                         	 	  	node_type;
+            typedef List_iterator<value_type, node_type>				iterator;
+            typedef List_iterator<value_type const, node_type const>	const_iterator;
+            typedef ReverseIterator<iterator>           				reverse_iterator;
+            typedef ReverseIterator<const_iterator>    	    		    const_reverse_iterator;
+            typedef std::ptrdiff_t									    difference_type;
+            typedef size_t 								  			  	size_type;
 
 		private :
 
@@ -33,9 +33,9 @@ namespace ft
 			Node<T>				*m_last_node;
 			size_t				m_size;
 
-			typedef typename allocator_type::template 		rebind<Node<T> >::other type_node_allocator;
-			typedef typename type_node_allocator::pointer	node_pointer;
-			type_node_allocator								node_allocator;
+			typedef typename allocator_type::template rebind<Node<T> >::other	type_node_allocator;
+			typedef typename type_node_allocator::pointer						node_pointer;
+			type_node_allocator													node_allocator;
 
 			void ft_init_node(void)
 			{
@@ -439,7 +439,76 @@ namespace ft
 					prev++;
 				}
 			}
-	};
+
+			void merge (list& x)
+			{
+				this->merge(x, &ft::less<value_type>)
+			}
+
+			template <class Compare>
+			void merge (list& x, Compare comp)
+			{
+				iterator	itx;
+				iterator	it;
+
+				if (&x == this)
+					return;
+				itx = x.begin();
+				itx = this->begin();
+				while (itx != x.end())
+				{
+					while (comp(*it, *itx))
+						it++;
+					itx.p->m_previous->next = it.p->next;
+					itx.p->m_previous = it.p
+					it.p->m_next->m_previous = itx.p;
+					it.p->m_next = itx.p;
+					itx.p->m_next->m_previous = itx.p->m_previous;
+					itx.p->m_next = it.p->next;
+					itx++;
+				}
+			}
+
+			void sort()
+			{
+				this->merge(&ft::less<value_type>)
+			}
+
+			template <class Compare>
+			void sort (Compare comp)
+			{
+				iterator	it;
+
+				if (this->empty())
+					return;
+				it = this->begin();
+				while (it != this->end())
+				{
+					it = this->begin();
+					while(comp(*it, *it(it + 1))) 
+						it++;
+					if (it != this->end())
+						swap(it, it + 1);
+				}
+			}
+
+			void reverse()
+			{
+				Node<value_type>	*tmp;
+				iterator			it;
+
+				if (this->empty())
+					return;
+				it = this->begin();
+				while (it != this->end())
+				{
+					tmp = it->previous;
+					it->previous = it->next;
+					it->next = tmp;
+					it++;
+				}
+			}
+		};
 
 	 template <class T, class Alloc>
     bool operator== (const ft::list<T, Alloc>& lhs, const ft::list<T, Alloc>& rhs)

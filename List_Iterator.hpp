@@ -59,6 +59,38 @@ namespace ft
 			{
 				return &(this->operator*()); 
 			}
+
+			List_iterator &operator+=(int value) 
+			{
+				if (value > 0) 
+				{
+					for (int i = 0; i < value; i++)
+						this->p = this->p->next();
+				} 
+				else 
+				{
+					for (int i = value; i > 0; i--)
+						this->p = this->p->previous();
+				}
+			}
+
+			List_iterator operator+(int value) const 
+			{
+				List_iterator tmp(*this);
+				return (tmp += value);
+			}
+
+			List_iterator &operator-=(int value) 
+			{
+				operator+=(-value);
+				return (*this);
+			}
+
+			List_iterator operator-(int value) const 
+			{
+				List_iterator tmp(*this);
+				return (tmp -= value);
+			}
 	
 			List_iterator& operator++(void)
 			{
