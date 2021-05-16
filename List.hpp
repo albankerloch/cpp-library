@@ -379,6 +379,19 @@ namespace ft
 				this->insert(position, first, last);
 				x.erase(first, last);
 			}
+
+			void remove (const value_type& val)
+			{
+				iterator it;
+
+				it = this->begin();
+				while (it != this->end())
+				{
+					if (*it == val)
+						ft_delete(it);
+					it++;
+				}
+			}
 	};
 
 	 template <class T, class Alloc>
