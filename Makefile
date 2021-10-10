@@ -11,12 +11,12 @@
 #******************************************************************************#
 
 SRCS =	main.cpp \
-        Test_List.cpp
+        Test_Map.cpp
 OBJS = ${SRCS:.cpp=.o}
 NAME = containers
 CXX = clang++
 RM = rm -rf
-CXXFLAGS = -std=c++98 -Wall -Wextra -Werror -I.
+CXXFLAGS = -g -Wall -Wextra -Werror -std=c++98 -I.
 
 all : ${NAME}
 

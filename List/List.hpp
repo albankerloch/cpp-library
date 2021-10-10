@@ -134,6 +134,37 @@ namespace ft
 				}
 				return (*this);
 			}
+
+			void assign (size_type n, const value_type& val)
+			{
+				this->clear();
+				while (n--)
+					this->push_front(val);
+			}
+
+ 			void assign (iterator first, iterator last)
+			{
+				this->clear();
+				while (first != last)
+				{
+					this->push_back(*first);
+					first++;
+				}
+			}
+ 			void assign (const_iterator const first, const_iterator const last)
+			{
+				this->clear();
+				while (first != last)
+				{
+					this->push_back(*first);
+					first++;
+				}
+			}
+			
+			allocator_type get_allocator() const
+			{
+				return (m_allocator);
+			}
 		
 			iterator begin() 
 			{ 
@@ -175,10 +206,22 @@ namespace ft
 				return (const_reverse_iterator(m_last_node->m_next)); 
 			}
 
+			bool empty() const 
+            {
+				if (this->m_size == 0)
+					return (true);
+				return (false);
+		    }
+
 			size_type size() const 
 			{ 
 				return (this->m_size);
 			}
+
+			size_type max_size() const 
+            {
+			    return (type_node_allocator().max_size());
+		    }
 
 			reference front()
 			{ 
@@ -189,18 +232,6 @@ namespace ft
 			{ 
 				return (reference(m_last_node->m_previous->data));
 			}
-
-			bool empty() const 
-            {
-				if (this->m_size == 0)
-					return (true);
-				return (false);
-		    }
-
-			size_type max_size() const 
-            {
-			    return (type_node_allocator().max_size());
-		    }
 
 			iterator insert (iterator position, const value_type & val)
 			{ 
@@ -222,6 +253,18 @@ namespace ft
 				return (iterator(position.p->m_previous));
 			}
 
+			void clear()
+			{
+				Node<T> *tmp = m_last_node->m_next;
+				Node<T> *m_next_tmp;
+				while (tmp != m_last_node)
+				{
+					m_next_tmp = tmp->m_next;
+					ft_delete(tmp);
+					tmp = m_next_tmp;
+				}
+			}
+
 			void insert (iterator position, size_type n, const value_type& val)
 			{
 				while (n--)
@@ -234,54 +277,6 @@ namespace ft
 				{
 					this->insert(position, *first);
 					first++;
-				}
-			}
-
-			void push_front(const value_type& val)
-			{
-				this->insert(this->m_last_node->m_next, val);
-			}
-
-			void push_back(const value_type& val)
-			{
-				this->insert(this->m_last_node, val);
-			}
-
-			void assign (size_type n, const value_type& val)
-			{
-				this->clear();
-				while (n--)
-					this->push_front(val);
-			}
-
- 			void assign (iterator first, iterator last)
-			{
-				this->clear();
-				while (first != last)
-				{
-					this->push_back(*first);
-					first++;
-				}
-			}
- 			void assign (const_iterator const first, const_iterator const last)
-			{
-				this->clear();
-				while (first != last)
-				{
-					this->push_back(*first);
-					first++;
-				}
-			}
-
-			void clear()
-			{
-				Node<T> *tmp = m_last_node->m_next;
-				Node<T> *m_next_tmp;
-				while (tmp != m_last_node)
-				{
-					m_next_tmp = tmp->m_next;
-					ft_delete(tmp);
-					tmp = m_next_tmp;
 				}
 			}
 
@@ -309,6 +304,26 @@ namespace ft
 				return (first);
 			}
 
+			void push_back(const value_type& val)
+			{
+				this->insert(this->m_last_node, val);
+			}
+
+			void pop_back()
+			{
+				ft_delete(m_last_node->m_previous);
+			}
+
+			void push_front(const value_type& val)
+			{
+				this->insert(this->m_last_node->m_next, val);
+			}
+
+			void pop_front()
+			{
+				ft_delete(m_last_node->m_next);
+			}	
+
 			void resize (size_type length, value_type val = value_type())
 			{
 				size_t i;
@@ -332,16 +347,6 @@ namespace ft
                 }
 			}
 
-			void pop_front()
-			{
-				ft_delete(m_last_node->m_next);
-			}	
-
-			void pop_back()
-			{
-				ft_delete(m_last_node->m_previous);
-			}
-
 			void swap (list& x)
 			{
 
@@ -360,6 +365,35 @@ namespace ft
                 this->m_last_node = temp_last_node;
                 this->m_allocator = temp_allocator;
                 this->m_size = temp_size;
+			}
+/*
+			void merge (list& x)
+			{
+				this->merge(x, &ft::less<value_type>);
+			}
+*/
+			template <class Compare>
+			void merge (list& x, Compare comp)
+			{
+				iterator	itx;
+				iterator	it;
+
+				if (&x == this)
+					return;
+				itx = x.begin();
+				itx = this->begin();
+				while (itx != x.end())
+				{
+					while (comp(*it, *itx))
+						it++;
+					itx.p->m_previous->next = it.p->next;
+					itx.p->m_previous = it.p;
+					it.p->m_next->m_previous = itx.p;
+					it.p->m_next = itx.p;
+					itx.p->m_next->m_previous = itx.p->m_previous;
+					itx.p->m_next = it.p->next;
+					itx++;
+				}
 			}
 
 			void splice (iterator position, list& x)
@@ -407,6 +441,23 @@ namespace ft
 				}
 			}
 
+			void reverse()
+			{
+				Node<value_type>	*tmp;
+				iterator			it;
+
+				if (this->empty())
+					return;
+				it = this->begin();
+				while (it != this->end())
+				{
+					tmp = it->previous;
+					it->previous = it->next;
+					it->next = tmp;
+					it++;
+				}
+			}
+
 			void unique()
 			{
 				iterator prev;
@@ -439,41 +490,12 @@ namespace ft
 					prev++;
 				}
 			}
-
-			void merge (list& x)
-			{
-				this->merge(x, &ft::less<value_type>)
-			}
-
-			template <class Compare>
-			void merge (list& x, Compare comp)
-			{
-				iterator	itx;
-				iterator	it;
-
-				if (&x == this)
-					return;
-				itx = x.begin();
-				itx = this->begin();
-				while (itx != x.end())
-				{
-					while (comp(*it, *itx))
-						it++;
-					itx.p->m_previous->next = it.p->next;
-					itx.p->m_previous = it.p
-					it.p->m_next->m_previous = itx.p;
-					it.p->m_next = itx.p;
-					itx.p->m_next->m_previous = itx.p->m_previous;
-					itx.p->m_next = it.p->next;
-					itx++;
-				}
-			}
-
+/*
 			void sort()
 			{
-				this->merge(&ft::less<value_type>)
+				this->merge(&ft::less<value_type>);
 			}
-
+*/
 			template <class Compare>
 			void sort (Compare comp)
 			{
@@ -491,26 +513,9 @@ namespace ft
 						swap(it, it + 1);
 				}
 			}
-
-			void reverse()
-			{
-				Node<value_type>	*tmp;
-				iterator			it;
-
-				if (this->empty())
-					return;
-				it = this->begin();
-				while (it != this->end())
-				{
-					tmp = it->previous;
-					it->previous = it->next;
-					it->next = tmp;
-					it++;
-				}
-			}
 		};
 
-	 template <class T, class Alloc>
+	template <class T, class Alloc>
     bool operator== (const ft::list<T, Alloc>& lhs, const ft::list<T, Alloc>& rhs)
     {
         typename ft::list<T>::const_iterator it_lhs;

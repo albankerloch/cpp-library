@@ -43,7 +43,7 @@ namespace ft
 	} u_nullptr = {};
 
 	template <class T>
-    struct less : binary_function<T, T, bool>
+    struct less : std::binary_function<T, T, bool>
     {
         bool operator() (const T& x, const T& y) const 
 		{ 

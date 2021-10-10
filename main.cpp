@@ -1,9 +1,8 @@
-void ft_test_vector(void);
-void ft_test_list(void);
+void ft_test_map(void);
 
 int main(void)
 {
     //ft_test_vector();
-    ft_test_list();
+    ft_test_map();
 
 }

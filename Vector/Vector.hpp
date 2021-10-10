@@ -35,7 +35,9 @@ namespace ft
 
         public:
 
-            explicit vector (const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_array(0), m_capacity(0), m_size(0) {}
+            explicit vector (const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_array(0), m_capacity(0), m_size(0) 
+            {
+            }
 
             explicit vector (size_type n, const value_type & val = value_type(), const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_capacity(n), m_size(n)
             {
@@ -78,6 +80,45 @@ namespace ft
                 }
                 return *this;
 		    }
+
+
+            void assign(iterator first, iterator last) 
+            {
+                size_t length;
+                size_t i;
+                
+                length = last - first;
+                if (length > this->m_capacity)
+                    this->reserve(length);
+                i = 0;
+                while (first != last) 
+                {
+                    m_allocator.construct(&this->m_array[i], *first);
+                    first++;
+                    i++;
+                }
+                this->m_size = length;
+            }
+
+            void assign(size_type length, const_reference value) 
+            {
+                size_t i;
+
+                if (length > this->m_capacity)
+                    this->reserve(length);
+                i = 0;
+                while (i < length) 
+                {
+                    m_allocator.construct(&this->m_array[i], value);
+                    ++i;
+                }
+                this->m_size = length;
+            }
+
+            allocator_type get_allocator() const
+			{
+				return (m_allocator);
+			}
                     
             reference operator[](size_type idx) 
             {
@@ -216,39 +257,6 @@ namespace ft
                     this->m_array = tmp;
                     this->m_capacity = length;
                 }
-            }
-
-            void assign(iterator first, iterator last) 
-            {
-                size_t length;
-                size_t i;
-                
-                length = last - first;
-                if (length > this->m_capacity)
-                    this->reserve(length);
-                i = 0;
-                while (first != last) 
-                {
-                    m_allocator.construct(&this->m_array[i], *first);
-                    first++;
-                    i++;
-                }
-                this->m_size = length;
-            }
-
-            void assign(size_type length, const_reference value) 
-            {
-                size_t i;
-
-                if (length > this->m_capacity)
-                    this->reserve(length);
-                i = 0;
-                while (i < length) 
-                {
-                    m_allocator.construct(&this->m_array[i], value);
-                    ++i;
-                }
-                this->m_size = length;
             }
 
             void push_back(value_type value)
