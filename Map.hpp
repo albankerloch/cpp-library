@@ -154,9 +154,8 @@ namespace ft
 					else
 						parent->left = 0;
 					delete n;
-					return ;
 				}
-				if (n->right && !n->left)
+				else if (n->right && !n->left)
 				{
 					if (parent->right == n)
 						parent->right = n->right;
@@ -164,9 +163,8 @@ namespace ft
 						parent->left = n->right;
 					n->right->parent = parent;
 					delete n;
-					return ;
 				}
-				if (n->left && !n->right)
+				else if (n->left && !n->right)
 				{
 					if (parent->right == n)
 						parent->right = n->left;
@@ -174,13 +172,15 @@ namespace ft
 						parent->left = n->left;
 					n->left->parent = parent;
 					delete n;
-					return ;
 				}
-				next = (iterator(n)++).node();
-				if (!next)
-					next = (iterator(n)--).node();
-				ft::swap(next->pair, n->pair);
-				ft_delete_node(next);
+				else
+				{
+					next = (iterator(n)++).node();
+					if (!next)
+						next = (iterator(n)--).node();
+					ft::swap(next->pair, n->pair);
+					ft_delete_node(next);
+				}
 			}
 
 			void ft_free_tree(node n)
@@ -215,6 +215,11 @@ namespace ft
 				this->ft_tree_initialization();
 				*this = other;
 			};
+			
+			~map()
+			{
+				this->ft_free_tree(this->m_root);	
+			};
 
 			map &operator=(const map<Key, T> &other)
 			{
@@ -223,9 +228,9 @@ namespace ft
 				return (*this);
 			};
 
-			~map()
+			allocator_type get_allocator() const
 			{
-				this->ft_free_tree(this->m_root);	
+				return (this->m_allocator);
 			};
 
 			iterator begin()
@@ -256,6 +261,20 @@ namespace ft
 				return (const_iterator(tmp));
 			}
 
+			iterator rbegin()
+			{
+				iterator i = this->end();
+				i--;
+				return (reverse_iterator(i.node()));
+			}
+
+			const_iterator rbegin() const
+			{
+				iterator i = this->end();
+				i--;
+				return (const_reverse_iterator(i.node()));
+			}
+
 			iterator end()		
 			{
 				return (iterator(this->m_root->right));
@@ -265,6 +284,63 @@ namespace ft
 			{ 
 				return (const_iterator(this->m_root->right));
 			};
+
+			reverse_iterator rend()			
+			{
+				return (reverse_iterator(this->m_root));
+			};
+
+			const_reverse_iterator rend() const	
+			{ 
+				return (const_reverse_iterator(this->m_root));
+			};
+
+			map &operator[](const key_type &key)
+			{
+				iterator tmp;
+				
+				tmp = this->find(key);
+				if (tmp != this->end())
+					return (tmp->second);
+				return (this->insert(std::make_pair(key, mapped_type())).first->second);
+			}	
+			
+			bool empty() const		
+			{ 
+				return (this->m_length == 0);
+			};
+
+			size_type	size() const		
+			{ 
+				return (this->_length);
+			};
+
+			size_type	max_size() const	
+			{ 
+				return (std::numeric_limits<size_type>::max() / (sizeof(BNode<key_type, mapped_type>)));
+			};
+
+			iterator insert(const value_type &value)
+			{
+				iterator tmp;
+
+				tmp = this->find(value.first);
+				if (tmp != this->m_root->right)
+					return (std::make_pair(tmp, false));
+				else
+					this->m_length++;
+				return (std::make_pair(iterator(this->ft_insert_node(this->_root, value.first, value.second)), true));
+			};
+
+			template <class InputIterator>
+			void insert(InputIterator first, InputIterator last)
+			{
+				while (first != last)
+				{
+					this->insert(*first);
+					first++;
+				}
+			}
 
 			void erase(iterator pos)
 			{
@@ -292,15 +368,29 @@ namespace ft
 					this->erase(first++);
 			}
 
+			void swap(map &x)
+			{
+				ft::swap(&this, &x);
+			};
+
 			void clear()
 			{
 				this->erase(this->begin(), this->end());
 			};
 
-			bool empty() const		
-			{ 
-				return (this->m_length == 0);
-			};
+			size_type count(const key_type &value) const
+			{
+				const_iterator it_begin = this->begin();
+				const_iterator it_end = this->end();
+
+				while (it_begin != it_end)
+				{
+					if (it_begin->first == value)
+						return (1);
+					++it_begin;
+				}
+				return (0);
+			}
 
 			iterator find(const key_type &value)
 			{
@@ -324,29 +414,92 @@ namespace ft
 				if (tmp)
 					return (const_iterator(tmp));
 				return (this->end());
-			}
-
-			iterator insert(const value_type &value)
-			{
-				iterator tmp;
-
-				tmp = this->find(value.first);
-				if (tmp != this->m_root->right)
-					return (std::make_pair(tmp, false));
-				else
-					this->m_length++;
-				return (std::make_pair(iterator(this->ft_insert_node(this->_root, value.first, value.second)), true));
 			};
 
-			template <class InputIterator>
-			void insert(InputIterator first, InputIterator last)
+			std::pair<iterator, iterator> equal_range(const key_type &k)
 			{
-				while (first != last)
+				return (std::pair<iterator, iterator>(this->lower_bound(k), this->upper_bound(k)));
+			};
+
+			std::pair<const_iterator, const_iterator> equal_range(const key_type &k) const
+			{
+				return (std::pair<const_iterator, const_iterator>(this->lower_bound(k), this->upper_bound(k)));
+			};
+
+			iterator lower_bound(const key_type &key)
+			{
+				iterator it_begin; 
+				iterator it_end;
+				
+				it_begin= this->begin();
+				it_end = this->end();
+				while (it_begin != it_end)
 				{
-					this->insert(*first);
-					first++;
+					if (this->m_compare(it_begin->first, key) <= 0)
+						return (it_begin);
+					it_begin++;
 				}
-			}
+				return (it_end);
+			};
+
+			const_iterator lower_bound(const key_type &key) const
+			{
+				const_iterator it_begin; 
+				const_iterator it_end;
+				
+				it_begin= this->begin();
+				it_end = this->end();
+				while (it_begin != it_end)
+				{
+					if (this->m_compare(it_begin->first, key) <= 0)
+						return (it_begin);
+					it_begin++;
+				}
+				return (it_end);
+			};
+
+			iterator upper_bound(const key_type &key)
+			{
+				iterator it_begin; 
+				iterator it_end;
+				
+				it_begin= this->begin();
+				it_end = this->end();
+				while (it_begin != it_end)
+				{
+					if (it_begin->first != key && this->m_compare(it_begin->first, key) <= 0)
+						return (it_begin);
+					it_begin++;
+				}
+				return (it_end);
+			};
+
+			const_iterator upper_bound(const key_type &key) const
+			{
+				const_iterator it_begin; 
+				const_iterator it_end;
+				
+				it_begin= this->begin();
+				it_end = this->end();
+				while (it_begin != it_end)
+				{
+					if (it_begin->first != key && this->m_compare(it_begin->first, key) <= 0)
+						return (it_begin);
+					it_begin++;
+				}
+				return (it_end);
+			};
+
+			key_compare		key_comp(void) const	
+			{ 
+				return (this->m_compare);
+			};
+
+			value_compare	value_comp(void) const	
+			{ 
+				return (value_compare(this->m_compare));
+			};
+
 	};
 
 }
