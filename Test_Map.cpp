@@ -72,6 +72,58 @@ bool CompareMap(ft::map<Key, T> *ft, std::map<Key, T> *stl, const std::string &t
 	return true;
 }
 
+void ft_clear(void)
+{
+	std::map<int, int> V1STL;
+	ft::map<int, int>  V1;
+
+	V1STL.insert(V1STL.begin(), std::make_pair(1,5));
+	V1.insert(V1.begin(),std::make_pair(1,5));
+
+	V1STL.clear();
+	V1.clear();
+	CompareMap(&V1, &V1STL, "Clear - default");
+}
+
+void ft_swap(void)
+{
+	std::map<int, int> V1STL;
+	ft::map<int, int>  V1;
+
+	V1STL.insert(V1STL.begin(), std::make_pair(1,5));
+	V1.insert(V1.begin(),std::make_pair(1,5));
+
+	std::map<int, int> V2STL;
+	ft::map<int, int>  V2;
+
+	V1STL.swap(V2STL);
+	V1.swap(V2);
+	CompareMap(&V1, &V1STL, "Swap - first element");
+	CompareMap(&V2, &V2STL, "Swap - second element");
+}
+
+void ft_insert_erase(void)
+{
+	std::map<int, int> V1STL;
+	ft::map<int, int>  V1;
+
+	V1STL.insert(V1STL.begin(), std::make_pair(1,5));
+	V1.insert(V1.begin(),std::make_pair(1,5));
+	CompareMap(&V1, &V1STL, "Insert - one element");
+
+	V1STL.insert(V1STL.end(), std::make_pair(2,3));
+	V1.insert(V1.end(), std::make_pair(2,3));
+	CompareMap(&V1, &V1STL, "Insert again - one element");
+
+	V1STL.erase(V1STL.begin());
+	V1.erase(V1.begin());
+	CompareMap(&V1, &V1STL, "Erase - one element");
+
+	V1STL.erase(V1STL.begin(), (V1STL.begin()++));
+	V1.erase(V1.begin(), (V1.begin()++));
+	CompareMap(&V1, &V1STL, "Erase - one range");
+}
+
 void ft_constructor(void)
 {
 	std::map<std::string, int> V1_STL;
@@ -95,29 +147,82 @@ void ft_constructor(void)
 	V2[1]=3;
 	CompareMap(&V2, &V2STL, "Constructor - fill");
 
+	V2STL[2]=4;
+	V2[2]=4;
 	std::map<int, int>  V3STL (V2STL.begin(),V2STL.end());
 	ft::map<int, int> V3 (V2.begin(),V2.end());
 	CompareMap(&V3, &V3STL, "Constructor - range");
 
 	std::map<int, int>V4STL (V3STL);
 	ft::map<int, int>V4(V3);
-	//CompareMap(&V4, &V4STL, "Constructor - copy");
-/*
-	V1_STL = V4STL;
-	V1 = V4;
-	CompareMap(&V1, &V1_STL, "Constructor - operator = ");*/
+	CompareMap(&V4, &V4STL, "Constructor - copy");
+
+	V2STL = V4STL;
+	V2 = V4;
+	CompareMap(&V1, &V1_STL, "Constructor - operator = ");
+
+	PrintMap(&V2);
+	STLPrintMap(&V2STL);
+}
+
+void ft_access(void)
+{
+	std::map<int, int> V1STL;
+	ft::map<int, int>  V1;
+
+	V1STL.insert(V1STL.begin(), std::make_pair(1,5));
+	V1.insert(V1.begin(),std::make_pair(1,5));
+	//STLPrintList(&V1STL);
+	//PrintList(&V1);
+	
+ 	if (V1.max_size() == V1STL.max_size())
+		std::cout << " Success - max_Size " <<  V1.max_size() << " vs " << V1STL.max_size() << std::endl;
+	else
+		std::cout << " Fail - max_Size " <<  V1.max_size() << " vs " << V1STL.max_size() <<  std::endl;
+
+	if (V1.empty() == V1STL.empty())
+		std::cout << " Success - Empty " <<  V1.empty() << " vs " << V1STL.empty()<< std::endl;
+	else
+		std::cout << " Fail - Empty " <<  V1.empty()<< " vs " << V1STL.empty()<<  std::endl;
+
+	std::map<int, int> V2STL;
+	ft::map<int, int> V2;
+
+	if (V2.empty() == V2STL.empty())
+		std::cout << " Success - Empty " <<  V2.empty() << " vs " << V2STL.empty()<< std::endl;
+	else
+		std::cout << " Fail - Empty " <<  V2.empty()<< " vs " << V2STL.empty()<<  std::endl;
+}
+
+
+void ft_begin_end()
+{
+	std::map<int, int> V1STL;
+	ft::map<int, int>  V1;
+
+	V1STL.insert(V1STL.begin(), std::make_pair(1,5));
+	V1.insert(V1.begin(),std::make_pair(1,5));
+
+	//STLPrintList(&V1STL);
+	//PrintList(&V1);
+
+	if (V1.begin()->first == V1STL.begin()->first)
+		std::cout << " Success - Begin " << std::endl;
+	else
+		std::cout << " Fail - Begin " <<  std::endl;
+
+	if (V1.rbegin()->first == V1STL.rbegin()->first)
+		std::cout << " Success - rBegin "  << std::endl;
+	else
+		std::cout << " Fail - rBegin " <<  std::endl;
 }
 
 void ft_test_map(void)
 {
    ft_constructor();
-   /*ft_assign();
-   ft_push_pop_back();
    ft_insert_erase();
-   ft_resize();
    ft_swap();
    ft_clear();
    ft_access();
-   ft_relationnal_operator();
-   ft_begin_end();*/
+   ft_begin_end();
 }

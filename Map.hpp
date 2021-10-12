@@ -215,7 +215,6 @@ namespace ft
 			map &operator=(const map<Key, T> &other)
 			{
 				this->clear();
-				std::cout << "test" << std::endl;
 				this->insert(other.begin(), other.end());
 				return (*this);
 			};
@@ -253,14 +252,14 @@ namespace ft
 				return (const_iterator(tmp));
 			}
 
-			iterator rbegin()
+			reverse_iterator rbegin()
 			{
 				iterator i = this->end();
 				i--;
 				return (reverse_iterator(i.node()));
 			}
 
-			const_iterator rbegin() const
+			const_reverse_iterator rbegin() const
 			{
 				iterator i = this->end();
 				i--;
@@ -337,22 +336,30 @@ namespace ft
 				iterator tmp;
 
 				tmp = this->find(value.first);
-				if (tmp != this->m_root->right)
+				if (tmp != this->end())
 					return (std::make_pair(tmp, false));
-				else
-					this->m_length++;
+				this->m_length++;
 				return (std::make_pair(iterator(this->ft_insert_node(this->m_root, value.first, value.second)), true));
 			};
 
 			template <class InputIterator>
 			void insert(InputIterator first, InputIterator last)
 			{
-				std::cout << "test2" << std::endl;
 				while (first != last)
 				{
 					this->insert(*first);
 					++first;
 				}
+			}
+
+			iterator  insert(iterator pos, const value_type &value)
+			{
+				iterator tmp;
+
+				if ((tmp = this->find(value.first)) != this->end())
+					return (tmp);
+				this->m_length++;
+				return (iterator(ft_insert_node(pos.node(), value.first, value.second)));
 			}
 
 			void erase(iterator pos)
@@ -383,14 +390,17 @@ namespace ft
 
 			void swap(map &x)
 			{
-				ft::swap(&this, &x);
+				map<Key, T, Compare, Alloc> tmp;
+
+				tmp = *this;
+				*this = x;
+				x = tmp;
 			};
 
 			void clear()
 			{
 				if (this->size() > 0)
 					this->erase(this->begin(), this->end());
-				this->m_root = NULL;
 			};
 
 			size_type count(const key_type &value) const
