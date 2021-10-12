@@ -13,10 +13,10 @@ namespace ft
 			public:
 				typedef std::pair<K, T> value_type;
 				typedef std::pair<K, T>& reference;
-				typedef BNode<K, T>* pointer;
+				typedef TreeNode<K, T>* pointer;
 				typedef MapIterator<K, T, Pointer, Reference>		curr_class;
 				typedef MapIterator<K, T, T*, T&>              		iterator;
-				pointer _ptr;
+				pointer p;
 			private:
 				pointer ptr_next(pointer ptr)
 				{
@@ -56,34 +56,34 @@ namespace ft
 					return (next);
 				};
 			public:
-				MapIterator(void): _ptr(0) {}
-				MapIterator(const pointer ptr): _ptr(ptr) {}
+				MapIterator(void): p(0) {}
+				MapIterator(const pointer ptr): p(ptr) {}
 				MapIterator(const iterator &other) { *this = other;}
 				
 				MapIterator &operator=(const iterator &other)
 				{
-					_ptr = other._ptr;
+					p = other.p;
 					return (*this);
 				};
 				
-				pointer node(void) { return (_ptr);}
+				pointer node(void) { return (p);}
 				
-				value_type &operator*(void) { return (_ptr->pair);}
+				value_type &operator*(void) { return (p->pair);}
 				
-				value_type *operator->(void) { return (&_ptr->pair);}
+				value_type *operator->(void) { return (&p->pair);}
 				
-				bool operator==(const curr_class &other) { return (_ptr == other._ptr);}
+				bool operator==(const curr_class &other) { return (p == other.p);}
 				bool operator!=(const curr_class &other) { return (!(*this == other));}
 				
 				MapIterator &operator++(void)
 				{
-					_ptr = ptr_next(_ptr);
+					p = ptr_next(p);
 					return (*this);
 				}
 
 				MapIterator &operator--(void)
 				{
-					_ptr = ptr_prev(_ptr);
+					p = ptr_prev(p);
 					return (*this);
 				}
 
@@ -108,10 +108,10 @@ namespace ft
 			public:
 				typedef std::pair<K, T> value_type;
 				typedef std::pair<K, T>& reference;
-				typedef BNode<K, T>* pointer;
+				typedef TreeNode<K, T>* pointer;
 				typedef ReverseMapIterator<K, T, Pointer, Reference>		curr_class;
 				typedef ReverseMapIterator<K, T, T*, T&>              		iterator;
-				pointer _ptr;
+				pointer p;
 			private:
 				pointer ptr_next(pointer ptr)
 				{
@@ -151,34 +151,34 @@ namespace ft
 					return (next);
 				};
 			public:
-				ReverseMapIterator(): _ptr(0) {}
-				ReverseMapIterator(const pointer ptr): _ptr(ptr) {}
+				ReverseMapIterator(): p(0) {}
+				ReverseMapIterator(const pointer ptr): p(ptr) {}
 				ReverseMapIterator(const iterator &other) {	*this = other;}
 
 				ReverseMapIterator &operator=(const iterator &other)
 				{
-					_ptr = other._ptr;
+					p = other.p;
 					return (*this);
 				};
 				
-				pointer node() { return (_ptr);}
+				pointer node() { return (p);}
 				
-				value_type &operator*(void) { return (_ptr->pair);}
+				value_type &operator*(void) { return (p->pair);}
 
-				value_type *operator->(void) { return (&_ptr->pair);}
+				value_type *operator->(void) { return (&p->pair);}
 
-				bool operator==(const curr_class &other) { return (_ptr == other._ptr);}
+				bool operator==(const curr_class &other) { return (p == other.p);}
 				bool operator!=(const curr_class &other) { return (!(*this == other));}
 				
 				ReverseMapIterator &operator++(void)
 				{
-					_ptr = ptr_prev(_ptr);
+					p = ptr_prev(p);
 					return (*this);
 				}
 
 				ReverseMapIterator &operator--(void)
 				{
-					_ptr = ptr_next(_ptr);
+					p = ptr_next(p);
 					return (*this);
 				}
 

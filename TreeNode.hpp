@@ -5,12 +5,12 @@
 namespace ft 
 {
     template<class Key, class T>
-   	struct BNode
+   	struct TreeNode
 	{
 		std::pair<Key, T> pair;
-		BNode *left;
-		BNode *right;
-		BNode *parent;
+		TreeNode *left;
+		TreeNode *right;
+		TreeNode *parent;
 		bool end;
 	};
 }

@@ -33,7 +33,7 @@ namespace ft
             typedef typename allocator_type::const_reference			const_reference;
             typedef typename allocator_type::pointer	     		 	pointer;
             typedef typename allocator_type::const_pointer   		   	const_pointer;
-			typedef BNode<key_type, mapped_type>* 												node;
+			typedef TreeNode<key_type, mapped_type>* 												node;
 			typedef MapIterator<key_type, mapped_type, pointer, reference> 						iterator;
 			typedef ReverseMapIterator<key_type, mapped_type, pointer, reference> 				reverse_iterator;
 			typedef MapIterator<key_type, mapped_type, const_pointer, const_reference> 			const_iterator;
@@ -78,7 +78,7 @@ namespace ft
 			{
 				node tmp;
 				
-				tmp = new BNode<key_type, mapped_type>();
+				tmp = new TreeNode<key_type, mapped_type>();
 				tmp->pair = std::make_pair(key, value);
 				tmp->right = 0;
 				tmp->left = 0;
@@ -328,7 +328,7 @@ namespace ft
 
 			size_type	max_size() const	
 			{ 
-				return (std::numeric_limits<size_type>::max() / (sizeof(BNode<key_type, mapped_type>)));
+				return (std::numeric_limits<size_type>::max() / (sizeof(TreeNode<key_type, mapped_type>)));
 			};
 
 			std::pair<iterator, bool> insert(const value_type &value)
