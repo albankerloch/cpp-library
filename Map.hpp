@@ -29,10 +29,10 @@ namespace ft
 			typedef Compare 																	key_compare;
 			typedef Alloc 																		allocator_type;
 
-			typedef T& 																			reference;
-			typedef const T& 																	const_reference;
-			typedef T* 																			pointer;
-			typedef const T* 																	const_pointer;
+			typedef typename allocator_type::reference        		  	reference;
+            typedef typename allocator_type::const_reference			const_reference;
+            typedef typename allocator_type::pointer	     		 	pointer;
+            typedef typename allocator_type::const_pointer   		   	const_pointer;
 			typedef BNode<key_type, mapped_type>* 												node;
 			typedef MapIterator<key_type, mapped_type, pointer, reference> 						iterator;
 			typedef ReverseMapIterator<key_type, mapped_type, pointer, reference> 				reverse_iterator;

@@ -8,7 +8,7 @@
 namespace ft
 {
 	template <typename K, typename T, typename Pointer, typename Reference>
-		class MapIterator
+		class MapIterator : IteratorTrait
 		{
 			public:
 				typedef std::pair<K, T> value_type;
