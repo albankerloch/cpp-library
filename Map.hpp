@@ -36,7 +36,7 @@ namespace ft
 			typedef TreeNode<key_type, mapped_type>* 												node;
 			typedef MapIterator<key_type, mapped_type, pointer, reference> 						iterator;
 			typedef ReverseMapIterator<key_type, mapped_type, pointer, reference> 				reverse_iterator;
-			typedef MapIterator<key_type, mapped_type, const_pointer, const_reference> 			const_iterator;
+			typedef MapIterator<key_type, mapped_type, const pointer, const reference> 			const_iterator;
 			typedef ReverseMapIterator<key_type, mapped_type, const_pointer, const_reference>	const_reverse_iterator;
 
 			typedef size_t 																		size_type;

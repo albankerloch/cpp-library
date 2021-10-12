@@ -17,8 +17,6 @@ namespace ft
 				typedef value_type &		reference;
 				typedef value_type const &	const_reference;
 				typedef std::ptrdiff_t 		difference_type;
-				typedef MapIterator<K, T, Pointer, Reference>		curr_class;
-				typedef MapIterator<K, T, T*, T&>              		iterator;
 				pointer p;
 
 			private:
