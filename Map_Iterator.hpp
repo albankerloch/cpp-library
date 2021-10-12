@@ -3,6 +3,7 @@
 # define MAP_ITERATOR_HPP
 
 # include "TreeNode.hpp"
+# include "Reverse_Iterator.hpp"
 # include "Algo.hpp"
 
 namespace ft
