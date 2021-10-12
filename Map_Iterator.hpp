@@ -11,12 +11,16 @@ namespace ft
 		class MapIterator : IteratorTrait
 		{
 			public:
-				typedef std::pair<K, T> value_type;
-				typedef std::pair<K, T>& reference;
-				typedef TreeNode<K, T>* pointer;
+				typedef std::pair<K, T> 	value_type;
+				typedef TreeNode<K, T>* 	pointer;
+				typedef value_type const*   const_pointer;
+				typedef value_type &		reference;
+				typedef value_type const &	const_reference;
+				typedef std::ptrdiff_t 		difference_type;
 				typedef MapIterator<K, T, Pointer, Reference>		curr_class;
 				typedef MapIterator<K, T, T*, T&>              		iterator;
 				pointer p;
+
 			private:
 				pointer ptr_next(pointer ptr)
 				{
@@ -58,9 +62,9 @@ namespace ft
 			public:
 				MapIterator(void): p(0) {}
 				MapIterator(const pointer ptr): p(ptr) {}
-				MapIterator(const iterator &other) { *this = other;}
+				MapIterator(const MapIterator &other) { *this = other;}
 				
-				MapIterator &operator=(const iterator &other)
+				MapIterator &operator=(const MapIterator &other)
 				{
 					p = other.p;
 					return (*this);
@@ -72,8 +76,8 @@ namespace ft
 				
 				value_type *operator->(void) { return (&p->pair);}
 				
-				bool operator==(const curr_class &other) { return (p == other.p);}
-				bool operator!=(const curr_class &other) { return (!(*this == other));}
+				bool operator==(const MapIterator &other) { return (p == other.p);}
+				bool operator!=(const MapIterator &other) { return (!(*this == other));}
 				
 				MapIterator &operator++(void)
 				{
