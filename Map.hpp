@@ -215,6 +215,7 @@ namespace ft
 			map &operator=(const map<Key, T> &other)
 			{
 				this->clear();
+				std::cout << "test" << std::endl;
 				this->insert(other.begin(), other.end());
 				return (*this);
 			};
@@ -286,7 +287,7 @@ namespace ft
 				return (const_reverse_iterator(this->m_root));
 			};
 
-			map &operator[](const key_type &key)
+			mapped_type &operator[](const key_type& key)
 			{
 				iterator tmp;
 				
@@ -294,8 +295,8 @@ namespace ft
 				if (tmp != this->end())
 					return (tmp->second);
 				return (this->insert(std::make_pair(key, mapped_type())).first->second);
-			};
-
+			}
+			
 			mapped_type& at(const key_type& k)
 			{
 				iterator it;
@@ -305,7 +306,7 @@ namespace ft
 					throw std::out_of_range("map::at:  key not found");
 				return it->second;
 			};	
-			
+
 			const mapped_type& at(const key_type& k) const 
 			{
 				const_iterator it;
@@ -331,7 +332,7 @@ namespace ft
 				return (std::numeric_limits<size_type>::max() / (sizeof(BNode<key_type, mapped_type>)));
 			};
 
-			iterator insert(const value_type &value)
+			std::pair<iterator, bool> insert(const value_type &value)
 			{
 				iterator tmp;
 
@@ -340,16 +341,17 @@ namespace ft
 					return (std::make_pair(tmp, false));
 				else
 					this->m_length++;
-				return (std::make_pair(iterator(this->ft_insert_node(this->_root, value.first, value.second)), true));
+				return (std::make_pair(iterator(this->ft_insert_node(this->m_root, value.first, value.second)), true));
 			};
 
 			template <class InputIterator>
 			void insert(InputIterator first, InputIterator last)
 			{
+				std::cout << "test2" << std::endl;
 				while (first != last)
 				{
 					this->insert(*first);
-					first++;
+					++first;
 				}
 			}
 
