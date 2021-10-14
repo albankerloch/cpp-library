@@ -1,34 +1,42 @@
-#******************************************************************************#
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: akerloc- <akerloc-@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/01/12 17:40:07 by akerloc-          #+#    #+#              #
-#    Updated: 2020/01/26 13:14:04 by akerloc-         ###   ########.fr        #
-#                                                                              #
-#******************************************************************************#
 
-SRCS =	main.cpp \
-        Test_Map.cpp
-OBJS = ${SRCS:.cpp=.o}
-NAME = containers
-CXX = clang++
-RM = rm -rf
-CXXFLAGS = -g -Wall -Wextra -Werror -std=c++98 -I.
 
-all : ${NAME}
+CC = clang++
+SRCS_FILES = main.cpp Test_Map.cpp
 
-clean : 
-		$(RM) ${OBJS} 
+NAME = ft_containers
+OBJS_PATH = ./OBJS_FT/
+OBJS = ${addprefix ${OBJS_PATH}, ${SRCS_FILES:.cpp=.o}}
+CFLAGS = -Wall -Wextra -Werror -std=c++98 -DNAMESPACE=ft
 
-fclean : clean
-		$(RM) ${NAME}
+STD_NAME = std_containers
+STD_OBJS_PATH = ./OBJS_STD/
+STD_OBJS = ${addprefix ${STD_OBJS_PATH}, ${SRCS_FILES:.cpp=.o}}
+STD_CFLAGS = -Wall -Wextra -Werror -std=c++98 -DNAMESPACE=std
 
-$(NAME) : ${OBJS} 
-		${CXX} -o ${NAME} ${OBJS} ${CXXFLAGS}
+all: ${NAME}
 
-re : fclean all
+$(NAME): ${OBJS_PATH} ${OBJS} ${STD_OBJS_PATH} ${STD_OBJS}
+	@${CC} ${CFLAGS} -o ${NAME} ${OBJS}
+	@${CC} ${STD_CFLAGS} -o ${STD_NAME} ${STD_OBJS}
 
-.PHONY : all clean re fclean
+${OBJS_PATH}:
+	@mkdir -p $@
+
+${STD_OBJS_PATH}%.o: %.cpp 
+	@${CC} ${STD_CFLAGS} -c $< -o $@
+
+${STD_OBJS_PATH}:
+	@mkdir -p $@
+
+${OBJS_PATH}%.o: %.cpp 
+	@${CC} ${CFLAGS} -c $< -o $@
+
+clean:
+	@rm -rf ${OBJS_PATH}
+
+fclean: clean
+	@rm -rf $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re

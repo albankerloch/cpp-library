@@ -8,11 +8,11 @@
 
 namespace ft
 {
-	template <typename K, typename T>
+	template <typename K, typename T, typename Pointer, typename Reference>
 		class MapIterator : IteratorTrait
 		{
 			public:
-				typedef std::pair<K, T> 	value_type;
+				typedef ft::pair<K, T> 	value_type;
 				typedef TreeNode<K, T>* 	pointer;
 				typedef value_type const*   const_pointer;
 				typedef value_type &		reference;
@@ -105,12 +105,12 @@ namespace ft
 				}
 
 		};
-		template <typename K, typename T>
+		template <typename K, typename T, typename Pointer, typename Reference>
 		class ReverseMapIterator
 		{
 			public:
-				typedef std::pair<K, T> value_type;
-				typedef std::pair<K, T>& reference;
+				typedef ft::pair<K, T> value_type;
+				typedef ft::pair<K, T>& reference;
 				typedef TreeNode<K, T>* pointer;
 				typedef ReverseMapIterator<K, T, Pointer, Reference>		curr_class;
 				typedef ReverseMapIterator<K, T, T*, T&>              		iterator;

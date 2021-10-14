@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cmath>
 #include <limits>
+# include "Algo.hpp"
 
 namespace ft
 {
@@ -19,13 +20,13 @@ namespace ft
 		b = c;
 	}
 
-	template <class Key, class T, class Compare=std::less<Key>, class Alloc = std::allocator<std::pair<const Key, T> > >
+	template <class Key, class T, class Compare=std::less<Key>, class Alloc = std::allocator<ft::pair<const Key, T> > >
 	class map
 	{
 		public:
 			typedef Key 																		key_type;
 			typedef T 																			mapped_type;
-			typedef std::pair<const key_type, mapped_type> 										value_type;
+			typedef ft::pair<const key_type, mapped_type> 										value_type;
 			typedef Compare 																	key_compare;
 			typedef Alloc 																		allocator_type;
 
@@ -79,7 +80,7 @@ namespace ft
 				node tmp;
 				
 				tmp = new TreeNode<key_type, mapped_type>();
-				tmp->pair = std::make_pair(key, value);
+				tmp->pair = ft::make_pair(key, value);
 				tmp->right = 0;
 				tmp->left = 0;
 				tmp->parent = parent;
@@ -209,6 +210,7 @@ namespace ft
 			
 			~map()
 			{
+				std::cout << " FT MAP " << std::endl;
 				this->clear();	
 			};
 
@@ -293,7 +295,7 @@ namespace ft
 				tmp = this->find(key);
 				if (tmp != this->end())
 					return (tmp->second);
-				return (this->insert(std::make_pair(key, mapped_type())).first->second);
+				return (this->insert(ft::make_pair(key, mapped_type())).first->second);
 			}
 			
 			mapped_type& at(const key_type& k)
@@ -331,15 +333,15 @@ namespace ft
 				return (std::numeric_limits<size_type>::max() / (sizeof(TreeNode<key_type, mapped_type>)));
 			};
 
-			std::pair<iterator, bool> insert(const value_type &value)
+			ft::pair<iterator, bool> insert(const value_type &value)
 			{
 				iterator tmp;
 
 				tmp = this->find(value.first);
 				if (tmp != this->end())
-					return (std::make_pair(tmp, false));
+					return (ft::make_pair(tmp, false));
 				this->m_length++;
-				return (std::make_pair(iterator(this->ft_insert_node(this->m_root, value.first, value.second)), true));
+				return (ft::make_pair(iterator(this->ft_insert_node(this->m_root, value.first, value.second)), true));
 			};
 
 			template <class InputIterator>
@@ -441,14 +443,14 @@ namespace ft
 				return (this->end());
 			};
 
-			std::pair<iterator, iterator> equal_range(const key_type &k)
+			ft::pair<iterator, iterator> equal_range(const key_type &k)
 			{
-				return (std::pair<iterator, iterator>(this->lower_bound(k), this->upper_bound(k)));
+				return (ft::pair<iterator, iterator>(this->lower_bound(k), this->upper_bound(k)));
 			};
 
-			std::pair<const_iterator, const_iterator> equal_range(const key_type &k) const
+			ft::pair<const_iterator, const_iterator> equal_range(const key_type &k) const
 			{
-				return (std::pair<const_iterator, const_iterator>(this->lower_bound(k), this->upper_bound(k)));
+				return (ft::pair<const_iterator, const_iterator>(this->lower_bound(k), this->upper_bound(k)));
 			};
 
 			iterator lower_bound(const key_type &key)

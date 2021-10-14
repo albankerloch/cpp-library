@@ -1,0 +1,56 @@
+#******************************************************************************#
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: akerloc- <akerloc-@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/01/12 17:40:07 by akerloc-          #+#    #+#              #
+#    Updated: 2020/01/26 13:14:04 by akerloc-         ###   ########.fr        #
+#                                                                              #
+#******************************************************************************#
+
+SRCS =	main.cpp \
+        Test_Map.cpp 
+OBJS_PATH = ./ft_obj/
+OBJS = ${addprefix ${OBJS_PATH}, ${SRCS:.cpp=.o}}
+STD_OBJS_PATH = ./std_obj/
+STD_OBJS = ${addprefix ${STD_OBJS_PATH}, ${SRCS:.cpp=.o}}
+NAME = ft_containers
+STD_NAME = std_containers
+CXX = clang++
+RM = rm -rf
+CXX_FLAGS = -Wall -Wextra -Werror -std=c++98 -I. -DNAMESPACE=ft
+CXX_STDFLAGS = -Wall -Wextra -Werror -std=c++98 -I. -DNAMESPACE=std
+
+all : ${NAME}
+
+clean : 
+		$(RM) ${OBJS} 
+
+fclean : clean
+		$(RM) ${NAME}
+
+${OBJS_PATH}:
+	@mkdir -p $@
+
+${STD_OBJS_PATH}:
+	@mkdir -p $@
+
+${OBJS_PATH}%.o: %.cpp 
+	@${CXX} ${CXX_FLAGS} -c $< -o $@
+
+${STD_OBJS_PATH}%.o: %.cpp 
+	@${CXX} ${CXX_STDFLAGS} -c $< -o $@
+
+ft : ${OBJS_PATH} ${OBJS}
+		@${CXX} ${CXX_FLAGS} -o ${NAME} ${OBJS}
+
+std : ${STD_OBJS_PATH} 
+		${CXX} -o ${STDNAME} ${STDOBJS} ${CSTDFLAGS}
+
+$(NAME) : ft 
+
+re : fclean all
+
+.PHONY : all clean re fclean

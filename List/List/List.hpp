@@ -366,12 +366,12 @@ namespace ft
                 this->m_allocator = temp_allocator;
                 this->m_size = temp_size;
 			}
-/*
+
 			void merge (list& x)
 			{
-				this->merge(x, &ft::less<value_type>);
+				this->merge(x, &std::less<value_type>);
 			}
-*/
+
 			template <class Compare>
 			void merge (list& x, Compare comp)
 			{
@@ -490,12 +490,12 @@ namespace ft
 					prev++;
 				}
 			}
-/*
+
 			void sort()
 			{
-				this->merge(&ft::less<value_type>);
+				this->merge(&std::less<value_type>);
 			}
-*/
+
 			template <class Compare>
 			void sort (Compare comp)
 			{
