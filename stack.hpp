@@ -1,10 +1,7 @@
 #ifndef DEF_STACK_HPP
 # define DEF_STACK_HPP
 
-# include "Vector_Iterator.hpp"
-# include "Reverse_Iterator.hpp"
 # include "vector.hpp"
-# include "Algo.hpp"
 # include <iostream>
 
 namespace ft 
