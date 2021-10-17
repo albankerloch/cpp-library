@@ -52,7 +52,8 @@ namespace ft
                 }
             }
 
-            explicit vector(iterator first, iterator last): m_array(0), m_capacity(0), m_size(0) 
+            template <class Ite>
+            explicit vector(Ite first, Ite last): m_array(0), m_capacity(0), m_size(0) 
             {
                 this->assign(first, last);
             }
@@ -83,13 +84,13 @@ namespace ft
                 return *this;
 		    }
 
-
-            void assign(iterator first, iterator last) 
+            template <class Ite>
+            void assign(Ite first, Ite last) 
             {
                 size_t length;
                 size_t i;
                 
-                length = last - first;
+                length = ft::itlen(first, last);;
                 if (length > this->m_capacity)
                     this->reserve(length);
                 i = 0;
@@ -380,14 +381,15 @@ namespace ft
                 m_allocator.construct(&this->m_array[i], value);
             }
 
-            void insert (iterator position, iterator first, iterator last)
+            template <class Ite>
+            void insert (iterator position, Ite first, Ite last)
             {
                 iterator it;
                 size_t i;
                 size_t n;
                 size_t begin_insert;
 
-                n = last - first;
+                n = ft::itlen(first, last);;
                 begin_insert = position - this->begin();
                 if (this->m_size + n > this->capacity())
                     this->reserve(this->m_size + n);
@@ -401,12 +403,12 @@ namespace ft
                 while(i != begin_insert)
                 {
                     m_allocator.destroy(&this->m_array[i]);
-                    m_allocator.construct(&this->m_array[i], *(last - 1));
+                    m_allocator.construct(&this->m_array[i], *(--last));
                     last--;
                     i--;
                 }
                 m_allocator.destroy(&this->m_array[i]);
-                m_allocator.construct(&this->m_array[i], *(last - 1));
+                m_allocator.construct(&this->m_array[i], *(--last));
             }
 
             void swap(vector & x)
