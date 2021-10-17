@@ -72,6 +72,8 @@ namespace ft
             {
                 size_t i;
 
+                this->m_size = 0;
+                this->m_capacity = 0;
                 i = 0;
                 while (i < vector_to_copy.m_size)
                 {
@@ -183,7 +185,7 @@ namespace ft
 
             size_type max_size() const 
             {
-			    return (std::numeric_limits<size_type>::max() / (sizeof(value_type) - sizeof(pointer)));
+			    return (std::numeric_limits<difference_type>::max() / (sizeof(value_type) / 2 ?: 1));
 		    }
 
             iterator begin(void) 
