@@ -141,66 +141,80 @@ mapNode<T>	*farLeft(mapNode<T> *node) {
 
 // pair struct for ft::map
 
-template <class T1, class T2>
-struct	pair
-{
-	typedef T1		first_type;
-	typedef T2		second_type;
+    template <class T1, class T2>
+        struct pair
+        {
+            public :
 
-	first_type		first;
-	second_type		second;
+                typedef T1 first_type;
+                typedef T2 second_type;
 
-	// Member functions
+                first_type first;
+                second_type second;
 
-	pair(void) : first(), second() { };
-	template<class U, class V>
-	pair(const pair<U, V> &src) : first(src.first), second(src.second) { };
-	pair(const first_type &a, const second_type &b) : first(a), second(b) { };
+                pair() : first(), second()
+                {
+				};
 
-	pair	&operator=(const pair &src) {
-		if (this == &src)
-			return (*this);
-		this->first = src.first;
-		this->second = src.second;
-		return (*this);
-	}
-};
+                template<class U, class V> pair (const pair<U, V>& pr) : first(pr.first), second(pr.second)
+                {
+				};
 
-template <class T1, class T2>
-ft::pair<T1,T2> make_pair(T1 x, T2 y)
-{
-	return (ft::pair<T1, T2>(x, y));
-};
+                pair (const first_type& a, const second_type& b) : first(a), second(b)
+                {
+				};
 
-template <class T1, class T2>
-bool operator==(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs) {
-	return (lhs.first == rhs.first && lhs.second == rhs.second);
-}
+                pair& operator= (const pair& p)
+                {
+                    if (*this == p)
+                        return (*this);
+                    this->first = p.first;
+                    this->second = p.second;
+                    return (*this);
+                }
+        };
+    
+    template <class T1, class T2>
+	bool operator== (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs)
+	{
+		return (lhs.first == rhs.first && lhs.second == rhs.second);
+	};
 
-template <class T1, class T2>
-bool operator!=(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs) {
-	return !(lhs == rhs);
-}
+    template <class T1, class T2>
+	bool operator!= (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs)
+	{
+		return !(lhs == rhs);
+	};
+    
+    template <class T1, class T2>
+	bool operator<  (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs)
+	{
+		return (lhs.first < rhs.first || (!(rhs.first < lhs.first) && lhs.second < rhs.second));
+	};
 
-template <class T1, class T2>
-bool operator< (const pair<T1, T2> &lhs, const pair<T1, T2> &rhs) {
-	return lhs.first < rhs.first || (!(rhs.first < lhs.first) && lhs.second < rhs.second);
-}
+    template <class T1, class T2>
+	bool operator<= (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs)
+	{
+		return !(rhs < lhs);
+	};
 
-template <class T1, class T2>
-bool operator<=(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs) {
-	return !(rhs < lhs);
-}
-
-template <class T1, class T2>
-bool operator> (const pair<T1, T2> &lhs, const pair<T1, T2> &rhs) {
-	return (rhs < lhs);
-}
-
-template <class T1, class T2>
-bool operator>=(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs) {
-	return !(lhs < rhs);
-}
+    template <class T1, class T2>
+	bool operator>  (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs)
+	{
+		return (rhs < lhs);
+	};
+  
+    template <class T1, class T2>
+	bool operator>= (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs)
+	{
+		return !(lhs < rhs);
+	};
+    
+    template <class T1, class T2>
+	ft::pair<T1,T2> make_pair(T1 x, T2 y)
+	{
+		return (ft::pair<T1, T2>(x, y));
+	};
 
 
 } // ******************************************************* ft namespace end //
