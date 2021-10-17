@@ -23,17 +23,12 @@ void ft_constructor(void)
 
 	NAMESPACE::map<std::string, int> V1_STL;
 
-	//PrintMap(&V1_STL);
+	PrintMap(&V1_STL);
  
- /*
-	ft::map<int, char> VCHAR2;
-	map<int, char> VCHAR2_STL;
+	NAMESPACE::map<int, char> VCHAR2;
 	VCHAR2[1]='B';
-	VCHAR2_STL[1]='B';
-	//PrintMap(&VCHAR2);
-	//STLPrintMap(&VCHAR2_STL);
-	CompareMap(&VCHAR2, &VCHAR2_STL, "Constructor - default with char");
-
+	PrintMap(&VCHAR2);
+/*
 	ft::map<int, int> V2;
 	map<int, int> V2STL;
 	V2STL[1]=3;
