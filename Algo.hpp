@@ -11,6 +11,14 @@ namespace ft
 {
     struct IteratorTrait {};
 
+	template <bool, class IsTrue = void>
+	struct enable_if;
+
+	template <class IsTrue>
+	struct enable_if<true, IsTrue> {
+		typedef IsTrue type;
+	};
+
 	template <class Ite>
 	size_t	itlen(Ite first, Ite last) {
 		size_t	i = 0;

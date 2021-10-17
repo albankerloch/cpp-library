@@ -3,6 +3,7 @@
 
 # include "Vector_Iterator.hpp"
 # include "Reverse_Iterator.hpp"
+# include "ReverseIte.hpp"
 # include "Algo.hpp"
 # include <iostream>
 
@@ -85,18 +86,18 @@ namespace ft
 		    }
 
             template <class Ite>
-            void assign(Ite first, Ite last) 
+            void assign(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first, Ite last) 
             {
                 size_t length;
                 size_t i;
                 
-                length = ft::itlen(first, last);;
+                length = ft::itlen(first, last);
                 if (length > this->m_capacity)
                     this->reserve(length);
                 i = 0;
                 while (first != last) 
                 {
-                    m_allocator.construct(&this->m_array[i], *first);
+                    this->m_allocator.construct(&this->m_array[i], *first);
                     first++;
                     i++;
                 }
@@ -384,31 +385,21 @@ namespace ft
             template <class Ite>
             void insert (iterator position, Ite first, Ite last)
             {
-                iterator it;
-                size_t i;
-                size_t n;
-                size_t begin_insert;
+                difference_type	idx;
+                difference_type	old_end_idx;
+                iterator		old_end;
+                iterator		end;
 
-                n = ft::itlen(first, last);;
-                begin_insert = position - this->begin();
-                if (this->m_size + n > this->capacity())
-                    this->reserve(this->m_size + n);
-                this->m_size = this->m_size + n;
-                i = this->size() - 1;
-                while(i != begin_insert + n - 1)
-                {
-                    m_allocator.construct(&this->m_array[i], this->m_array[i - n]);
-                    i--;
-                }
-                while(i != begin_insert)
-                {
-                    m_allocator.destroy(&this->m_array[i]);
-                    m_allocator.construct(&this->m_array[i], *(--last));
-                    last--;
-                    i--;
-                }
-                m_allocator.destroy(&this->m_array[i]);
-                m_allocator.construct(&this->m_array[i], *(--last));
+                idx = position - this->begin();
+                old_end_idx = this->end() - this->begin();
+                this->resize(this->m_size + (ft::itlen(first, last)));
+                end = this->end();
+                position = this->begin() + idx;
+                old_end = this->begin() + old_end_idx;
+                while (old_end != position)
+                    *--end = *--old_end;
+                while (first != last)
+                    *position++ = *first++;
             }
 
             void swap(vector & x)
