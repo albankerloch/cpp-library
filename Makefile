@@ -33,9 +33,11 @@ ${OBJS_PATH}%.o: %.cpp
 
 clean:
 	@rm -rf ${OBJS_PATH}
+	@rm -rf $(STD_OBJS_PATH)
 
 fclean: clean
 	@rm -rf $(NAME)
+	@rm -rf $(STD_NAME)
 
 re: fclean all
 
