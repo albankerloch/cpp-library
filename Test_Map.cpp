@@ -1,6 +1,6 @@
 #include <map>
 
-#include "Map.hpp"
+#include "map.hpp"
 
 template <typename Key, typename T>
 void PrintMap(NAMESPACE::map<Key, T> *stl) 
@@ -22,6 +22,10 @@ void ft_constructor(void)
 {
 
 	NAMESPACE::map<std::string, int> V1_STL;
+
+	NAMESPACE::map<std::string, int>::const_iterator it_stl_const = V1_STL.begin();
+
+	(void)it_stl_const;
 
 	PrintMap(&V1_STL);
  

@@ -1,14 +1,14 @@
 #ifndef DEF_TREE_NODE_HPP
 # define DEF_TREE_NODE_HPP
 
-# include "Algo.hpp"
+# include "base.hpp"
 
 namespace ft 
 {
-    template<class Key, class T>
+    template<typename T>
    	struct TreeNode
 	{
-		ft::pair<Key, T> pair;
+		T pair;
 		TreeNode *left;
 		TreeNode *right;
 		TreeNode *parent;
