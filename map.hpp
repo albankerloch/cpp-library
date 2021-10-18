@@ -21,15 +21,14 @@
 namespace ft {
 
 template <typename T>
-void	swap(T &a, T &b)
+void	swap(T *a, T *b)
 {
-	T c;
+	T *c;
 
 	c = a;
 	a = b;
 	b = c;
 }
-
 
 template < class Key,                                     // map::key_type
 		 class T,                                         // map::mapped_type
@@ -41,7 +40,7 @@ class map {
 
 	typedef Key											key_type;
 	typedef T											mapped_type;
-	typedef ft::pair<key_type, mapped_type>		value_type;
+	typedef ft::pair<const key_type, mapped_type>		value_type;
 	typedef Compare										key_compare;
 	class												value_compare;
 
@@ -50,7 +49,7 @@ class map {
 	typedef typename allocator_type::const_reference	const_reference;
 	typedef typename allocator_type::pointer			pointer;
 	typedef typename allocator_type::const_pointer		const_pointer;
-	typedef ft::TreeNode<value_type>					node_type;
+	typedef ft::TreeNode<key_type, mapped_type>			node_type;
 	typedef node_type*									node;
 
 	typedef ptrdiff_t									difference_type;
@@ -98,12 +97,13 @@ class map {
 			{
 				node tmp;
 				
-				tmp = new TreeNode<value_type>();
+				tmp = new TreeNode<key_type, mapped_type>(key, value, parent, end);
+				/*+
 				tmp->pair = ft::make_pair(key, value);
 				tmp->right = 0;
 				tmp->left = 0;
 				tmp->parent = parent;
-				tmp->end = end;
+				tmp->end = end;*/
 
 				return (tmp);
 			};
@@ -198,7 +198,7 @@ class map {
 					next = (iterator(n)++).node();
 					if (!next)
 						next = (iterator(n)--).node();
-					ft::swap(next->pair, n->pair);
+					ft::swap(&(next->pair), &(n->pair));
 					ft_delete_node(next);
 				}
 			}
@@ -348,7 +348,7 @@ class map {
 
 			size_type	max_size() const	
 			{ 
-				return (std::numeric_limits<size_type>::max() / (sizeof(TreeNode<value_type>)));
+				return (std::numeric_limits<size_type>::max() / (sizeof(TreeNode<key_type, mapped_type>)));
 			};
 
 			ft::pair<iterator, bool> insert(const value_type &value)

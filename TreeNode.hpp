@@ -5,14 +5,27 @@
 
 namespace ft 
 {
-    template<typename T>
-   	struct TreeNode
+    template<class Key, class T>
+   	class TreeNode
 	{
-		T 			pair;
+		public :
+		typedef Key	key_type;
+		typedef T	mapped_type;
+		ft::pair<const key_type, mapped_type>	pair;
 		TreeNode 	*left;
 		TreeNode 	*right;
 		TreeNode 	*parent;
-		bool 		end;
+		bool		end;
+
+		public:
+
+		TreeNode(key_type const key, mapped_type value, TreeNode *parent, bool end = false) : pair(ft::make_pair(key, value))
+		{
+			this->right = 0;
+			this->left = 0;
+			this->parent = parent;
+			this->end = end;
+		};
 	};
 }
 
