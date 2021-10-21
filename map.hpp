@@ -43,9 +43,6 @@ namespace ft
 
 		public:
 
-	// ******************************* Ele Access ******************************* //
-
-		mapped_type	&operator[](const key_type &k);
 
 	// ******************************** Modifiers ******************************* //
 
@@ -266,6 +263,10 @@ namespace ft
 				return (this->m_size == 0 ? true : false);
 			};
 
+			mapped_type & operator[](const key_type &k) 
+			{
+				return (this->insert(value_type(k, mapped_type()))).first->second;
+			};
 
 	}; // ***************************************************** class ft::map end //
 
@@ -273,11 +274,7 @@ namespace ft
 
 	// ******************************* Ele Access ******************************* //
 
-	template<class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::mapped_type&
-	map<Key, T, Compare, Alloc>::operator[](const key_type &k) {
-		return (this->insert(value_type(k, mapped_type()))).first->second;
-	}
+	
 
 	// ******************************** Modifiers ******************************* //
 
