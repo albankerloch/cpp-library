@@ -113,11 +113,7 @@ namespace ft
 
 		private:
 
-			template <class Ite>
-			void				_createm_root_it(Ite first, Ite last)
-			{
-				this->insert(first, last);
-			};
+		
 
 			void _createm_root(size_type size, const value_type &val = value_type()) 
 			{
