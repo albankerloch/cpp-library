@@ -1,205 +1,152 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mapIte.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mli <mli@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/26 15:47:56 by mli               #+#    #+#             */
+/*   Updated: 2021/02/28 15:53:53 by mli              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#ifndef MAP_ITERATOR_HPP
-# define MAP_ITERATOR_HPP
+#ifndef MAP_ITE_CLASS_HPP
+# define MAP_ITE_CLASS_HPP
 
-# include "TreeNode.hpp"
-# include "Reverse_Iterator.hpp"
-# include "Algo.hpp"
+# include "base.hpp"
 
-namespace ft
-{
-	template <typename K, typename T, typename Pointer, typename Reference>
-		class MapIterator : IteratorTrait
-		{
-			public:
-				typedef ft::pair<K, T> 	value_type;
-				typedef TreeNode<K, T>* 	pointer;
-				typedef value_type const*   const_pointer;
-				typedef value_type &		reference;
-				typedef value_type const &	const_reference;
-				typedef std::ptrdiff_t 		difference_type;
-				pointer p;
+namespace ft {
 
-			private:
-				pointer ptr_next(pointer ptr)
-				{
-					pointer next;
-					if (!ptr->right)
-					{
-						next = ptr;
-						while (next->parent && next == next->parent->right)
-							next = next->parent;
-						next = next->parent;
-					}
-					else
-					{
-						next = ptr->right;
-						while (next->left)
-							next = next->left;
-					}
-					return (next);
-				};
-				pointer ptr_prev(pointer ptr)
-				{
-					pointer next;
+template <typename T, typename node_type>
+class mapIte {
+	protected:
+		node_type						*_node;
+		mapIte(node_type *src);
 
-					if (!ptr->left)
-					{
-						next = ptr;
-						while (next->parent && next == next->parent->left)
-							next = next->parent;
-						next = next->parent;
-					}
-					else
-					{
-						next = ptr->left;
-						while (next->right)
-							next = next->right;
-					}
-					return (next);
-				};
-			public:
-				MapIterator(void): p(0) {}
-				MapIterator(const pointer ptr): p(ptr) {}
-				MapIterator(const MapIterator &other) { *this = other;}
-				
-				MapIterator &operator=(const MapIterator &other)
-				{
-					p = other.p;
-					return (*this);
-				};
-				
-				pointer node(void) { return (p);}
-				
-				value_type &operator*(void) { return (p->pair);}
-				
-				value_type *operator->(void) { return (&p->pair);}
-				
-				bool operator==(const MapIterator &other) { return (p == other.p);}
-				bool operator!=(const MapIterator &other) { return (!(*this == other));}
-				
-				MapIterator &operator++(void)
-				{
-					p = ptr_next(p);
-					return (*this);
-				}
+	public:
+		typedef T						value_type;
+		typedef ptrdiff_t				difference_type;
+		typedef value_type&				reference;
+		typedef value_type*				pointer;
 
-				MapIterator &operator--(void)
-				{
-					p = ptr_prev(p);
-					return (*this);
-				}
+		mapIte(void);
+		mapIte(const mapIte &src);
+		virtual ~mapIte(void);
+		mapIte	&operator=(mapIte const &rhs);
 
-				MapIterator operator++(int)
-				{
-					MapIterator tmp(*this);
-					this->operator++();
-					return (tmp);
-				}
+		template <class U> bool	operator==(const mapIte<U, node_type> &rhs) const;
+		template <class U> bool	operator!=(const mapIte<U, node_type> &rhs) const;
 
-				MapIterator operator--(int)
-				{
-					MapIterator tmp(*this);
-					this->operator--();
-					return (tmp);
-				}
+		mapIte		&operator++(void);
+		mapIte		operator++(int);
+		mapIte		&operator--(void);
+		mapIte		operator--(int);
 
-		};
-		template <typename K, typename T, typename Pointer, typename Reference>
-		class ReverseMapIterator
-		{
-			public:
-				typedef ft::pair<K, T> value_type;
-				typedef ft::pair<K, T>& reference;
-				typedef TreeNode<K, T>* pointer;
-				typedef ReverseMapIterator<K, T, Pointer, Reference>		curr_class;
-				typedef ReverseMapIterator<K, T, T*, T&>              		iterator;
-				pointer p;
-			private:
-				pointer ptr_next(pointer ptr)
-				{
-					pointer next;
-					if (!ptr->right)
-					{
-						next = ptr;
-						while (next->parent && next == next->parent->right)
-							next = next->parent;
-						next = next->parent;
-					}
-					else
-					{
-						next = ptr->right;
-						while (next->left)
-							next = next->left;
-					}
-					return (next);
-				};
-				pointer ptr_prev(pointer ptr)
-				{
-					pointer next;
+		reference	operator*(void) const;
+		pointer		operator->(void) const;
 
-					if (!ptr->left)
-					{
-						next = ptr;
-						while (next->parent && next == next->parent->left)
-							next = next->parent;
-						next = next->parent;
-					}
-					else
-					{
-						next = ptr->left;
-						while (next->right)
-							next = next->right;
-					}
-					return (next);
-				};
-			public:
-				ReverseMapIterator(): p(0) {}
-				ReverseMapIterator(const pointer ptr): p(ptr) {}
-				ReverseMapIterator(const iterator &other) {	*this = other;}
+		operator mapIte<const T, node_type>(void) const {
+			return mapIte<const T, node_type>(this->_node);
+		}
 
-				ReverseMapIterator &operator=(const iterator &other)
-				{
-					p = other.p;
-					return (*this);
-				};
-				
-				pointer node() { return (p);}
-				
-				value_type &operator*(void) { return (p->pair);}
+		template <class, class, class, class>
+		friend class map;
 
-				value_type *operator->(void) { return (&p->pair);}
+		template <class, class>
+		friend class mapIte;
 
-				bool operator==(const curr_class &other) { return (p == other.p);}
-				bool operator!=(const curr_class &other) { return (!(*this == other));}
-				
-				ReverseMapIterator &operator++(void)
-				{
-					p = ptr_prev(p);
-					return (*this);
-				}
+}; // ****************************************************** class mapIte end //
 
-				ReverseMapIterator &operator--(void)
-				{
-					p = ptr_next(p);
-					return (*this);
-				}
+template <typename T, typename node_type>
+mapIte<T, node_type>::mapIte(void) : _node(NULL) { return ; }
 
-				ReverseMapIterator operator++(int)
-				{
-					ReverseMapIterator tmp(*this);
-					this->operator++();
-					return (tmp);
-				}
+template <typename T, typename node_type>
+mapIte<T, node_type>::mapIte(node_type *src) { this->_node = src; }
 
-				ReverseMapIterator operator--(int)
-				{
-					ReverseMapIterator tmp(*this);
-					this->operator--();
-					return (tmp);
-				}
+template <typename T, typename node_type>
+mapIte<T, node_type>::mapIte(const mapIte &src) { *this = src; }
 
-		};
+template <typename T, typename node_type>
+mapIte<T, node_type>::~mapIte(void) { return ; }
+
+template <typename T, typename node_type>
+mapIte<T, node_type> &mapIte<T, node_type>::operator=(const mapIte &rhs) {
+	if (this == &rhs)
+		return (*this);
+	this->_node = rhs._node;
+	return (*this);
 }
-#endif
-	
+
+template <typename T, typename node_type> template <class U>
+bool	mapIte<T, node_type>::operator==(const mapIte<U, node_type> &rhs) const {
+	return (this->_node == rhs._node);
+}
+
+template <typename T, typename node_type> template <class U>
+bool	mapIte<T, node_type>::operator!=(const mapIte<U, node_type> &rhs) const {
+	return (this->_node != rhs._node);
+}
+
+template <typename T, typename node_type>
+mapIte<T, node_type> &mapIte<T, node_type>::operator++(void) {
+	if (this->_node->right != NULL)
+		this->_node = farLeft(this->_node->right);
+	else
+	{
+		node_type	*child = this->_node;
+
+		this->_node = this->_node->parent;
+		while (this->_node && child == this->_node->right)
+		{
+			child = this->_node;
+			this->_node = this->_node->parent;
+		}
+	}
+	return (*this);
+}
+
+template <typename T, typename node_type>
+mapIte<T, node_type> mapIte<T, node_type>::operator++(int) {
+	mapIte	tmp(*this);
+	++(*this);
+	return (tmp);
+}
+
+template <typename T, typename node_type>
+mapIte<T, node_type>& mapIte<T, node_type>::operator--(void) {
+	if (this->_node->left != NULL)
+		this->_node = farRight(this->_node->left);
+	else
+	{
+		node_type	*child = this->_node;
+
+		this->_node = this->_node->parent;
+		while (this->_node && child == this->_node->left)
+		{
+			child = this->_node;
+			this->_node = this->_node->parent;
+		}
+	}
+	return (*this);
+}
+
+template <typename T, typename node_type>
+mapIte<T, node_type> mapIte<T, node_type>::operator--(int) {
+	mapIte	tmp(*this);
+	--(*this);
+	return (tmp);
+}
+
+template <typename T, typename node_type>
+typename mapIte<T, node_type>::reference mapIte<T, node_type>::operator*(void) const {
+	return (this->_node->data);
+}
+
+template <typename T, typename node_type>
+typename mapIte<T, node_type>::pointer mapIte<T, node_type>::operator->(void) const {
+	return &this->operator*();
+}
+
+} // ******************************************************* ft namespace end //
+
+#endif // ********************************************* MAP_ITE_CLASS_HPP end //

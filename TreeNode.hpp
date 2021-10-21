@@ -9,7 +9,8 @@ namespace ft
    	class TreeNode
 	{
 		public :
-		T			data;
+		typedef T	data_type;
+		data_type	data;
 		TreeNode 	*left;
 		TreeNode 	*right;
 		TreeNode 	*parent;
@@ -17,9 +18,10 @@ namespace ft
 
 		public:
 
-		TreeNode(const T &src = T()) : data(src), left(NULL), right(NULL), parent(NULL), end(false)
+		TreeNode(const data_type &src = data_type()) : data(src), left(NULL), right(NULL), parent(NULL), end(false)
 		{
 		};
+
 	};
 
 	template <typename T>
