@@ -44,18 +44,6 @@ namespace ft
 		public:
 
 
-	// ****************************** Iterators ********************************* //
-
-		iterator				begin(void);
-		const_iterator			begin(void) const;
-		iterator				end(void);
-		const_iterator			end(void) const;
-
-		reverse_iterator		rbegin(void);
-		const_reverse_iterator	rbegin(void) const;
-		reverse_iterator		rend(void);
-		const_reverse_iterator	rend(void) const;
-
 	// ******************************* Capacity ********************************* //
 
 		size_type	size(void) const;
@@ -196,8 +184,6 @@ namespace ft
 
 		public :
 
-			map	&operator=(map const &rhs);
-
 			explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
 			{
 				this->m_root = new node_type;
@@ -223,67 +209,64 @@ namespace ft
 				delete this->m_root;
 			};
 
+			map& operator=(map const &rhs) 
+			{
+				if (this == &rhs)
+					return (*this);
+				this->clear();
+				this->insert(rhs.begin(), rhs.end());
+				return (*this);
+			};
+
+			iterator begin(void) 
+			{
+				return iterator(farLeft(this->m_root));
+			};
+
+			const_iterator begin(void) const 
+			{
+				return const_iterator(farLeft(this->m_root));
+			};
+
+			iterator end(void) 
+			{
+				return iterator(farRight(this->m_root));
+			};
+
+			const_iterator end(void) const 
+			{
+				return const_iterator(farRight(this->m_root));
+			};
+
+			reverse_iterator rbegin(void) 
+			{
+				return reverse_iterator(this->end());
+			};
+
+			const_reverse_iterator rbegin(void) const 
+			{
+				return const_reverse_iterator(this->end());
+			};
+
+			reverse_iterator rend(void) 
+			{
+				return reverse_iterator(this->begin());
+			};
+
+			const_reverse_iterator rend(void) const 
+			{
+				return const_reverse_iterator(this->begin());
+			};
+
+
+
 	}; // ***************************************************** class ft::map end //
 
-	template<class Key, class T, class Compare, class Alloc>
-	map<Key, T, Compare, Alloc>&
-	map<Key, T, Compare, Alloc>::operator=(map const &rhs) {
-		if (this == &rhs)
-			return (*this);
-		this->clear();
-		this->insert(rhs.begin(), rhs.end());
-		return (*this);
-	}
+	
 
 	// ****************************** Iterators ********************************* //
 
-	template<class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::iterator
-	map<Key, T, Compare, Alloc>::begin(void) {
-		return iterator(farLeft(this->m_root));
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::const_iterator
-	map<Key, T, Compare, Alloc>::begin(void) const {
-		return const_iterator(farLeft(this->m_root));
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::iterator
-	map<Key, T, Compare, Alloc>::end(void) {
-		return iterator(farRight(this->m_root));
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::const_iterator
-	map<Key, T, Compare, Alloc>::end(void) const {
-		return const_iterator(farRight(this->m_root));
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::reverse_iterator
-	map<Key, T, Compare, Alloc>::rbegin(void) {
-		return reverse_iterator(this->end());
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::const_reverse_iterator
-	map<Key, T, Compare, Alloc>::rbegin(void) const {
-		return const_reverse_iterator(this->end());
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::reverse_iterator
-	map<Key, T, Compare, Alloc>::rend(void) {
-		return reverse_iterator(this->begin());
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::const_reverse_iterator
-	map<Key, T, Compare, Alloc>::rend(void) const {
-		return const_reverse_iterator(this->begin());
-	}
+	
 
 	// ******************************* Capacity ********************************* //
 
