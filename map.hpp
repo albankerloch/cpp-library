@@ -199,8 +199,6 @@ namespace ft
 
 		public :
 
-		virtual ~map(void);
-
 		map	&operator=(map const &rhs);
 
 		explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
@@ -222,13 +220,14 @@ namespace ft
 			*this = src;
 		};
 
-	}; // ***************************************************** class ft::map end //
 
-	template<class Key, class T, class Compare, class Alloc>
-	map<Key, T, Compare, Alloc>::~map(void) {
-		this->clear();
-		delete this->m_root;
-	}
+		virtual ~map(void)
+		{
+			this->clear();
+			delete this->m_root;
+		};
+
+	}; // ***************************************************** class ft::map end //
 
 	template<class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc>&
