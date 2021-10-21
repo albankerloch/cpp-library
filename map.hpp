@@ -44,19 +44,6 @@ namespace ft
 		public:
 
 
-	// ******************************** Modifiers ******************************* //
-
-		ft::pair<iterator, bool>	insert(const value_type &val);
-		iterator					insert(iterator position, const value_type &val);
-		template <class Ite> void	insert(Ite first, Ite last);
-
-		void		erase(iterator position);
-		size_type	erase(const key_type &k);
-		void		erase(iterator first, iterator last);
-
-		void		swap(map &x);
-		void		clear(void);
-
 	// ******************************* Observers ******************************** //
 
 		key_compare		key_comp(void) const;
@@ -268,83 +255,76 @@ namespace ft
 				return (this->insert(value_type(k, mapped_type()))).first->second;
 			};
 
+			ft::pair<iterator, bool> insert(const value_type &val) 
+			{
+				ft::pair<iterator, bool> res;
+
+				res.second = !this->count(val.first);
+				if (res.second == true)
+					this->ft_insert_node(new node_type(val));
+				res.first = this->find(val.first);
+				return (res);
+			};
+
+			iterator insert(iterator position, const value_type &val) 
+			{
+				static_cast<void>(position);
+				return this->insert(val).first;
+			};
+
+			template <class Ite>
+			void insert(Ite first, Ite last) 
+			{
+				while (first != last)
+					this->insert(*first++);
+			};
+
+			void erase(iterator position) 
+			{
+				this->erase(position++, position);
+			};
+
+			size_type erase(const key_type &k) 
+			{
+				iterator element = this->find(k);
+
+				if (element == this->end())
+					return (0);
+				this->ft_delete_node(element._node);
+				return (1);
+			};
+
+			void erase(iterator first, iterator last) 
+			{
+				while (first != last)
+					this->ft_delete_node((first++)._node);
+			};
+
+			void swap(map &x) 
+			{
+				map tmp;
+
+				tmp.ft_copy(x);
+				x.ft_copy(*this);
+				this->ft_copy(tmp);
+			};
+
+			void clear(void) 
+			{
+				node_ptr ghost = this->end()._node;
+
+				if (this->m_size == 0)
+					return ;
+				ghost->parent->right = NULL;
+				this->ft_tree_clear(this->m_root);
+				this->m_root = ghost;
+				this->m_size = 0;
+			};
+
 	}; // ***************************************************** class ft::map end //
 
 	
-
-	// ******************************* Ele Access ******************************* //
-
 	
-
-	// ******************************** Modifiers ******************************* //
-
-	template<class Key, class T, class Compare, class Alloc>
-	ft::pair<typename map<Key, T, Compare, Alloc>::iterator, bool>
-	map<Key, T, Compare, Alloc>::insert(const value_type &val) {
-		ft::pair<iterator, bool> res;
-
-		res.second = !this->count(val.first);
-		if (res.second == true)
-			this->ft_insert_node(new node_type(val));
-		res.first = this->find(val.first);
-		return (res);
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::iterator
-	map<Key, T, Compare, Alloc>::insert(iterator position, const value_type &val) {
-		static_cast<void>(position);
-		return this->insert(val).first;
-	}
-
-	template<class Key, class T, class Compare, class Alloc> template <class Ite>
-	void	map<Key, T, Compare, Alloc>::insert(Ite first, Ite last) {
-		while (first != last)
-			this->insert(*first++);
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	void	map<Key, T, Compare, Alloc>::erase(iterator position) {
-		this->erase(position++, position);
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::size_type
-	map<Key, T, Compare, Alloc>::erase(const key_type &k) {
-		iterator element = this->find(k);
-
-		if (element == this->end())
-			return (0);
-		this->ft_delete_node(element._node);
-		return (1);
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	void	map<Key, T, Compare, Alloc>::erase(iterator first, iterator last) {
-		while (first != last)
-			this->ft_delete_node((first++)._node);
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	void	map<Key, T, Compare, Alloc>::swap(map &x) {
-		map tmp;
-
-		tmp.ft_copy(x);
-		x.ft_copy(*this);
-		this->ft_copy(tmp);
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	void	map<Key, T, Compare, Alloc>::clear(void) {
-		node_ptr ghost = this->end()._node;
-
-		if (this->m_size == 0)
-			return ;
-		ghost->parent->right = NULL;
-		this->ft_tree_clear(this->m_root);
-		this->m_root = ghost;
-		this->m_size = 0;
-	}
 
 	// ******************************* Observers ******************************** //
 
