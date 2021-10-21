@@ -43,9 +43,6 @@ namespace ft
 
 		public:
 
-	// ************************** Member functions ****************************** //
-
-
 
 	// ****************************** Iterators ********************************* //
 
@@ -199,33 +196,32 @@ namespace ft
 
 		public :
 
-		map	&operator=(map const &rhs);
+			map	&operator=(map const &rhs);
 
-		explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
-		{
-			this->m_root = new node_type;
-			return ;
-		};
+			explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
+			{
+				this->m_root = new node_type;
+				return ;
+			};
 
-		template <class Ite>
-		map(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first, Ite last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
-		{
-			this->m_root = new node_type;
-			this->insert(first, last);
-		};
+			template <class Ite>
+			map(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first, Ite last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
+			{
+				this->m_root = new node_type;
+				this->insert(first, last);
+			};
 
-		map(const map &src) : m_root(), m_compare(key_compare()), m_allocator(allocator_type()), m_size(0) 
-		{
-			this->m_root = new node_type;
-			*this = src;
-		};
+			map(const map &src) : m_root(), m_compare(key_compare()), m_allocator(allocator_type()), m_size(0) 
+			{
+				this->m_root = new node_type;
+				*this = src;
+			};
 
-
-		virtual ~map(void)
-		{
-			this->clear();
-			delete this->m_root;
-		};
+			~map(void)
+			{
+				this->clear();
+				delete this->m_root;
+			};
 
 	}; // ***************************************************** class ft::map end //
 
