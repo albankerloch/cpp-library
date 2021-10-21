@@ -179,7 +179,7 @@ namespace ft
 				*this = other;
 			};
 
-			~map(void)
+			~map()
 			{
 				this->clear();
 				delete this->m_root;
@@ -199,42 +199,42 @@ namespace ft
 				return (this->m_allocator);
 			};
 
-			iterator begin(void) 
+			iterator begin() 
 			{
 				return iterator(farLeft(this->m_root));
 			};
 
-			const_iterator begin(void) const 
+			const_iterator begin() const 
 			{
 				return const_iterator(farLeft(this->m_root));
 			};
 
-			iterator end(void) 
+			iterator end() 
 			{
 				return iterator(farRight(this->m_root));
 			};
 
-			const_iterator end(void) const 
+			const_iterator end() const 
 			{
 				return const_iterator(farRight(this->m_root));
 			};
 
-			reverse_iterator rbegin(void) 
+			reverse_iterator rbegin() 
 			{
 				return reverse_iterator(this->end());
 			};
 
-			const_reverse_iterator rbegin(void) const 
+			const_reverse_iterator rbegin() const 
 			{
 				return const_reverse_iterator(this->end());
 			};
 
-			reverse_iterator rend(void) 
+			reverse_iterator rend() 
 			{
 				return reverse_iterator(this->begin());
 			};
 
-			const_reverse_iterator rend(void) const 
+			const_reverse_iterator rend() const 
 			{
 				return const_reverse_iterator(this->begin());
 			};
@@ -249,19 +249,39 @@ namespace ft
 				return (this->insert(value_type(key, mapped_type()))).first->second;
 			};
 
-			size_type size(void) const 
+			mapped_type& at(const key_type& k)
+			{
+				iterator it;
+				
+				it = this->find(k);
+				if (it == this->end())
+					throw std::out_of_range("map::at:  key not found");
+				return it->second;
+			};	
+
+			const mapped_type& at(const key_type& k) const 
+			{
+				const_iterator it;
+				
+				it = this->find(k);
+				if (it == this->end())
+					throw std::out_of_range("map::at:  key not found");
+				return it->second;
+			};	
+
+			bool empty() const 
+			{
+				return (this->m_size == 0);
+			};
+
+			size_type size() const 
 			{
 				return (this->m_size);
 			};
 
-			size_type max_size(void) const 
+			size_type max_size() const 
 			{
 				return (std::numeric_limits<difference_type>::max() / (sizeof(node_type) / 2 ?: 1));
-			};
-
-			bool empty(void) const 
-			{
-				return (this->m_size == 0 ? true : false);
 			};
 
 			ft::pair<iterator, bool> insert(const value_type &val) 
@@ -318,7 +338,7 @@ namespace ft
 				this->ft_copy(tmp);
 			};
 
-			void clear(void) 
+			void clear() 
 			{
 				node_ptr ghost = this->end()._node;
 
@@ -330,12 +350,12 @@ namespace ft
 				this->m_size = 0;
 			};
 
-			key_compare key_comp(void) const 
+			key_compare key_comp() const 
 			{
 				return (key_compare());
 			};
 
-			value_compare value_comp(void) const 
+			value_compare value_comp() const 
 			{
 				return (value_compare(key_compare()));
 			};
