@@ -164,7 +164,7 @@ namespace ft
 			}
 		};
 
-		void _btree_rm(node_ptr rmNode)
+		void ft_delete_node(node_ptr rmNode)
 		{
 			node_ptr	replaceNode = NULL;
 			node_ptr	*rmPlace = &this->m_root;
@@ -201,7 +201,7 @@ namespace ft
 			delete rmNode;
 		};
 
-		bool _key_eq(const key_type &k1, const key_type &k2)  const 
+		bool ft_key_compare(const key_type &k1, const key_type &k2)  const 
 		{
 			return (!this->m_compare(k1, k2) && !this->m_compare(k2, k1));
 		};
@@ -365,14 +365,14 @@ namespace ft
 
 		if (element == this->end())
 			return (0);
-		this->_btree_rm(element._node);
+		this->ft_delete_node(element._node);
 		return (1);
 	}
 
 	template<class Key, class T, class Compare, class Alloc>
 	void	map<Key, T, Compare, Alloc>::erase(iterator first, iterator last) {
 		while (first != last)
-			this->_btree_rm((first++)._node);
+			this->ft_delete_node((first++)._node);
 	}
 
 	template<class Key, class T, class Compare, class Alloc>
@@ -419,7 +419,7 @@ namespace ft
 
 		while (it != ite)
 		{
-			if (this->_key_eq(it->first, k))
+			if (this->ft_key_compare(it->first, k))
 				break ;
 			++it;
 		}
@@ -433,7 +433,7 @@ namespace ft
 
 		while (it != ite)
 		{
-			if (this->_key_eq(it->first, k))
+			if (this->ft_key_compare(it->first, k))
 				break ;
 			++it;
 		}
@@ -448,7 +448,7 @@ namespace ft
 
 		while (it != ite)
 		{
-			if (this->_key_eq((it++)->first, k))
+			if (this->ft_key_compare((it++)->first, k))
 			{
 				++res;
 				break ; // Because map can't have the same key twice (or more)
