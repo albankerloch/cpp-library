@@ -136,7 +136,7 @@ namespace ft
 			delete node;
 		}
 
-		void _btree_add(node_ptr newNode)
+		void ft_insert_node(node_ptr newNode)
 		{
 			node_ptr	*parent = &this->m_root;
 			node_ptr	*node = &this->m_root;
@@ -335,7 +335,7 @@ namespace ft
 
 		res.second = !this->count(val.first);
 		if (res.second == true)
-			this->_btree_add(new node_type(val));
+			this->ft_insert_node(new node_type(val));
 		res.first = this->find(val.first);
 		return (res);
 	}
