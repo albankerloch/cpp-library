@@ -48,11 +48,10 @@ namespace ft
 
 		private:
 
-			node_ptr				_data;
-			key_compare				_key_cmp;
-			allocator_type			_alloc;
-			size_type				_size;
-			const static size_type	_max_size;
+			node_ptr				m_root;
+			key_compare				m_compare;
+			allocator_type			m_allocator;
+			size_type				m_size;
 
 
 		public:
@@ -128,8 +127,8 @@ namespace ft
 		private:
 
 		template <class Ite>
-		void				_create_data_it(Ite first, Ite last);
-		void				_create_data(size_type size, const value_type &val = value_type());
+		void				_createm_root_it(Ite first, Ite last);
+		void				_createm_root(size_type size, const value_type &val = value_type());
 		void				_cpy_content(map &src);
 
 		void				_btree_clear(node_ptr node);
@@ -143,8 +142,8 @@ namespace ft
 
 	template <class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc>::map(const key_compare &comp, const allocator_type \
-			&alloc) : _data(), _key_cmp(comp), _alloc(alloc), _size(0) {
-		this->_data = new node_type;
+			&alloc) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) {
+		this->m_root = new node_type;
 		return ;
 	}
 
@@ -152,22 +151,22 @@ namespace ft
 	map<Key, T, Compare, Alloc>::map(
 		typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first,
 		Ite last, const key_compare &comp, const allocator_type &alloc) : \
-			_data(), _key_cmp(comp), _alloc(alloc), _size(0) {
-		this->_data = new node_type;
-		this->_create_data_it(first, last);
+			m_root(), m_compare(comp), m_allocator(alloc), m_size(0) {
+		this->m_root = new node_type;
+		this->_createm_root_it(first, last);
 	}
 
 	template<class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc>::map(map const &src) : \
-			_data(), _key_cmp(key_compare()), _alloc(allocator_type()), _size(0) {
-		this->_data = new node_type;
+			m_root(), m_compare(key_compare()), m_allocator(allocator_type()), m_size(0) {
+		this->m_root = new node_type;
 		*this = src;
 	}
 
 	template<class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc>::~map(void) {
 		this->clear();
-		delete this->_data;
+		delete this->m_root;
 	}
 
 	template<class Key, class T, class Compare, class Alloc>
@@ -176,7 +175,7 @@ namespace ft
 		if (this == &rhs)
 			return (*this);
 		this->clear();
-		this->_create_data_it(rhs.begin(), rhs.end());
+		this->_createm_root_it(rhs.begin(), rhs.end());
 		return (*this);
 	}
 
@@ -185,25 +184,25 @@ namespace ft
 	template<class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator
 	map<Key, T, Compare, Alloc>::begin(void) {
-		return iterator(farLeft(this->_data));
+		return iterator(farLeft(this->m_root));
 	}
 
 	template<class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_iterator
 	map<Key, T, Compare, Alloc>::begin(void) const {
-		return const_iterator(farLeft(this->_data));
+		return const_iterator(farLeft(this->m_root));
 	}
 
 	template<class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator
 	map<Key, T, Compare, Alloc>::end(void) {
-		return iterator(farRight(this->_data));
+		return iterator(farRight(this->m_root));
 	}
 
 	template<class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_iterator
 	map<Key, T, Compare, Alloc>::end(void) const {
-		return const_iterator(farRight(this->_data));
+		return const_iterator(farRight(this->m_root));
 	}
 
 	template<class Key, class T, class Compare, class Alloc>
@@ -235,18 +234,18 @@ namespace ft
 	template<class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::size_type
 	map<Key, T, Compare, Alloc>::size(void) const {
-		return (this->_size);
+		return (this->m_size);
 	}
 
 	template<class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::size_type
 	map<Key, T, Compare, Alloc>::max_size(void) const {
-		return (this->_max_size);
+		return (std::numeric_limits<difference_type>::max() / (sizeof(node_type) / 2 ?: 1));
 	}
 
 	template<class Key, class T, class Compare, class Alloc>
 	bool	map<Key, T, Compare, Alloc>::empty(void) const {
-		return (this->_size == 0 ? true : false);
+		return (this->m_size == 0 ? true : false);
 	}
 
 	// ******************************* Ele Access ******************************* //
@@ -319,12 +318,12 @@ namespace ft
 	void	map<Key, T, Compare, Alloc>::clear(void) {
 		node_ptr ghost = this->end()._node;
 
-		if (this->_size == 0)
+		if (this->m_size == 0)
 			return ;
 		ghost->parent->right = NULL;
-		this->_btree_clear(this->_data);
-		this->_data = ghost;
-		this->_size = 0;
+		this->_btree_clear(this->m_root);
+		this->m_root = ghost;
+		this->m_size = 0;
 	}
 
 	// ******************************* Observers ******************************** //
@@ -395,7 +394,7 @@ namespace ft
 
 		while (it != ite)
 		{
-			if (!this->_key_cmp(it->first, k))
+			if (!this->m_compare(it->first, k))
 				break;
 			++it;
 		}
@@ -409,7 +408,7 @@ namespace ft
 
 		while (it != ite)
 		{
-			if (!this->_key_cmp(it->first, k))
+			if (!this->m_compare(it->first, k))
 				break;
 			++it;
 		}
@@ -423,7 +422,7 @@ namespace ft
 
 		while (it != ite)
 		{
-			if (this->_key_cmp(k, it->first))
+			if (this->m_compare(k, it->first))
 				break;
 			++it;
 		}
@@ -437,7 +436,7 @@ namespace ft
 
 		while (it != ite)
 		{
-			if (this->_key_cmp(k, it->first))
+			if (this->m_compare(k, it->first))
 				break;
 			++it;
 		}
@@ -467,25 +466,25 @@ namespace ft
 	// ################################ Private ####################################
 
 	template<class Key, class T, class Compare, class Alloc> template <class Ite>
-	void	map<Key, T, Compare, Alloc>::_create_data_it(Ite first, Ite last) {
+	void	map<Key, T, Compare, Alloc>::_createm_root_it(Ite first, Ite last) {
 		this->insert(first, last);
 	}
 
 	template<class Key, class T, class Compare, class Alloc>
-	void	map<Key, T, Compare, Alloc>::_create_data(size_type size, const value_type &val) {
+	void	map<Key, T, Compare, Alloc>::_createm_root(size_type size, const value_type &val) {
 		(void)size; (void)val;
 	}
 
 	template<class Key, class T, class Compare, class Alloc>
 	void	map<Key, T, Compare, Alloc>::_cpy_content(map &src) {
 		this->clear();
-		node_ptr tmp = this->_data;
+		node_ptr tmp = this->m_root;
 
-		this->_data = src._data;
-		this->_key_cmp = src._key_cmp;
-		this->_alloc = src._alloc;
-		this->_size = src._size;
-		src._data = tmp; src._size = 0;
+		this->m_root = src.m_root;
+		this->m_compare = src.m_compare;
+		this->m_allocator = src.m_allocator;
+		this->m_size = src.m_size;
+		src.m_root = tmp; src.m_size = 0;
 		tmp = NULL;
 	}
 
@@ -500,16 +499,16 @@ namespace ft
 
 	template<class Key, class T, class Compare, class Alloc>
 	void	map<Key, T, Compare, Alloc>::_btree_add(node_ptr newNode) {
-		node_ptr	*parent = &this->_data;
-		node_ptr	*node = &this->_data;
-		node_ptr	ghost = farRight(this->_data);
+		node_ptr	*parent = &this->m_root;
+		node_ptr	*node = &this->m_root;
+		node_ptr	ghost = farRight(this->m_root);
 		bool		side_left = -1;
 
-		++this->_size;
+		++this->m_size;
 		while (*node && *node != ghost)
 		{
 			parent = node;
-			side_left = this->_key_cmp(newNode->data.first, (*node)->data.first);
+			side_left = this->m_compare(newNode->data.first, (*node)->data.first);
 			node = (side_left ? &(*node)->left : &(*node)->right);
 		}
 		if (*node == NULL)
@@ -529,9 +528,9 @@ namespace ft
 	template<class Key, class T, class Compare, class Alloc>
 	void	map<Key, T, Compare, Alloc>::_btree_rm(node_ptr rmNode) {
 		node_ptr	replaceNode = NULL;
-		node_ptr	*rmPlace = &this->_data;
+		node_ptr	*rmPlace = &this->m_root;
 
-		--this->_size;
+		--this->m_size;
 		if (rmNode->parent)
 			rmPlace = (rmNode->parent->left == rmNode ? &rmNode->parent->left : &rmNode->parent->right);
 		if (rmNode->left == NULL && rmNode->right == NULL)
@@ -566,13 +565,8 @@ namespace ft
 	template<class Key, class T, class Compare, class Alloc>
 	bool
 	map<Key, T, Compare, Alloc>::_key_eq(const key_type &k1, const key_type &k2) const {
-		return (!this->_key_cmp(k1, k2) && !this->_key_cmp(k2, k1));
+		return (!this->m_compare(k1, k2) && !this->m_compare(k2, k1));
 	}
-
-	template <class Key, class T, class Compare, class Alloc>
-	const typename map<Key, T, Compare, Alloc>::size_type
-	map<Key, T, Compare, Alloc>::_max_size =
-		std::numeric_limits<difference_type>::max() / (sizeof(node_type) / 2 ?: 1);
 
 	// ####################### Non-member function overloads #######################
 
