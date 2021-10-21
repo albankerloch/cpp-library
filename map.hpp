@@ -234,7 +234,7 @@ namespace ft
 		Ite last, const key_compare &comp, const allocator_type &alloc) : \
 			m_root(), m_compare(comp), m_allocator(alloc), m_size(0) {
 		this->m_root = new node_type;
-		this->_createm_root_it(first, last);
+		this->insert(first, last);
 	}
 
 	template<class Key, class T, class Compare, class Alloc>
@@ -256,7 +256,7 @@ namespace ft
 		if (this == &rhs)
 			return (*this);
 		this->clear();
-		this->_createm_root_it(rhs.begin(), rhs.end());
+		this->insert(rhs.begin(), rhs.end());
 		return (*this);
 	}
 
