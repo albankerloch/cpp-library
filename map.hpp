@@ -284,14 +284,14 @@ namespace ft
 				return (std::numeric_limits<size_type>::max() / (sizeof(TreeNode<value_type>)));
 			};
 
-			ft::pair<iterator, bool> insert(const value_type &val) 
+			ft::pair<iterator, bool> insert(const value_type &value) 
 			{
 				ft::pair<iterator, bool> res;
 
-				res.second = !this->count(val.first);
-				if (res.second == true)
-					this->ft_insert_node(new node_type(val));
-				res.first = this->find(val.first);
+				res.second = !this->count(value.first);
+				if (!this->count(value.first))
+					this->ft_insert_node(new node_type(value));
+				res.first = this->find(value.first);
 				return (res);
 			};
 
