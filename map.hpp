@@ -1,7 +1,8 @@
 #ifndef DEF_MAP_HPP
 # define DEF_MAP_HPP
 
-# include "base.hpp"
+//# include "base.hpp"
+# include "Utils.hpp"
 # include "Map_Iterator.hpp"
 # include "ReverseIte.hpp"
 # include "TreeNode.hpp"
@@ -297,7 +298,7 @@ namespace ft
 
 			iterator insert(iterator position, const value_type &val) 
 			{
-				static_cast<void>(position);
+				(void)(position);
 				return this->insert(val).first;
 			};
 
@@ -340,8 +341,9 @@ namespace ft
 
 			void clear() 
 			{
-				node_ptr ghost = this->end()._node;
-
+				node_ptr ghost;
+				
+				ghost = this->end()._node;
 				if (this->m_size == 0)
 					return ;
 				ghost->parent->right = NULL;

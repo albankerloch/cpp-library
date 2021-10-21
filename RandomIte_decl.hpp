@@ -13,6 +13,8 @@
 #ifndef RANDOMITE_DECL_CLASS_HPP
 # define RANDOMITE_DECL_CLASS_HPP
 
+# include "Utils.hpp"
+
 namespace ft {
 
 	template <typename Spe>

@@ -6,6 +6,8 @@
 # include <sstream>
 # include <typeinfo>
 # include <iostream>
+# include <string>
+# include <memory>
 
 namespace ft 
 {
@@ -45,22 +47,6 @@ namespace ft
 		}
 		return (first2 != last2);
 	}
-
-	static class nullptr_t
-	{
-		public:
-		
-			template<class T>
-			operator T*() const { return (0); }
-
-			template<class C, class T>
-			operator T C::*() const { return (0); }
-
-		private:
-			
-			void operator&() const;
-
-	} u_nullptr = {};
 
     template <class T1, class T2>
         struct pair
@@ -136,6 +122,19 @@ namespace ft
 	{
 		return (ft::pair<T1, T2>(x, y));
 	};
+
+
+template <class Ite1, class Ite2>
+bool	equal(Ite1 first1, Ite1 last1, Ite2 first2)
+{
+	while (first1 != last1)
+	{
+		if (*first1 != *first2)
+			return false;
+		++first1; ++first2;
+	}
+	return true;
+}
 
 }
 

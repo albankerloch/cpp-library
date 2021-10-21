@@ -13,12 +13,13 @@
 #ifndef MAP_ITE_CLASS_HPP
 # define MAP_ITE_CLASS_HPP
 
-# include "base.hpp"
+# include "Utils.hpp"
 
 namespace ft {
 
 template <typename T, typename node_type>
-class MapIterator {
+class MapIterator 
+{
 	protected:
 		node_type						*_node;
 		MapIterator(node_type *src);
