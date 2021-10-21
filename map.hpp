@@ -199,11 +199,6 @@ namespace ft
 
 		public :
 
-		template <class Ite>
-		map(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first,
-				Ite last, const key_compare &comp = key_compare(),
-				const allocator_type &alloc = allocator_type());
-		map(const map &src);
 		virtual ~map(void);
 
 		map	&operator=(map const &rhs);
@@ -214,26 +209,20 @@ namespace ft
 			return ;
 		};
 
+		template <class Ite>
+		map(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first, Ite last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
+		{
+			this->m_root = new node_type;
+			this->insert(first, last);
+		};
+
+		map(const map &src) : m_root(), m_compare(key_compare()), m_allocator(allocator_type()), m_size(0) 
+		{
+			this->m_root = new node_type;
+			*this = src;
+		};
+
 	}; // ***************************************************** class ft::map end //
-
-
-	
-
-	template <class Key, class T, class Compare, class Alloc> template <class Ite>
-	map<Key, T, Compare, Alloc>::map(
-		typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first,
-		Ite last, const key_compare &comp, const allocator_type &alloc) : \
-			m_root(), m_compare(comp), m_allocator(alloc), m_size(0) {
-		this->m_root = new node_type;
-		this->insert(first, last);
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	map<Key, T, Compare, Alloc>::map(map const &src) : \
-			m_root(), m_compare(key_compare()), m_allocator(allocator_type()), m_size(0) {
-		this->m_root = new node_type;
-		*this = src;
-	}
 
 	template<class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc>::~map(void) {
