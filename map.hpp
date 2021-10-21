@@ -281,7 +281,7 @@ namespace ft
 
 			size_type max_size() const 
 			{
-				return (std::numeric_limits<difference_type>::max() / (sizeof(node_type) / 2 ?: 1));
+				return (std::numeric_limits<size_type>::max() / (sizeof(TreeNode<value_type>)));
 			};
 
 			ft::pair<iterator, bool> insert(const value_type &val) 
