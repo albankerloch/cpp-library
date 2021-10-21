@@ -22,43 +22,6 @@ class mapIte {
 	protected:
 		node_type						*_node;
 		mapIte(node_type *src);
-		node_type* ptr_next(node_type *ptr)
-		{
-			node_type *next;
-			if (!ptr->right)
-			{
-				next = ptr;
-				while (next->parent && next == next->parent->right)
-					next = next->parent;
-				next = next->parent;
-			}
-			else
-			{
-				next = ptr->right;
-				while (next->left)
-					next = next->left;
-			}
-			return (next);
-		};
-		node_type* ptr_prev(node_type *ptr)
-		{
-			node_type *next;
-
-			if (!ptr->left)
-			{
-				next = ptr;
-				while (next->parent && next == next->parent->left)
-					next = next->parent;
-				next = next->parent;
-			}
-			else
-			{
-				next = ptr->left;
-				while (next->right)
-					next = next->right;
-			}
-			return (next);
-		};
 
 	public:
 		typedef T						value_type;
@@ -70,8 +33,6 @@ class mapIte {
 		mapIte(const mapIte &src);
 		virtual ~mapIte(void);
 		mapIte	&operator=(mapIte const &rhs);
-
-		node_type *node(void) { return (_node);}
 
 		template <class U> bool	operator==(const mapIte<U, node_type> &rhs) const;
 		template <class U> bool	operator!=(const mapIte<U, node_type> &rhs) const;
@@ -128,7 +89,6 @@ bool	mapIte<T, node_type>::operator!=(const mapIte<U, node_type> &rhs) const {
 
 template <typename T, typename node_type>
 mapIte<T, node_type> &mapIte<T, node_type>::operator++(void) {
-	/*
 	if (this->_node->right != NULL)
 		this->_node = farLeft(this->_node->right);
 	else
@@ -141,8 +101,7 @@ mapIte<T, node_type> &mapIte<T, node_type>::operator++(void) {
 			child = this->_node;
 			this->_node = this->_node->parent;
 		}
-	}*/
-	this->_node = ptr_next(this->_node);
+	}
 	return (*this);
 }
 
@@ -155,7 +114,6 @@ mapIte<T, node_type> mapIte<T, node_type>::operator++(int) {
 
 template <typename T, typename node_type>
 mapIte<T, node_type>& mapIte<T, node_type>::operator--(void) {
-	/*
 	if (this->_node->left != NULL)
 		this->_node = farRight(this->_node->left);
 	else
@@ -168,8 +126,7 @@ mapIte<T, node_type>& mapIte<T, node_type>::operator--(void) {
 			child = this->_node;
 			this->_node = this->_node->parent;
 		}
-	}*/
-	this->_node = ptr_prev(this->_node);
+	}
 	return (*this);
 }
 
@@ -182,7 +139,7 @@ mapIte<T, node_type> mapIte<T, node_type>::operator--(int) {
 
 template <typename T, typename node_type>
 typename mapIte<T, node_type>::reference mapIte<T, node_type>::operator*(void) const {
-	return (this->_node->pair);
+	return (this->_node->data);
 }
 
 template <typename T, typename node_type>
