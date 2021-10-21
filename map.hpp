@@ -1,21 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   map_decl.hpp                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mli <mli@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/25 15:56:50 by mli               #+#    #+#             */
-/*   Updated: 2021/03/06 12:37:40 by mli              ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#ifndef MAP_CLASS_HPP
-# define MAP_CLASS_HPP
+#ifndef DEF_MAP_HPP
+# define DEF_MAP_HPP
 
 # include "base.hpp"
 # include "Map_Iterator.hpp"
-//# include "map_mli.hpp"
 # include "ReverseIte.hpp"
 # include "TreeNode.hpp"
 
