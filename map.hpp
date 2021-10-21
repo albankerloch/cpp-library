@@ -116,6 +116,7 @@ namespace ft
 		template <class Ite>
 		void				_createm_root_it(Ite first, Ite last);
 		void				_createm_root(size_type size, const value_type &val = value_type());
+
 		void				_cpy_content(map &src) 
 		{
 			this->clear();
@@ -129,11 +130,87 @@ namespace ft
 			tmp = NULL;
 		};
 
-		void				_btree_clear(node_ptr node);
-		void				_btree_add(node_ptr node);
-		void				_btree_rm(node_ptr node);
 
-		bool				_key_eq(const key_type &k1, const key_type &k2) const;
+	void				_btree_clear(node_ptr node)
+	{
+		if (node == NULL)
+			return ;
+		this->_btree_clear(node->left);
+		this->_btree_clear(node->right);
+		delete node;
+	}
+
+	void				_btree_add(node_ptr newNode)
+	{
+		node_ptr	*parent = &this->m_root;
+		node_ptr	*node = &this->m_root;
+		node_ptr	ghost = farRight(this->m_root);
+		bool		side_left = -1;
+
+		++this->m_size;
+		while (*node && *node != ghost)
+		{
+			parent = node;
+			side_left = this->m_compare(newNode->data.first, (*node)->data.first);
+			node = (side_left ? &(*node)->left : &(*node)->right);
+		}
+		if (*node == NULL)
+		{
+			newNode->parent = (*parent);
+			*node = newNode;
+		}
+		else // if (*node == ghost)
+		{
+			*node = newNode;
+			newNode->parent = ghost->parent;
+			ghost->parent = farRight(newNode); // Using farRight(newNode)
+			farRight(newNode)->right = ghost; // in case newNode isnt alone
+		}
+	};
+
+	void				_btree_rm(node_ptr rmNode)
+	{
+		node_ptr	replaceNode = NULL;
+		node_ptr	*rmPlace = &this->m_root;
+
+		--this->m_size;
+		if (rmNode->parent)
+			rmPlace = (rmNode->parent->left == rmNode ? &rmNode->parent->left : &rmNode->parent->right);
+		if (rmNode->left == NULL && rmNode->right == NULL)
+			;
+		else if (rmNode->left == NULL) // left == NULL && right != NULL
+			replaceNode = rmNode->right;
+		else // left != NULL && right ?= NULL
+		{
+			replaceNode = farRight(rmNode->left);
+			if (replaceNode != rmNode->left)
+				if ((replaceNode->parent->right = replaceNode->left))
+					replaceNode->left->parent = replaceNode->parent;
+		}
+		if (replaceNode)
+		{
+			replaceNode->parent = rmNode->parent;
+			if (rmNode->left && rmNode->left != replaceNode)
+			{
+				replaceNode->left = rmNode->left;
+				replaceNode->left->parent = replaceNode;
+			}
+			if (rmNode->right && rmNode->right != replaceNode)
+			{
+				replaceNode->right = rmNode->right;
+				replaceNode->right->parent = replaceNode;
+			}
+		}
+		*rmPlace = replaceNode;
+		delete rmNode;
+	};
+
+	bool				_key_eq(const key_type &k1, const key_type &k2)  const 
+	{
+		return (!this->m_compare(k1, k2) && !this->m_compare(k2, k1));
+	};
+
+
 
 	}; // ***************************************************** class ft::map end //
 
@@ -474,86 +551,6 @@ namespace ft
 	}
 
 	
-
-	template<class Key, class T, class Compare, class Alloc>
-	void	map<Key, T, Compare, Alloc>::_btree_clear(node_ptr node) {
-		if (node == NULL)
-			return ;
-		this->_btree_clear(node->left);
-		this->_btree_clear(node->right);
-		delete node;
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	void	map<Key, T, Compare, Alloc>::_btree_add(node_ptr newNode) {
-		node_ptr	*parent = &this->m_root;
-		node_ptr	*node = &this->m_root;
-		node_ptr	ghost = farRight(this->m_root);
-		bool		side_left = -1;
-
-		++this->m_size;
-		while (*node && *node != ghost)
-		{
-			parent = node;
-			side_left = this->m_compare(newNode->data.first, (*node)->data.first);
-			node = (side_left ? &(*node)->left : &(*node)->right);
-		}
-		if (*node == NULL)
-		{
-			newNode->parent = (*parent);
-			*node = newNode;
-		}
-		else // if (*node == ghost)
-		{
-			*node = newNode;
-			newNode->parent = ghost->parent;
-			ghost->parent = farRight(newNode); // Using farRight(newNode)
-			farRight(newNode)->right = ghost; // in case newNode isnt alone
-		}
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	void	map<Key, T, Compare, Alloc>::_btree_rm(node_ptr rmNode) {
-		node_ptr	replaceNode = NULL;
-		node_ptr	*rmPlace = &this->m_root;
-
-		--this->m_size;
-		if (rmNode->parent)
-			rmPlace = (rmNode->parent->left == rmNode ? &rmNode->parent->left : &rmNode->parent->right);
-		if (rmNode->left == NULL && rmNode->right == NULL)
-			;
-		else if (rmNode->left == NULL) // left == NULL && right != NULL
-			replaceNode = rmNode->right;
-		else // left != NULL && right ?= NULL
-		{
-			replaceNode = farRight(rmNode->left);
-			if (replaceNode != rmNode->left)
-				if ((replaceNode->parent->right = replaceNode->left))
-					replaceNode->left->parent = replaceNode->parent;
-		}
-		if (replaceNode)
-		{
-			replaceNode->parent = rmNode->parent;
-			if (rmNode->left && rmNode->left != replaceNode)
-			{
-				replaceNode->left = rmNode->left;
-				replaceNode->left->parent = replaceNode;
-			}
-			if (rmNode->right && rmNode->right != replaceNode)
-			{
-				replaceNode->right = rmNode->right;
-				replaceNode->right->parent = replaceNode;
-			}
-		}
-		*rmPlace = replaceNode;
-		delete rmNode;
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	bool
-	map<Key, T, Compare, Alloc>::_key_eq(const key_type &k1, const key_type &k2) const {
-		return (!this->m_compare(k1, k2) && !this->m_compare(k2, k1));
-	}
 
 	// ####################### Non-member function overloads #######################
 
