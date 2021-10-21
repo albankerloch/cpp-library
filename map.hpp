@@ -43,13 +43,6 @@ namespace ft
 
 		public:
 
-
-	// ******************************* Capacity ********************************* //
-
-		size_type	size(void) const;
-		size_type	max_size(void) const;
-		bool		empty(void) const;
-
 	// ******************************* Ele Access ******************************* //
 
 		mapped_type	&operator[](const key_type &k);
@@ -258,34 +251,25 @@ namespace ft
 				return const_reverse_iterator(this->begin());
 			};
 
+			size_type size(void) const 
+			{
+				return (this->m_size);
+			};
+
+			size_type max_size(void) const 
+			{
+				return (std::numeric_limits<difference_type>::max() / (sizeof(node_type) / 2 ?: 1));
+			};
+
+			bool empty(void) const 
+			{
+				return (this->m_size == 0 ? true : false);
+			};
 
 
 	}; // ***************************************************** class ft::map end //
 
 	
-
-	// ****************************** Iterators ********************************* //
-
-	
-
-	// ******************************* Capacity ********************************* //
-
-	template<class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::size_type
-	map<Key, T, Compare, Alloc>::size(void) const {
-		return (this->m_size);
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::size_type
-	map<Key, T, Compare, Alloc>::max_size(void) const {
-		return (std::numeric_limits<difference_type>::max() / (sizeof(node_type) / 2 ?: 1));
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	bool	map<Key, T, Compare, Alloc>::empty(void) const {
-		return (this->m_size == 0 ? true : false);
-	}
 
 	// ******************************* Ele Access ******************************* //
 
