@@ -41,8 +41,8 @@ namespace ft
 		typedef node_type*										node_ptr;
 		typedef ptrdiff_t										difference_type;
 		typedef size_t											size_type;
-		typedef ft::mapIte<value_type, node_type>			iterator;
-		typedef ft::mapIte<const value_type, node_type>	const_iterator;
+		typedef ft::MapIterator<value_type, node_type>			iterator;
+		typedef ft::MapIterator<const value_type, node_type>	const_iterator;
 		typedef ft::reverse_iterator<iterator>					reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 

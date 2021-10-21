@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mapIte.hpp                                         :+:      :+:    :+:   */
+/*   MapIterator.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mli <mli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -18,10 +18,10 @@
 namespace ft {
 
 template <typename T, typename node_type>
-class mapIte {
+class MapIterator {
 	protected:
 		node_type						*_node;
-		mapIte(node_type *src);
+		MapIterator(node_type *src);
 
 	public:
 		typedef T						value_type;
@@ -29,48 +29,48 @@ class mapIte {
 		typedef value_type&				reference;
 		typedef value_type*				pointer;
 
-		mapIte(void);
-		mapIte(const mapIte &src);
-		virtual ~mapIte(void);
-		mapIte	&operator=(mapIte const &rhs);
+		MapIterator(void);
+		MapIterator(const MapIterator &src);
+		virtual ~MapIterator(void);
+		MapIterator	&operator=(MapIterator const &rhs);
 
-		template <class U> bool	operator==(const mapIte<U, node_type> &rhs) const;
-		template <class U> bool	operator!=(const mapIte<U, node_type> &rhs) const;
+		template <class U> bool	operator==(const MapIterator<U, node_type> &rhs) const;
+		template <class U> bool	operator!=(const MapIterator<U, node_type> &rhs) const;
 
-		mapIte		&operator++(void);
-		mapIte		operator++(int);
-		mapIte		&operator--(void);
-		mapIte		operator--(int);
+		MapIterator		&operator++(void);
+		MapIterator		operator++(int);
+		MapIterator		&operator--(void);
+		MapIterator		operator--(int);
 
 		reference	operator*(void) const;
 		pointer		operator->(void) const;
 
-		operator mapIte<const T, node_type>(void) const {
-			return mapIte<const T, node_type>(this->_node);
+		operator MapIterator<const T, node_type>(void) const {
+			return MapIterator<const T, node_type>(this->_node);
 		}
 
 		template <class, class, class, class>
 		friend class map;
 
 		template <class, class>
-		friend class mapIte;
+		friend class MapIterator;
 
-}; // ****************************************************** class mapIte end //
-
-template <typename T, typename node_type>
-mapIte<T, node_type>::mapIte(void) : _node(NULL) { return ; }
+}; // ****************************************************** class MapIterator end //
 
 template <typename T, typename node_type>
-mapIte<T, node_type>::mapIte(node_type *src) { this->_node = src; }
+MapIterator<T, node_type>::MapIterator(void) : _node(NULL) { return ; }
 
 template <typename T, typename node_type>
-mapIte<T, node_type>::mapIte(const mapIte &src) { *this = src; }
+MapIterator<T, node_type>::MapIterator(node_type *src) { this->_node = src; }
 
 template <typename T, typename node_type>
-mapIte<T, node_type>::~mapIte(void) { return ; }
+MapIterator<T, node_type>::MapIterator(const MapIterator &src) { *this = src; }
 
 template <typename T, typename node_type>
-mapIte<T, node_type> &mapIte<T, node_type>::operator=(const mapIte &rhs) {
+MapIterator<T, node_type>::~MapIterator(void) { return ; }
+
+template <typename T, typename node_type>
+MapIterator<T, node_type> &MapIterator<T, node_type>::operator=(const MapIterator &rhs) {
 	if (this == &rhs)
 		return (*this);
 	this->_node = rhs._node;
@@ -78,17 +78,17 @@ mapIte<T, node_type> &mapIte<T, node_type>::operator=(const mapIte &rhs) {
 }
 
 template <typename T, typename node_type> template <class U>
-bool	mapIte<T, node_type>::operator==(const mapIte<U, node_type> &rhs) const {
+bool	MapIterator<T, node_type>::operator==(const MapIterator<U, node_type> &rhs) const {
 	return (this->_node == rhs._node);
 }
 
 template <typename T, typename node_type> template <class U>
-bool	mapIte<T, node_type>::operator!=(const mapIte<U, node_type> &rhs) const {
+bool	MapIterator<T, node_type>::operator!=(const MapIterator<U, node_type> &rhs) const {
 	return (this->_node != rhs._node);
 }
 
 template <typename T, typename node_type>
-mapIte<T, node_type> &mapIte<T, node_type>::operator++(void) {
+MapIterator<T, node_type> &MapIterator<T, node_type>::operator++(void) {
 	if (this->_node->right != NULL)
 		this->_node = farLeft(this->_node->right);
 	else
@@ -106,14 +106,14 @@ mapIte<T, node_type> &mapIte<T, node_type>::operator++(void) {
 }
 
 template <typename T, typename node_type>
-mapIte<T, node_type> mapIte<T, node_type>::operator++(int) {
-	mapIte	tmp(*this);
+MapIterator<T, node_type> MapIterator<T, node_type>::operator++(int) {
+	MapIterator	tmp(*this);
 	++(*this);
 	return (tmp);
 }
 
 template <typename T, typename node_type>
-mapIte<T, node_type>& mapIte<T, node_type>::operator--(void) {
+MapIterator<T, node_type>& MapIterator<T, node_type>::operator--(void) {
 	if (this->_node->left != NULL)
 		this->_node = farRight(this->_node->left);
 	else
@@ -131,19 +131,19 @@ mapIte<T, node_type>& mapIte<T, node_type>::operator--(void) {
 }
 
 template <typename T, typename node_type>
-mapIte<T, node_type> mapIte<T, node_type>::operator--(int) {
-	mapIte	tmp(*this);
+MapIterator<T, node_type> MapIterator<T, node_type>::operator--(int) {
+	MapIterator	tmp(*this);
 	--(*this);
 	return (tmp);
 }
 
 template <typename T, typename node_type>
-typename mapIte<T, node_type>::reference mapIte<T, node_type>::operator*(void) const {
+typename MapIterator<T, node_type>::reference MapIterator<T, node_type>::operator*(void) const {
 	return (this->_node->data);
 }
 
 template <typename T, typename node_type>
-typename mapIte<T, node_type>::pointer mapIte<T, node_type>::operator->(void) const {
+typename MapIterator<T, node_type>::pointer MapIterator<T, node_type>::operator->(void) const {
 	return &this->operator*();
 }
 
