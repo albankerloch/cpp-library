@@ -64,13 +64,6 @@ namespace ft
 			allocator_type			m_allocator;
 			size_type				m_size;
 
-
-		public:
-
-
-	// ******************************* Operations ******************************* //
-	// ******************************* Non-public ******************************* //
-
 		private:
 
 			void ft_insert_node(node_ptr newNode)
@@ -171,7 +164,6 @@ namespace ft
 			explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
 			{
 				this->m_root = new node_type;
-				return ;
 			};
 
 			template <class Ite>
@@ -181,10 +173,10 @@ namespace ft
 				this->insert(first, last);
 			};
 
-			map(const map &src) : m_root(), m_compare(key_compare()), m_allocator(allocator_type()), m_size(0) 
+			map(const map &other) : m_root(), m_compare(key_compare()), m_allocator(allocator_type()), m_size(0) 
 			{
 				this->m_root = new node_type;
-				*this = src;
+				*this = other;
 			};
 
 			~map(void)
@@ -193,13 +185,18 @@ namespace ft
 				delete this->m_root;
 			};
 
-			map& operator=(map const &rhs) 
+			map& operator=(map const &other) 
 			{
-				if (this == &rhs)
+				if (this == &other)
 					return (*this);
 				this->clear();
-				this->insert(rhs.begin(), rhs.end());
+				this->insert(other.begin(), other.end());
 				return (*this);
+			};
+
+			allocator_type get_allocator() const
+			{
+				return (this->m_allocator);
 			};
 
 			iterator begin(void) 
@@ -242,6 +239,16 @@ namespace ft
 				return const_reverse_iterator(this->begin());
 			};
 
+			mapped_type & operator[](const key_type &key) 
+			{
+				iterator tmp;
+				
+				tmp = this->find(key);
+				if (tmp != this->end())
+					return (tmp->second);
+				return (this->insert(value_type(key, mapped_type()))).first->second;
+			};
+
 			size_type size(void) const 
 			{
 				return (this->m_size);
@@ -255,11 +262,6 @@ namespace ft
 			bool empty(void) const 
 			{
 				return (this->m_size == 0 ? true : false);
-			};
-
-			mapped_type & operator[](const key_type &k) 
-			{
-				return (this->insert(value_type(k, mapped_type()))).first->second;
 			};
 
 			ft::pair<iterator, bool> insert(const value_type &val) 
@@ -449,8 +451,6 @@ namespace ft
 				res.second = this->upper_bound(k);
 				return (res);
 			};
-
-
 
 	}; 
 
