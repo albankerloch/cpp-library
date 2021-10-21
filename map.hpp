@@ -113,11 +113,91 @@ namespace ft
 
 		private:
 
-			void _cpy_content(map &src) 
+			void ft_insert_node(node_ptr newNode)
 			{
-				this->clear();
-				node_ptr tmp = this->m_root;
+				node_ptr	*parent = &this->m_root;
+				node_ptr	*node = &this->m_root;
+				node_ptr	ghost = farRight(this->m_root);
+				bool		side_left = -1;
 
+				++this->m_size;
+				while (*node && *node != ghost)
+				{
+					parent = node;
+					side_left = this->m_compare(newNode->data.first, (*node)->data.first);
+					node = (side_left ? &(*node)->left : &(*node)->right);
+				}
+				if (*node == NULL)
+				{
+					newNode->parent = (*parent);
+					*node = newNode;
+				}
+				else
+				{
+					*node = newNode;
+					newNode->parent = ghost->parent;
+					ghost->parent = farRight(newNode);
+					farRight(newNode)->right = ghost;
+				}
+			};
+
+			void ft_delete_node(node_ptr rmNode)
+			{
+				node_ptr	replaceNode = NULL;
+				node_ptr	*rmPlace = &this->m_root;
+
+				--this->m_size;
+				if (rmNode->parent)
+					rmPlace = (rmNode->parent->left == rmNode ? &rmNode->parent->left : &rmNode->parent->right);
+				if (rmNode->left == NULL && rmNode->right == NULL)
+					;
+				else if (rmNode->left == NULL)
+					replaceNode = rmNode->right;
+				else
+				{
+					replaceNode = farRight(rmNode->left);
+					if (replaceNode != rmNode->left)
+						if ((replaceNode->parent->right = replaceNode->left))
+							replaceNode->left->parent = replaceNode->parent;
+				}
+				if (replaceNode)
+				{
+					replaceNode->parent = rmNode->parent;
+					if (rmNode->left && rmNode->left != replaceNode)
+					{
+						replaceNode->left = rmNode->left;
+						replaceNode->left->parent = replaceNode;
+					}
+					if (rmNode->right && rmNode->right != replaceNode)
+					{
+						replaceNode->right = rmNode->right;
+						replaceNode->right->parent = replaceNode;
+					}
+				}
+				*rmPlace = replaceNode;
+				delete rmNode;
+			};
+
+			void ft_tree_clear(node_ptr node)
+			{
+				if (node == NULL)
+					return ;
+				this->ft_tree_clear(node->left);
+				this->ft_tree_clear(node->right);
+				delete node;
+			};
+
+			bool ft_key_compare(const key_type &k1, const key_type &k2)  const 
+			{
+				return (!this->m_compare(k1, k2) && !this->m_compare(k2, k1));
+			};
+
+			void ft_copy(map &src) 
+			{
+				node_ptr tmp;
+
+				this->clear();
+				tmp = this->m_root;
 				this->m_root = src.m_root;
 				this->m_compare = src.m_compare;
 				this->m_allocator = src.m_allocator;
@@ -126,85 +206,6 @@ namespace ft
 				tmp = NULL;
 			};
 
-
-		void _btree_clear(node_ptr node)
-		{
-			if (node == NULL)
-				return ;
-			this->_btree_clear(node->left);
-			this->_btree_clear(node->right);
-			delete node;
-		}
-
-		void ft_insert_node(node_ptr newNode)
-		{
-			node_ptr	*parent = &this->m_root;
-			node_ptr	*node = &this->m_root;
-			node_ptr	ghost = farRight(this->m_root);
-			bool		side_left = -1;
-
-			++this->m_size;
-			while (*node && *node != ghost)
-			{
-				parent = node;
-				side_left = this->m_compare(newNode->data.first, (*node)->data.first);
-				node = (side_left ? &(*node)->left : &(*node)->right);
-			}
-			if (*node == NULL)
-			{
-				newNode->parent = (*parent);
-				*node = newNode;
-			}
-			else // if (*node == ghost)
-			{
-				*node = newNode;
-				newNode->parent = ghost->parent;
-				ghost->parent = farRight(newNode); // Using farRight(newNode)
-				farRight(newNode)->right = ghost; // in case newNode isnt alone
-			}
-		};
-
-		void ft_delete_node(node_ptr rmNode)
-		{
-			node_ptr	replaceNode = NULL;
-			node_ptr	*rmPlace = &this->m_root;
-
-			--this->m_size;
-			if (rmNode->parent)
-				rmPlace = (rmNode->parent->left == rmNode ? &rmNode->parent->left : &rmNode->parent->right);
-			if (rmNode->left == NULL && rmNode->right == NULL)
-				;
-			else if (rmNode->left == NULL) // left == NULL && right != NULL
-				replaceNode = rmNode->right;
-			else // left != NULL && right ?= NULL
-			{
-				replaceNode = farRight(rmNode->left);
-				if (replaceNode != rmNode->left)
-					if ((replaceNode->parent->right = replaceNode->left))
-						replaceNode->left->parent = replaceNode->parent;
-			}
-			if (replaceNode)
-			{
-				replaceNode->parent = rmNode->parent;
-				if (rmNode->left && rmNode->left != replaceNode)
-				{
-					replaceNode->left = rmNode->left;
-					replaceNode->left->parent = replaceNode;
-				}
-				if (rmNode->right && rmNode->right != replaceNode)
-				{
-					replaceNode->right = rmNode->right;
-					replaceNode->right->parent = replaceNode;
-				}
-			}
-			*rmPlace = replaceNode;
-			delete rmNode;
-		};
-
-		bool ft_key_compare(const key_type &k1, const key_type &k2)  const 
-		{
-			return (!this->m_compare(k1, k2) && !this->m_compare(k2, k1));
-		};
 
 
 	}; // ***************************************************** class ft::map end //
@@ -379,9 +380,9 @@ namespace ft
 	void	map<Key, T, Compare, Alloc>::swap(map &x) {
 		map tmp;
 
-		tmp._cpy_content(x);
-		x._cpy_content(*this);
-		this->_cpy_content(tmp);
+		tmp.ft_copy(x);
+		x.ft_copy(*this);
+		this->ft_copy(tmp);
 	}
 
 	template<class Key, class T, class Compare, class Alloc>
@@ -391,7 +392,7 @@ namespace ft
 		if (this->m_size == 0)
 			return ;
 		ghost->parent->right = NULL;
-		this->_btree_clear(this->m_root);
+		this->ft_tree_clear(this->m_root);
 		this->m_root = ghost;
 		this->m_size = 0;
 	}
