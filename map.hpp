@@ -116,7 +116,18 @@ namespace ft
 		template <class Ite>
 		void				_createm_root_it(Ite first, Ite last);
 		void				_createm_root(size_type size, const value_type &val = value_type());
-		void				_cpy_content(map &src);
+		void				_cpy_content(map &src) 
+		{
+			this->clear();
+			node_ptr tmp = this->m_root;
+
+			this->m_root = src.m_root;
+			this->m_compare = src.m_compare;
+			this->m_allocator = src.m_allocator;
+			this->m_size = src.m_size;
+			src.m_root = tmp; src.m_size = 0;
+			tmp = NULL;
+		};
 
 		void				_btree_clear(node_ptr node);
 		void				_btree_add(node_ptr node);
@@ -462,18 +473,7 @@ namespace ft
 		(void)size; (void)val;
 	}
 
-	template<class Key, class T, class Compare, class Alloc>
-	void	map<Key, T, Compare, Alloc>::_cpy_content(map &src) {
-		this->clear();
-		node_ptr tmp = this->m_root;
-
-		this->m_root = src.m_root;
-		this->m_compare = src.m_compare;
-		this->m_allocator = src.m_allocator;
-		this->m_size = src.m_size;
-		src.m_root = tmp; src.m_size = 0;
-		tmp = NULL;
-	}
+	
 
 	template<class Key, class T, class Compare, class Alloc>
 	void	map<Key, T, Compare, Alloc>::_btree_clear(node_ptr node) {
