@@ -44,11 +44,6 @@ namespace ft
 		public:
 
 
-	// ******************************* Observers ******************************** //
-
-		key_compare		key_comp(void) const;
-		value_compare	value_comp(void) const;
-
 	// ******************************* Operations ******************************* //
 
 		iterator		find(const key_type &k);
@@ -321,6 +316,17 @@ namespace ft
 				this->m_size = 0;
 			};
 
+			key_compare key_comp(void) const 
+			{
+				return (key_compare());
+			};
+
+			value_compare value_comp(void) const 
+			{
+				return (value_compare(key_compare()));
+			};
+
+
 	}; // ***************************************************** class ft::map end //
 
 	
@@ -328,18 +334,7 @@ namespace ft
 
 	// ******************************* Observers ******************************** //
 
-	template<class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::key_compare
-	map<Key, T, Compare, Alloc>::key_comp(void) const {
-		return (key_compare());
-	}
-
-	template<class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::value_compare
-	map<Key, T, Compare, Alloc>::value_comp(void) const {
-		return (value_compare(key_compare()));
-	}
-
+	
 	// ******************************* Operations ******************************* //
 
 	template<class Key, class T, class Compare, class Alloc>
