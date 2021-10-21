@@ -113,13 +113,6 @@ namespace ft
 
 		private:
 
-		
-
-			void _createm_root(size_type size, const value_type &val = value_type()) 
-			{
-				(void)size; (void)val;
-			};
-
 			void _cpy_content(map &src) 
 			{
 				this->clear();
