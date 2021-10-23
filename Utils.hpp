@@ -33,7 +33,7 @@ namespace ft
 		return (i);
 	}
 
-   template<class InputIterator1, class InputIterator2>
+    template<class InputIterator1, class InputIterator2>
 	bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2)
 	{
 		while (first1 != last1)
@@ -49,37 +49,37 @@ namespace ft
 	}
 
     template <class T1, class T2>
-        struct pair
-        {
-            public :
+	struct pair
+	{
+		public :
 
-                typedef T1 first_type;
-                typedef T2 second_type;
+			typedef T1 first_type;
+			typedef T2 second_type;
 
-                first_type first;
-                second_type second;
+			first_type first;
+			second_type second;
 
-                pair() : first(), second()
-                {
-				};
+			pair() : first(), second()
+			{
+			};
 
-                template<class U, class V> pair (const pair<U, V>& pr) : first(pr.first), second(pr.second)
-                {
-				};
+			template<class U, class V> pair (const pair<U, V>& pr) : first(pr.first), second(pr.second)
+			{
+			};
 
-                pair (const first_type& a, const second_type& b) : first(a), second(b)
-                {
-				};
+			pair (const first_type& a, const second_type& b) : first(a), second(b)
+			{
+			};
 
-                pair& operator= (const pair& p)
-                {
-                    if (*this == p)
-                        return (*this);
-                    this->first = p.first;
-                    this->second = p.second;
-                    return (*this);
-                }
-        };
+			pair& operator= (const pair& p)
+			{
+				if (*this == p)
+					return (*this);
+				this->first = p.first;
+				this->second = p.second;
+				return (*this);
+			}
+	};
     
     template <class T1, class T2>
 	bool operator== (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs)
@@ -124,17 +124,17 @@ namespace ft
 	};
 
 
-template <class Ite1, class Ite2>
-bool	equal(Ite1 first1, Ite1 last1, Ite2 first2)
-{
-	while (first1 != last1)
+	template <class Ite1, class Ite2>
+	bool	equal(Ite1 first1, Ite1 last1, Ite2 first2)
 	{
-		if (*first1 != *first2)
-			return false;
-		++first1; ++first2;
+		while (first1 != last1)
+		{
+			if (*first1 != *first2)
+				return false;
+			++first1; ++first2;
+		}
+		return true;
 	}
-	return true;
-}
 
 }
 

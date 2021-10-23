@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   MapIterator.hpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mli <mli@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/26 15:47:56 by mli               #+#    #+#             */
-/*   Updated: 2021/02/28 15:53:53 by mli              ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MAP_ITE_CLASS_HPP
 # define MAP_ITE_CLASS_HPP
 
@@ -56,7 +44,7 @@ class MapIterator
 		template <class, class>
 		friend class MapIterator;
 
-}; // ****************************************************** class MapIterator end //
+};
 
 template <typename T, typename node_type>
 MapIterator<T, node_type>::MapIterator(void) : _node(NULL) { return ; }
@@ -148,6 +136,6 @@ typename MapIterator<T, node_type>::pointer MapIterator<T, node_type>::operator-
 	return &this->operator*();
 }
 
-} // ******************************************************* ft namespace end //
+}
 
-#endif // ********************************************* MAP_ITE_CLASS_HPP end //
+#endif

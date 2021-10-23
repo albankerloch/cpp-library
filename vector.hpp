@@ -4,6 +4,7 @@
 # include "Utils.hpp"
 # include "RandomIte.hpp"
 # include "ReverseIte.hpp"
+# include "Vector_Iterator.hpp"
 
 namespace ft {
 
@@ -21,38 +22,8 @@ class vector {
 	typedef ptrdiff_t									difference_type;
 	typedef size_t										size_type;
 
-	class iterator : public RandIte<value_type> {
-		protected:
-		typedef RandIte<value_type> super;
-		iterator(value_type *src) : RandIte<value_type>(src) {};
-		private:
-		iterator(const RandIte<value_type> &src) : RandIte<value_type>(src) {};
+	typedef ft::VectorIterator<value_type>				iterator;
 
-		public:
-		iterator(void) : RandIte<value_type>() {};
-		iterator(const iterator &src) : RandIte<value_type>(src) {};
-
-		typedef value_type&			reference;
-		typedef value_type*			pointer;
-
-		reference			operator*(void) const;
-		pointer				operator->(void) const;
-		iterator			&operator+=(difference_type n);
-		iterator			&operator-=(difference_type n);
-		reference			operator[](difference_type n) const;
-
-		difference_type		operator-(const RandIte<value_type> &n) const { return super::operator-(n); };
-		iterator			operator-(difference_type n) const { return super::operator-(n); };
-		iterator			operator+(difference_type n) const { return super::operator+(n); };
-		friend iterator		operator+(difference_type n, const iterator &rhs) { return rhs.operator+(n); };
-
-		iterator			&operator++(void) { super::operator++(); return *this; };
-		iterator			operator++(int) { return super::operator++(0); };
-		iterator			&operator--(void) { super::operator--(); return *this; };
-		iterator			operator--(int) { return super::operator--(0); };
-
-		friend class vector;
-	};
 	class const_iterator : public RandIte<value_type> {
 		protected:
 		typedef RandIte<value_type> super;
@@ -478,7 +449,6 @@ void swap(vector<T> &x, vector<T> &y)
 	x.swap(y);
 };
 
-
 template <class T, class Alloc>
 bool	operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) 
 {
@@ -521,39 +491,6 @@ bool	operator>=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	if (lhs == rhs)
 		return (true);
 	return (!(lhs < rhs));
-}
-
-
-// Regular Iterator
-
-template <typename T, typename Alloc>
-typename vector<T, Alloc>::iterator::reference
-	vector<T, Alloc>::iterator::operator*(void) const {
-	return (*this->_value);
-}
-
-template <typename T, typename Alloc>
-typename vector<T, Alloc>::iterator::pointer
-	vector<T, Alloc>::iterator::operator->(void) const {
-	return (this->_value);
-}
-
-template <typename T, typename Alloc>
-typename vector<T, Alloc>::iterator&
-	vector<T, Alloc>::iterator::operator+=(difference_type n) {
-	this->_value += n; return *this;
-}
-
-template <typename T, typename Alloc>
-typename vector<T, Alloc>::iterator&
-	vector<T, Alloc>::iterator::operator-=(difference_type n) {
-	this->_value -= n; return *this;
-}
-
-template <typename T, typename Alloc>
-typename vector<T, Alloc>::iterator::reference
-	vector<T, Alloc>::iterator::operator[](difference_type n) const {
-	return (this->_value[n]);
 }
 
 // Const Iterator

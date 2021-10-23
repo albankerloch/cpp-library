@@ -1,158 +1,76 @@
-#ifndef DEF_VECTOR_ITERATOR_HPP
-# define DEF_VECTOR_ITERATOR_HPP
+#ifndef VECTOR_ITE_CLASS_HPP
+# define VECTOR_ITE_CLASS_HPP
 
-# include <iostream>
-# include "Algo.hpp"
+# include "Utils.hpp"
+# include "RandomIte.hpp"
 
-namespace ft 
+namespace ft {
+
+template <typename T>
+class VectorIterator : public RandIte<T> 
 {
-    template<typename T>
-    class VectorIterator: IteratorTrait
-    {
-		public:
+	public:
+		typedef T						value_type;
+		typedef ptrdiff_t				difference_type;
+		typedef value_type&				reference;
+		typedef value_type*				pointer;
+		typedef RandIte<value_type> super;
 
-			typedef T 					value_type;
-			typedef value_type* 		pointer;
-			typedef value_type const	*const_pointer;
-			typedef value_type&			reference;
-			typedef value_type const &	const_reference;
-			typedef std::ptrdiff_t 		difference_type;
+	private:
 
-		protected:
+		VectorIterator(const RandIte<value_type> &src) : RandIte<value_type>(src) {};
+
+	public:
+
+		VectorIterator(void) : RandIte<value_type>() {};
+		VectorIterator(const VectorIterator &src) : RandIte<value_type>(src) {};
+		VectorIterator(value_type *src) : RandIte<value_type>(src) {};
 		
-			pointer p;
+		reference			operator*(void) const;
+		pointer				operator->(void) const;
+		VectorIterator			&operator+=(difference_type n);
+		VectorIterator			&operator-=(difference_type n);
+		reference			operator[](difference_type n) const;
 
-		public:
+		difference_type		operator-(const RandIte<value_type> &n) const { return super::operator-(n); };
+		VectorIterator			operator-(difference_type n) const { return super::operator-(n); };
+		VectorIterator			operator+(difference_type n) const { return super::operator+(n); };
+		friend VectorIterator		operator+(difference_type n, const VectorIterator &rhs) { return rhs.operator+(n); };
 
-			VectorIterator(): p(0) {}
+		VectorIterator			&operator++(void) { super::operator++(); return *this; };
+		VectorIterator			operator++(int) { return super::operator++(0); };
+		VectorIterator			&operator--(void) { super::operator--(); return *this; };
+		VectorIterator			operator--(int) { return super::operator--(0); };
 
-			VectorIterator(pointer p): p(p) {}
 
-			VectorIterator(VectorIterator const &other): p(other.p) {}
+};
 
-			virtual ~VectorIterator() {}
 
-			VectorIterator &operator=(VectorIterator const &other) 
-			{
-				this->p = other.p;
-				return (*this);
-			}
+template <typename T>
+typename VectorIterator<T>::reference VectorIterator<T>::operator*(void) const {
+	return (*this->_value);
+}
 
-			reference operator*() 
-			{
-				return (*this->p);
-			}
+template <typename T>
+typename VectorIterator<T>::pointer VectorIterator<T>::operator->(void) const {
+	return (this->_value);
+}
 
-			const_reference operator*() const 
-			{
-				return (*this->p);
-			}
+template <typename T>
+VectorIterator<T> & VectorIterator<T>::operator+=(difference_type n) 
+{
+	this->_value += n; return *this;
+}
 
-			pointer operator->() 
-			{
-				return (this->p);
-			}
+template <typename T>
+VectorIterator<T> & VectorIterator<T>::operator-=(difference_type n) {
+	this->_value -= n; return *this;
+}
 
-			const_pointer operator->() const 
-			{
-				return (this->p);
-			}
-
-			reference operator[](int val) 
-			{
-				return (*(this->p + val));
-			}
-
-			const_reference operator[](int val) const 
-			{
-				return (*(this->p + val));
-			}
-
-			VectorIterator operator++(int) 
-			{
-				VectorIterator tmp(*this);
-				++this->p;
-				return (tmp);
-			}
-			
-			VectorIterator &operator++() 
-			{
-				++this->p;
-				return (*this);
-			}
-
-			VectorIterator operator--(int) 
-			{
-				VectorIterator tmp(*this);
-				--this->p;
-				return (tmp);
-			}
-
-			VectorIterator &operator--() 
-			{
-				--this->p;
-				return (*this);
-			}
-
-			VectorIterator &operator+=(int value) 
-			{
-				this->p += value;
-				return (*this);
-			}
-
-			VectorIterator operator+(int value) const 
-			{
-				VectorIterator tmp(*this);
-				return (tmp += value);
-			}
-
-			VectorIterator &operator-=(int value) 
-			{
-				this->p -= value;
-				return (*this);
-			}
-
-			VectorIterator operator-(int value) const 
-			{
-				VectorIterator tmp(*this);
-				return (tmp -= value);
-			}
-
-			difference_type operator-(VectorIterator const &other) const 
-			{
-				return (this->p - other.p);
-			}
-
-			bool operator==(VectorIterator const &other) const 
-			{
-				return (this->p == other.p);
-			}
-
-			bool operator!=(VectorIterator const &other) const 
-			{
-				return (this->p != other.p);
-			}
-
-			bool operator<(VectorIterator const &other) const 
-			{
-				return (this->p < other.p);
-			}
-
-			bool operator<=(VectorIterator const &other) const 
-			{
-				return (this->p <= other.p);
-			}
-
-			bool operator>(VectorIterator const &other) const
-			{
-				return (this->p > other.p);
-			}
-			
-			bool operator>=(VectorIterator const &other) const 
-			{
-				return (this->p >= other.p);
-			}
-    };
+template <typename T>
+typename VectorIterator<T>::reference VectorIterator<T>::operator[](difference_type n) const {
+	return (this->_value[n]);
+}
 }
 
 #endif
