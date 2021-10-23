@@ -147,11 +147,10 @@ class vector {
 
 	protected:
 	private:
-	value_type				*m_array;
 	allocator_type			m_allocator;
-	size_type				m_size;
+	value_type				*m_array;
 	size_type				m_capacity;
-	const static size_type	m_max_size;
+	size_type				m_size;
 
 	template <class Ite>
 	void				_createm_array(difference_type capacity, Ite first, Ite last);
@@ -166,27 +165,27 @@ class vector {
 
 template <typename T, typename Alloc>
 vector<T, Alloc>::vector(const allocator_type &alloc) : \
-	m_array(NULL), m_allocator(alloc), m_size(0), m_capacity(0) {
+	m_allocator(alloc), m_array(NULL), m_capacity(0) ,  m_size(0){
 	return ;
 }
 
 template <typename T, typename Alloc>
 vector<T, Alloc>::vector(size_type size, const value_type &val,
 	const allocator_type &alloc) : \
-	m_array(NULL), m_allocator(alloc), m_size(0), m_capacity(0) {
+	m_allocator(alloc), m_array(NULL),  m_capacity(0), m_size(0) {
 	this->_createm_array(size, val);
 	return ;
 }
 
 template <typename T, typename Alloc> template <class Ite>
 vector<T, Alloc>::vector(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first,
-		Ite last, const allocator_type &alloc) : m_array(NULL), m_allocator(alloc), m_size(0), m_capacity(0) {
+		Ite last, const allocator_type &alloc) : m_allocator(alloc), m_array(NULL), m_capacity(0) , m_size(0) {
 	this->_createm_array(ft::itlen(first, last), first, last);
 }
 
 template<typename T, typename Alloc>
 vector<T, Alloc>::vector(vector const &src) : \
-	m_array(NULL), m_allocator(allocator_type()), m_size(0), m_capacity(0) {
+	m_allocator(allocator_type()), m_array(NULL), m_capacity(0) , m_size(0){
 	*this = src;
 }
 
