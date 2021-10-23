@@ -168,7 +168,7 @@ namespace ft
 			};
 
 			template <class Ite>
-			map(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first, Ite last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
+			map(Ite first, Ite last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type(), typename ft::enable_if<!ft::is_integral_type<Ite>::value, Ite>::type* = NULL) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
 			{
 				this->m_root = new node_type;
 				this->insert(first, last);
