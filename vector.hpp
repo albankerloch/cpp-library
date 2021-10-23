@@ -478,6 +478,52 @@ void swap(vector<T> &x, vector<T> &y)
 	x.swap(y);
 };
 
+
+template <class T, class Alloc>
+bool	operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) 
+{
+	if (lhs.size() != rhs.size())
+		return false;
+	return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+}
+
+template <class T, class Alloc>
+bool	operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) 
+{
+	return (!(lhs == rhs));
+}
+
+template <class T, class Alloc>
+bool	operator< (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) 
+{
+	return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+}
+
+template <class T, class Alloc>
+bool	operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) 
+{
+	if (lhs == rhs)
+		return (true);
+	return (lhs < rhs);
+}
+
+template <class T, class Alloc>
+bool	operator> (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) 
+{
+	if (lhs == rhs)
+		return (false);
+	return (!(lhs < rhs));
+}
+
+template <class T, class Alloc>
+bool	operator>=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) 
+{
+	if (lhs == rhs)
+		return (true);
+	return (!(lhs < rhs));
+}
+
+
 // Regular Iterator
 
 template <typename T, typename Alloc>
@@ -540,52 +586,6 @@ template <typename T, typename Alloc>
 typename vector<T, Alloc>::const_iterator::reference
 	vector<T, Alloc>::const_iterator::operator[](difference_type n) const {
 	return (this->_value[n]);
-}
-
-// ####################### Non-member function overloads #######################
-
-template <class T, class Alloc>
-bool	operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) 
-{
-	if (lhs.size() != rhs.size())
-		return false;
-	return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
-}
-
-template <class T, class Alloc>
-bool	operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) 
-{
-	return (!(lhs == rhs));
-}
-
-template <class T, class Alloc>
-bool	operator< (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) 
-{
-	return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
-}
-
-template <class T, class Alloc>
-bool	operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) 
-{
-	if (lhs == rhs)
-		return (true);
-	return (lhs < rhs);
-}
-
-template <class T, class Alloc>
-bool	operator> (const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) 
-{
-	if (lhs == rhs)
-		return (false);
-	return (!(lhs < rhs));
-}
-
-template <class T, class Alloc>
-bool	operator>=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) 
-{
-	if (lhs == rhs)
-		return (true);
-	return (!(lhs < rhs));
 }
 
 }
