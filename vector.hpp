@@ -429,7 +429,29 @@ class vector {
 		return (save_first);
 	}
 
-	void		swap(vector &x);
+	void swap(vector & x)
+	{
+		T	*temp_array;
+		size_t temp_size;
+		size_t temp_capacity;
+		allocator_type	temp_allocator;
+
+		temp_array = x.m_array;
+		temp_size = x.m_size;
+		temp_capacity = x.m_capacity;
+		temp_allocator = x.m_allocator;
+
+		x.m_array = this->m_array;
+		x.m_size = this->m_size;
+		x.m_capacity = this->m_capacity;
+		x.m_allocator = this->m_allocator;
+
+		this->m_array = temp_array;
+		this->m_size = temp_size;
+		this->m_capacity = temp_capacity;
+		this->m_allocator = temp_allocator;
+	}
+	
 	void		clear(void);
 
 	protected:
@@ -453,14 +475,11 @@ class vector {
 // ******************************** Modifiers ******************************* //
 
 
-template<typename T, typename Alloc>
-void	vector<T, Alloc>::swap(vector &x) {
-	vector<T, Alloc> tmp;
-
-	tmp._cpy_content(x);
-	x._cpy_content(*this);
-	this->_cpy_content(tmp);
-}
+template<typename T>
+void swap(vector<T> &x, vector<T> &y) 
+{
+	x.swap(y);
+};
 
 template<typename T, typename Alloc>
 void	vector<T, Alloc>::clear(void) {
