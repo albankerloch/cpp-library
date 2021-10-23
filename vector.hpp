@@ -355,10 +355,50 @@ class vector {
 		return (iterator(this->begin() + ret));
 	}     
 
-	void		insert(iterator position, size_type n, const value_type &val);
-	template <class Ite>
-		void	insert(iterator position, Ite first,
-			typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type last);
+	void insert (iterator position, size_type n, const value_type& value)
+	{
+		size_t begin_insert;
+		size_t i;
+
+		begin_insert = position - this->begin();
+		if (this->m_size + n > this->capacity())
+			this->reserve(this->m_size + n);
+		this->m_size = this->m_size + n;
+		i = this->size() - 1;
+		while(i != begin_insert + n - 1)
+		{
+			m_allocator.construct(&this->m_array[i], this->m_array[i - n]);
+			i--;
+		}
+		while(i != begin_insert)
+		{
+			m_allocator.destroy(&this->m_array[i]);
+			m_allocator.construct(&this->m_array[i], value);
+			i--;
+		}
+		m_allocator.destroy(&this->m_array[i]);
+		m_allocator.construct(&this->m_array[i], value);
+	}
+
+	 template <class Ite>
+	void insert (iterator position, Ite first, typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type last)
+	{
+		difference_type	idx;
+		difference_type	old_end_idx;
+		iterator		old_end;
+		iterator		end;
+
+		idx = position - this->begin();
+		old_end_idx = this->end() - this->begin();
+		this->resize(this->m_size + (ft::itlen(first, last)));
+		end = this->end();
+		position = this->begin() + idx;
+		old_end = this->begin() + old_end_idx;
+		while (old_end != position)
+			*--end = *--old_end;
+		while (first != last)
+			*position++ = *first++;
+	}
 
 	iterator	erase(iterator ite);
 	iterator	erase(iterator first, iterator last);
@@ -386,23 +426,7 @@ class vector {
 // ******************************** Modifiers ******************************* //
 
 
-template<typename T, typename Alloc>
-void	vector<T, Alloc>::insert(iterator position, size_type n, const value_type &val) {
-	difference_type const	idx = position - this->begin();
-	difference_type const	old_end_idx = this->end() - this->begin();
-	iterator				old_end, end;
-
-	this->resize(this->m_size + n);
-
-	end = this->end();
-	position = this->begin() + idx;
-	old_end = this->begin() + old_end_idx;
-	while (old_end != position)
-		*--end = *--old_end;
-	while (n-- > 0)
-		*position++ = val;
-}
-
+/*
 template<typename T, typename Alloc> template <class Ite>
 void	vector<T, Alloc>::insert(iterator position, Ite first, typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type last) {
 	difference_type const	idx = position - this->begin();
@@ -418,7 +442,7 @@ void	vector<T, Alloc>::insert(iterator position, Ite first, typename ft::enable_
 		*--end = *--old_end;
 	while (first != last)
 		*position++ = *first++;
-}
+}*/
 
 template<typename T, typename Alloc>
 typename vector<T, Alloc>::iterator	vector<T, Alloc>::erase(iterator ite) {
