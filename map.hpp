@@ -316,8 +316,10 @@ namespace ft
 
 			size_type erase(const key_type &k) 
 			{
-				iterator element = this->find(k);
-
+				iterator element;
+				
+				
+				element = this->find(k);
 				if (element == this->end())
 					return (0);
 				this->ft_delete_node(element._node);
