@@ -105,10 +105,21 @@ class vector {
 	};
 
 	template <class Ite>
-	vector(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first,
-			Ite last, const allocator_type &alloc = allocator_type());
-	vector(const vector &src);
-	virtual ~vector(void);
+	explicit vector(Ite first, Ite last): m_array(0), m_capacity(0), m_size(0) 
+	{
+		this->assign(first, last);
+	};
+
+	vector (const vector  & vector_to_copy) : m_allocator(vector_to_copy.m_allocator), m_array(0), m_capacity(0), m_size(0)
+	{
+		*this = vector_to_copy;
+	};
+
+	~vector() 
+	{
+		this->clear();
+		m_allocator.deallocate(this->m_array, this->m_capacity);
+	};
 
 	vector	&operator=(vector const &rhs);
 
@@ -176,24 +187,6 @@ class vector {
 
 }; // ************************************************** class ft::vector end //
 
-
-
-template <typename T, typename Alloc> template <class Ite>
-vector<T, Alloc>::vector(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first,
-		Ite last, const allocator_type &alloc) : m_allocator(alloc), m_array(NULL), m_capacity(0) , m_size(0) {
-	this->_createm_array(ft::itlen(first, last), first, last);
-}
-
-template<typename T, typename Alloc>
-vector<T, Alloc>::vector(vector const &src) : \
-	m_allocator(allocator_type()), m_array(NULL), m_capacity(0) , m_size(0){
-	*this = src;
-}
-
-template<typename T, typename Alloc>
-vector<T, Alloc>::~vector(void) {
-	this->_destroym_array();
-}
 
 template<typename T, typename Alloc>
 vector<T, Alloc>	&vector<T, Alloc>::operator=(vector const &rhs) {
