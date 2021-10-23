@@ -359,8 +359,11 @@ namespace ft
 
 			iterator find(const key_type &k) 
 			{
-				iterator it = this->begin(), ite = this->end();
-
+				iterator it;
+				iterator ite;
+				
+				it = this->begin();
+				ite = this->end();
 				while (it != ite)
 				{
 					if (this->ft_key_compare(it->first, k))
@@ -372,8 +375,11 @@ namespace ft
 
 			const_iterator find(const key_type &k) const 
 			{
-				const_iterator it = this->begin(), ite = this->end();
-
+				const_iterator it;
+				const_iterator ite;
+				
+				it = this->begin();
+				ite = this->end();
 				while (it != ite)
 				{
 					if (this->ft_key_compare(it->first, k))
@@ -385,24 +391,31 @@ namespace ft
 
 			size_type count(const key_type &k) const 
 			{
-				const_iterator	it = this->begin(), ite = this->end();
-				size_type		res = 0;
-
+				size_type		ret;
+				const_iterator it;
+				const_iterator ite;
+			
+				it = this->begin();
+				ite = this->end();
+				ret = 0;
 				while (it != ite)
 				{
 					if (this->ft_key_compare((it++)->first, k))
 					{
-						++res;
+						++ret;
 						break ;
 					}
 				}
-				return (res);
+				return (ret);
 			};
 
 			iterator lower_bound(const key_type &k) 
 			{
-				iterator it = this->begin(), ite = this->end();
-
+				iterator it;
+				iterator ite;
+				
+				it = this->begin();
+				ite = this->end();
 				while (it != ite)
 				{
 					if (!this->m_compare(it->first, k))
@@ -414,8 +427,11 @@ namespace ft
 
 			const_iterator lower_bound(const key_type &k) const 
 			{
-				const_iterator it = this->begin(), ite = this->end();
-
+				const_iterator it;
+				const_iterator ite;
+			
+				it = this->begin();
+				ite = this->end();
 				while (it != ite)
 				{
 					if (!this->m_compare(it->first, k))
@@ -427,8 +443,11 @@ namespace ft
 
 			iterator upper_bound(const key_type &k) 
 			{
-				iterator it = this->begin(), ite = this->end();
-
+				iterator it;
+				iterator ite;
+				
+				it = this->begin();
+				ite = this->end();
 				while (it != ite)
 				{
 					if (this->m_compare(k, it->first))
@@ -440,8 +459,11 @@ namespace ft
 
 			const_iterator upper_bound(const key_type &k) const 
 			{
-				const_iterator it = this->begin(), ite = this->end();
-
+				const_iterator it;
+				const_iterator ite;
+			
+				it = this->begin();
+				ite = this->end();
 				while (it != ite)
 				{
 					if (this->m_compare(k, it->first))
