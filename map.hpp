@@ -343,15 +343,8 @@ namespace ft
 
 			void clear() 
 			{
-				node_pointer ghost;
-				
-				ghost = this->end()._node;
-				if (this->m_size == 0)
-					return ;
-				ghost->parent->right = NULL;
-				this->ft_tree_clear(this->m_root);
-				this->m_root = ghost;
-				this->m_size = 0;
+				if (this->size() > 0)
+					this->erase(this->begin(), this->end());
 			};
 
 			key_compare key_comp() const 
