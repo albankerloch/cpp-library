@@ -147,18 +147,18 @@ class vector {
 
 	protected:
 	private:
-	value_type				*_data;
-	allocator_type			_alloc;
-	size_type				_size;
-	size_type				_capacity;
-	const static size_type	_max_size;
+	value_type				*m_array;
+	allocator_type			m_allocator;
+	size_type				m_size;
+	size_type				m_capacity;
+	const static size_type	m_max_size;
 
 	template <class Ite>
-	void				_create_data(difference_type capacity, Ite first, Ite last);
-	void				_create_data(size_type size, const value_type &val = value_type());
-	void				_destroy_data(void);
+	void				_createm_array(difference_type capacity, Ite first, Ite last);
+	void				_createm_array(size_type size, const value_type &val = value_type());
+	void				_destroym_array(void);
 	template <class Ite, class Iterator>
-	static void			_cpy_data(Ite start, Iterator first, Iterator last);
+	static void			_cpym_array(Ite start, Iterator first, Iterator last);
 	void				_cpy_content(vector &vct);
 
 }; // ************************************************** class ft::vector end //
@@ -166,33 +166,33 @@ class vector {
 
 template <typename T, typename Alloc>
 vector<T, Alloc>::vector(const allocator_type &alloc) : \
-	_data(NULL), _alloc(alloc), _size(0), _capacity(0) {
+	m_array(NULL), m_allocator(alloc), m_size(0), m_capacity(0) {
 	return ;
 }
 
 template <typename T, typename Alloc>
 vector<T, Alloc>::vector(size_type size, const value_type &val,
 	const allocator_type &alloc) : \
-	_data(NULL), _alloc(alloc), _size(0), _capacity(0) {
-	this->_create_data(size, val);
+	m_array(NULL), m_allocator(alloc), m_size(0), m_capacity(0) {
+	this->_createm_array(size, val);
 	return ;
 }
 
 template <typename T, typename Alloc> template <class Ite>
 vector<T, Alloc>::vector(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first,
-		Ite last, const allocator_type &alloc) : _data(NULL), _alloc(alloc), _size(0), _capacity(0) {
-	this->_create_data(ft::itlen(first, last), first, last);
+		Ite last, const allocator_type &alloc) : m_array(NULL), m_allocator(alloc), m_size(0), m_capacity(0) {
+	this->_createm_array(ft::itlen(first, last), first, last);
 }
 
 template<typename T, typename Alloc>
 vector<T, Alloc>::vector(vector const &src) : \
-	_data(NULL), _alloc(allocator_type()), _size(0), _capacity(0) {
+	m_array(NULL), m_allocator(allocator_type()), m_size(0), m_capacity(0) {
 	*this = src;
 }
 
 template<typename T, typename Alloc>
 vector<T, Alloc>::~vector(void) {
-	this->_destroy_data();
+	this->_destroym_array();
 }
 
 template<typename T, typename Alloc>
@@ -202,7 +202,7 @@ vector<T, Alloc>	&vector<T, Alloc>::operator=(vector const &rhs) {
 	const_iterator first = rhs.begin();
 	const_iterator last = rhs.end();
 	size_type len = ft::itlen(first, last);
-	this->_create_data((len > this->_capacity) ? len : this->_capacity, first, last);
+	this->_createm_array((len > this->m_capacity) ? len : this->m_capacity, first, last);
 	return (*this);
 }
 
@@ -210,59 +210,59 @@ vector<T, Alloc>	&vector<T, Alloc>::operator=(vector const &rhs) {
 
 template<typename T, typename Alloc>
 typename vector<T, Alloc>::iterator vector<T, Alloc>::begin(void) {
-	return (iterator(this->_data));
+	return (iterator(this->m_array));
 }
 
 template<typename T, typename Alloc>
 typename vector<T, Alloc>::const_iterator vector<T, Alloc>::begin(void) const {
-	return (const_iterator(this->_data));
+	return (const_iterator(this->m_array));
 }
 
 template<typename T, typename Alloc>
 typename vector<T, Alloc>::iterator vector<T, Alloc>::end(void) {
-	return (iterator(&this->_data[this->_size]));
+	return (iterator(&this->m_array[this->m_size]));
 }
 
 template<typename T, typename Alloc>
 typename vector<T, Alloc>::const_iterator vector<T, Alloc>::end(void) const {
-	return (const_iterator(&this->_data[this->_size]));
+	return (const_iterator(&this->m_array[this->m_size]));
 }
 
 template<typename T, typename Alloc>
 typename vector<T, Alloc>::reverse_iterator vector<T, Alloc>::rbegin(void) {
-	return (reverse_iterator(&this->_data[this->_size]));
+	return (reverse_iterator(&this->m_array[this->m_size]));
 }
 
 template<typename T, typename Alloc>
 typename vector<T, Alloc>::const_reverse_iterator vector<T, Alloc>::rbegin(void) const {
-	return (const_reverse_iterator(&this->_data[this->_size]));
+	return (const_reverse_iterator(&this->m_array[this->m_size]));
 }
 
 template<typename T, typename Alloc>
 typename vector<T, Alloc>::reverse_iterator vector<T, Alloc>::rend(void) {
-	return (reverse_iterator(this->_data));
+	return (reverse_iterator(this->m_array));
 }
 
 template<typename T, typename Alloc>
 typename vector<T, Alloc>::const_reverse_iterator vector<T, Alloc>::rend(void) const {
-	return (const_reverse_iterator(this->_data));
+	return (const_reverse_iterator(this->m_array));
 }
 
 // ******************************* Capacity ********************************* //
 
 template<typename T, typename Alloc>
 typename vector<T, Alloc>::size_type vector<T, Alloc>::size(void) const {
-	return (this->_size);
+	return (this->m_size);
 }
 
 template<typename T, typename Alloc>
 typename vector<T, Alloc>::size_type vector<T, Alloc>::capacity(void) const {
-	return (this->_capacity);
+	return (this->m_capacity);
 }
 
 template<typename T, typename Alloc>
 typename vector<T, Alloc>::size_type vector<T, Alloc>::max_size(void) const {
-	return (_max_size);
+	return (std::numeric_limits<difference_type>::max() / (sizeof(value_type) / 2 ?: 1));
 }
 
 template<typename T, typename Alloc>
@@ -271,69 +271,69 @@ void		vector<T, Alloc>::reserve(size_type n) {
 		throw std::length_error("allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size");
 	if (n <= this->capacity())
 		return ;
-	this->_create_data(n, this->begin(), this->end());
+	this->_createm_array(n, this->begin(), this->end());
 }
 
 template<typename T, typename Alloc>
 void		vector<T, Alloc>::resize(size_type size, value_type val) {
-	if (size < this->_size)
+	if (size < this->m_size)
 	{
-		while (size < this->_size)
-			this->_alloc.destroy(&this->_data[--this->_size]);
+		while (size < this->m_size)
+			this->m_allocator.destroy(&this->m_array[--this->m_size]);
 	}
 	else
 	{
-		size_type const &lambda = (this->_size);
+		size_type const &lambda = (this->m_size);
 
-		if (size <= this->_capacity)
+		if (size <= this->m_capacity)
 			;
 		else if (size <= lambda * 2)
 			this->reserve(lambda * 2);
 		else
 			this->reserve(size);
-		while (this->_size < size)
-			this->_alloc.construct(&this->_data[this->_size++], val);
+		while (this->m_size < size)
+			this->m_allocator.construct(&this->m_array[this->m_size++], val);
 	}
 }
 
 template<typename T, typename Alloc>
 bool	vector<T, Alloc>::empty(void) const {
-	return (this->_size == 0 ? true : false);
+	return (this->m_size == 0 ? true : false);
 }
 
 // ******************************* Ele Access ******************************* //
 
 template<typename T, typename Alloc> typename vector<T, Alloc>::
 reference		vector<T, Alloc>::operator[](size_type n) {
-	return this->_data[n];
+	return this->m_array[n];
 }
 
 template<typename T, typename Alloc> typename vector<T, Alloc>::
 const_reference	vector<T, Alloc>::operator[](size_type n) const {
-	return this->_data[n];
+	return this->m_array[n];
 }
 
 template<typename T, typename Alloc> typename vector<T, Alloc>::
 reference		vector<T, Alloc>::at(size_type n) {
-	if (n < this->_size)
+	if (n < this->m_size)
 		return ((*this)[n]);
 	std::ostringstream ostr;
 
 	ostr << "vector";
 	ostr << "::_M_range_check: __n (which is " << n
-		<< ") >= this->size() (which is " << this->_size << ")";
+		<< ") >= this->size() (which is " << this->m_size << ")";
 	throw std::out_of_range(ostr.str());
 }
 
 template<typename T, typename Alloc> typename vector<T, Alloc>::
 const_reference	vector<T, Alloc>::at(size_type n) const {
-	if (n < this->_size)
+	if (n < this->m_size)
 		return ((*this)[n]);
 	std::ostringstream ostr;
 
 	ostr << "vector";
 	ostr << "::_M_range_check: __n (which is " << n
-		<< ") >= this->size() (which is " << this->_size << ")";
+		<< ") >= this->size() (which is " << this->m_size << ")";
 	throw std::out_of_range(ostr.str());
 }
 
@@ -349,12 +349,12 @@ const_reference	vector<T, Alloc>::front(void) const {
 
 template<typename T, typename Alloc> typename vector<T, Alloc>::
 reference		vector<T, Alloc>::back(void) {
-	return (*this)[this->_size - 1];
+	return (*this)[this->m_size - 1];
 }
 
 template<typename T, typename Alloc> typename vector<T, Alloc>::
 const_reference	vector<T, Alloc>::back(void) const {
-	return (*this)[this->_size - 1];
+	return (*this)[this->m_size - 1];
 }
 
 // ******************************** Modifiers ******************************* //
@@ -363,40 +363,40 @@ template<typename T, typename Alloc> template <class Ite>
 void	vector<T, Alloc>::assign(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first, Ite last) {
 	size_type size = ft::itlen(first, last);
 
-	if (size > this->_capacity)
-		this->_create_data(size, first, last);
+	if (size > this->m_capacity)
+		this->_createm_array(size, first, last);
 	else
 	{
 		this->clear();
 		while (first != last)
-			this->_alloc.construct(&this->_data[this->_size++], *first++);
+			this->m_allocator.construct(&this->m_array[this->m_size++], *first++);
 	}
 }
 
 template<typename T, typename Alloc>
 void	vector<T, Alloc>::assign(size_type n, const value_type &val) {
-	if (n > this->_capacity)
-		this->_create_data(n, val);
+	if (n > this->m_capacity)
+		this->_createm_array(n, val);
 	else
 	{
 		this->clear();
-		while (this->_size < n)
-			this->_alloc.construct(&this->_data[this->_size++], val);
+		while (this->m_size < n)
+			this->m_allocator.construct(&this->m_array[this->m_size++], val);
 	}
 }
 
 template<typename T, typename Alloc>
 void		vector<T, Alloc>::push_back(const value_type &val) {
-	if (this->_size == this->_capacity)
-		this->resize(this->_size + 1, val);
+	if (this->m_size == this->m_capacity)
+		this->resize(this->m_size + 1, val);
 	else
-		this->_alloc.construct(&this->_data[this->_size++], val);
+		this->m_allocator.construct(&this->m_array[this->m_size++], val);
 }
 
 // Do not protect this function or it will not behave like the original!
 template<typename T, typename Alloc>
 void		vector<T, Alloc>::pop_back(void) {
-	this->_alloc.destroy(&this->_data[--this->_size]);
+	this->m_allocator.destroy(&this->m_array[--this->m_size]);
 }
 
 template<typename T, typename Alloc> typename vector<T, Alloc>::
@@ -413,7 +413,7 @@ void	vector<T, Alloc>::insert(iterator position, size_type n, const value_type &
 	difference_type const	old_end_idx = this->end() - this->begin();
 	iterator				old_end, end;
 
-	this->resize(this->_size + n);
+	this->resize(this->m_size + n);
 
 	end = this->end();
 	position = this->begin() + idx;
@@ -430,7 +430,7 @@ void	vector<T, Alloc>::insert(iterator position, Ite first, typename ft::enable_
 	difference_type const	old_end_idx = this->end() - this->begin();
 	iterator				old_end, end;
 
-	this->resize(this->_size + (ft::itlen(first, last)));
+	this->resize(this->m_size + (ft::itlen(first, last)));
 
 	end = this->end();
 	position = this->begin() + idx;
@@ -459,7 +459,7 @@ typename vector<T, Alloc>::iterator	vector<T, Alloc>::erase(iterator first, iter
 		++last;
 	}
 	while (deleted-- > 0)
-		this->_alloc.destroy(&this->_data[--this->_size]);
+		this->m_allocator.destroy(&this->m_array[--this->m_size]);
 	return (tmp);
 }
 
@@ -474,48 +474,48 @@ void	vector<T, Alloc>::swap(vector &x) {
 
 template<typename T, typename Alloc>
 void	vector<T, Alloc>::clear(void) {
-	while (this->_size > 0)
-		this->_alloc.destroy(&this->_data[--this->_size]);
+	while (this->m_size > 0)
+		this->m_allocator.destroy(&this->m_array[--this->m_size]);
 }
 
 // ################################ Private ####################################
 
 template<typename T, typename Alloc> template <class Ite>
-void	vector<T, Alloc>::_create_data(difference_type capacity, Ite first, Ite last) {
+void	vector<T, Alloc>::_createm_array(difference_type capacity, Ite first, Ite last) {
 	vector<T, Alloc> res;
 	difference_type len = ft::itlen(first, last);
 
 	if (capacity < len || capacity < 0)
 		throw std::bad_alloc();
-	res._alloc = this->_alloc;
-	res._size = len; res._capacity = capacity;
-	res._data = res._alloc.allocate(capacity);
+	res.m_allocator = this->m_allocator;
+	res.m_size = len; res.m_capacity = capacity;
+	res.m_array = res.m_allocator.allocate(capacity);
 	for (size_type i = 0; first != last; ++first)
-		res._alloc.construct(&res._data[i++], *first);
-	this->_destroy_data();
+		res.m_allocator.construct(&res.m_array[i++], *first);
+	this->_destroym_array();
 	this->_cpy_content(res);
 }
 
 template<typename T, typename Alloc>
-void	vector<T, Alloc>::_create_data(size_type size, const value_type &val) {
-	this->_destroy_data();
-	this->_data = this->_alloc.allocate(size);
+void	vector<T, Alloc>::_createm_array(size_type size, const value_type &val) {
+	this->_destroym_array();
+	this->m_array = this->m_allocator.allocate(size);
 	for (size_type i = 0; i < size; ++i)
-		this->_alloc.construct(&this->_data[i], val);
-	this->_size = size; this->_capacity = size;
+		this->m_allocator.construct(&this->m_array[i], val);
+	this->m_size = size; this->m_capacity = size;
 }
 
 template<typename T, typename Alloc>
-void	vector<T, Alloc>::_destroy_data(void) {
-	if (!this->_data)
+void	vector<T, Alloc>::_destroym_array(void) {
+	if (!this->m_array)
 		return ;
 	this->clear();
-	this->_alloc.deallocate(this->_data, this->_capacity);
-	this->_data = NULL; this->_size = 0; this->_capacity = 0;
+	this->m_allocator.deallocate(this->m_array, this->m_capacity);
+	this->m_array = NULL; this->m_size = 0; this->m_capacity = 0;
 }
 
 template<typename T, typename Alloc> template <class Ite, class Iterator>
-void	vector<T, Alloc>::_cpy_data(Ite start, Iterator first, Iterator last) {
+void	vector<T, Alloc>::_cpym_array(Ite start, Iterator first, Iterator last) {
 	while (first != last)
 	{
 		*start = *first;
@@ -526,16 +526,13 @@ void	vector<T, Alloc>::_cpy_data(Ite start, Iterator first, Iterator last) {
 
 template<typename T, typename Alloc>
 void	vector<T, Alloc>::_cpy_content(vector<T, Alloc> &vct) {
-	this->_data = vct._data;
-	this->_alloc = vct._alloc;
-	this->_size = vct._size;
-	this->_capacity = vct._capacity;
-	vct._data = NULL; vct._size = 0; vct._capacity = 0;
+	this->m_array = vct.m_array;
+	this->m_allocator = vct.m_allocator;
+	this->m_size = vct.m_size;
+	this->m_capacity = vct.m_capacity;
+	vct.m_array = NULL; vct.m_size = 0; vct.m_capacity = 0;
 }
 
-template <typename T, typename Alloc>
-const typename vector<T, Alloc>::size_type vector<T, Alloc>::_max_size =
-	std::numeric_limits<difference_type>::max() / (sizeof(value_type) / 2 ?: 1);
 
 // ############################## Iterators ####################################
 
