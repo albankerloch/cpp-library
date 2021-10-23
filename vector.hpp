@@ -298,12 +298,53 @@ class vector {
 		return (this->m_array[this->m_size - 1]);
 	}
 
-	// Modifiers
-	template <class Ite>
-	void		assign(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first, Ite last);
-	void		assign(size_type n, const value_type &val);
-	void		push_back(const value_type &val);
-	void		pop_back(void);
+ 	template <class Ite>
+	void assign(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first, Ite last) 
+	{
+		size_t length;
+		size_t i;
+		
+		length = ft::itlen(first, last);
+		if (length > this->m_capacity)
+			this->reserve(length);
+		i = 0;
+		while (first != last) 
+		{
+			this->m_allocator.construct(&this->m_array[i], *first);
+			first++;
+			i++;
+		}
+		this->m_size = length;
+	}
+
+	void assign(size_type length, const_reference value) 
+	{
+		size_t i;
+
+		if (length > this->m_capacity)
+			this->reserve(length);
+		i = 0;
+		while (i < length) 
+		{
+			m_allocator.construct(&this->m_array[i], value);
+			++i;
+		}
+		this->m_size = length;
+	}
+
+	void push_back(value_type value)
+	{
+		if (this->m_size == this->m_capacity)
+			this->reserve(this->m_capacity + 1);
+		m_allocator.construct(&m_array[this->m_size], value);
+		this->m_size++;
+	}
+
+	void pop_back(void)
+	{
+		m_allocator.destroy(this->m_array + this->m_size);
+		this->m_size--;
+	}
 
 	iterator	insert(iterator position, const value_type &val);
 	void		insert(iterator position, size_type n, const value_type &val);
@@ -336,45 +377,6 @@ class vector {
 
 // ******************************** Modifiers ******************************* //
 
-template<typename T, typename Alloc> template <class Ite>
-void	vector<T, Alloc>::assign(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first, Ite last) {
-	size_type size = ft::itlen(first, last);
-
-	if (size > this->m_capacity)
-		this->_createm_array(size, first, last);
-	else
-	{
-		this->clear();
-		while (first != last)
-			this->m_allocator.construct(&this->m_array[this->m_size++], *first++);
-	}
-}
-
-template<typename T, typename Alloc>
-void	vector<T, Alloc>::assign(size_type n, const value_type &val) {
-	if (n > this->m_capacity)
-		this->_createm_array(n, val);
-	else
-	{
-		this->clear();
-		while (this->m_size < n)
-			this->m_allocator.construct(&this->m_array[this->m_size++], val);
-	}
-}
-
-template<typename T, typename Alloc>
-void		vector<T, Alloc>::push_back(const value_type &val) {
-	if (this->m_size == this->m_capacity)
-		this->resize(this->m_size + 1, val);
-	else
-		this->m_allocator.construct(&this->m_array[this->m_size++], val);
-}
-
-// Do not protect this function or it will not behave like the original!
-template<typename T, typename Alloc>
-void		vector<T, Alloc>::pop_back(void) {
-	this->m_allocator.destroy(&this->m_array[--this->m_size]);
-}
 
 template<typename T, typename Alloc> typename vector<T, Alloc>::
 iterator	vector<T, Alloc>::insert(iterator position, const value_type &val) {
