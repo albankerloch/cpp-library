@@ -309,9 +309,9 @@ namespace ft
 					this->insert(*first++);
 			};
 
-			void erase(iterator position) 
+			void erase(iterator pos) 
 			{
-				this->erase(position++, position);
+				this->ft_delete_node(pos._node);
 			};
 
 			size_type erase(const key_type &k) 
