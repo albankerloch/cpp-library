@@ -221,13 +221,63 @@ class vector {
 		}
 	}
 
-	void		resize(size_type size, value_type val = value_type());
+	void resize (size_type length, value_type value = value_type())
+	{
+		size_t i;
 
-	// Element access
-	reference			operator[](size_type n);
-	const_reference		operator[](size_type n) const;
-	reference			at(size_type n);
-	const_reference		at(size_type n) const;
+		if (length < this->m_size)
+		{
+			i = length;
+			while (i < this->m_size)
+			{
+				this->m_allocator.destroy(&this->m_array[i]);
+				i++;
+			}
+			this->m_size = length;
+		}
+		else if (length > this->m_size)
+		{
+			if (length > this->m_capacity)
+				this->reserve(length);
+			i = this->m_size;
+			while (i < length)
+			{
+				this->m_allocator.construct(&this->m_array[i], value);
+				i++;
+			}
+			this->m_size = length;
+		}
+	}
+
+	allocator_type get_allocator() const
+	{
+		return (m_allocator);
+	}
+			
+	reference operator[](size_type idx) 
+	{
+		return (this->m_array[idx]);
+	}
+
+	const_reference operator[](size_type idx) const 
+	{
+		return (this->m_array[idx]);
+	}
+
+	reference at(size_type idx) 
+	{
+		if (idx >= this->m_size)
+			throw std::out_of_range("At : index out of range");
+		return (this->m_array[idx]);
+	}
+
+	const_reference at(size_type idx) const 
+	{
+		if (idx >= this->m_size)
+			throw std::out_of_range("At : index out of range");
+		return (this->m_array[idx]);
+	}
+
 	reference			front(void);
 	const_reference		front(void) const;
 	reference			back(void);
@@ -269,71 +319,8 @@ class vector {
 }; // ************************************************** class ft::vector end //
 
 
-// ****************************** Iterators ********************************* //
-
-
-// ******************************* Capacity ********************************* //
-
-
-
-template<typename T, typename Alloc>
-void		vector<T, Alloc>::resize(size_type size, value_type val) {
-	if (size < this->m_size)
-	{
-		while (size < this->m_size)
-			this->m_allocator.destroy(&this->m_array[--this->m_size]);
-	}
-	else
-	{
-		size_type const &lambda = (this->m_size);
-
-		if (size <= this->m_capacity)
-			;
-		else if (size <= lambda * 2)
-			this->reserve(lambda * 2);
-		else
-			this->reserve(size);
-		while (this->m_size < size)
-			this->m_allocator.construct(&this->m_array[this->m_size++], val);
-	}
-}
-
-
 // ******************************* Ele Access ******************************* //
 
-template<typename T, typename Alloc> typename vector<T, Alloc>::
-reference		vector<T, Alloc>::operator[](size_type n) {
-	return this->m_array[n];
-}
-
-template<typename T, typename Alloc> typename vector<T, Alloc>::
-const_reference	vector<T, Alloc>::operator[](size_type n) const {
-	return this->m_array[n];
-}
-
-template<typename T, typename Alloc> typename vector<T, Alloc>::
-reference		vector<T, Alloc>::at(size_type n) {
-	if (n < this->m_size)
-		return ((*this)[n]);
-	std::ostringstream ostr;
-
-	ostr << "vector";
-	ostr << "::_M_range_check: __n (which is " << n
-		<< ") >= this->size() (which is " << this->m_size << ")";
-	throw std::out_of_range(ostr.str());
-}
-
-template<typename T, typename Alloc> typename vector<T, Alloc>::
-const_reference	vector<T, Alloc>::at(size_type n) const {
-	if (n < this->m_size)
-		return ((*this)[n]);
-	std::ostringstream ostr;
-
-	ostr << "vector";
-	ostr << "::_M_range_check: __n (which is " << n
-		<< ") >= this->size() (which is " << this->m_size << ")";
-	throw std::out_of_range(ostr.str());
-}
 
 template<typename T, typename Alloc> typename vector<T, Alloc>::
 reference		vector<T, Alloc>::front(void) {
