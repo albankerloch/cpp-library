@@ -5,6 +5,7 @@
 # include "RandomIte.hpp"
 # include "ReverseIte.hpp"
 # include "Vector_Iterator.hpp"
+# include "Const_Vector_Iterator.hpp"
 
 namespace ft {
 
@@ -23,8 +24,9 @@ class vector {
 	typedef size_t										size_type;
 
 	typedef ft::VectorIterator<value_type>				iterator;
+	typedef ft::ConstVectorIterator<value_type>			const_iterator;
 
-	class const_iterator : public RandIte<value_type> {
+/*	class const_iterator : public RandIte<value_type> {
 		protected:
 		typedef RandIte<value_type> super;
 		const_iterator(value_type *src) : RandIte<value_type>(src) {};
@@ -52,7 +54,7 @@ class vector {
 		const_iterator		operator--(int) { return super::operator--(0); };
 
 		friend class vector;
-	};
+	};*/
 	typedef ft::reverse_iterator<iterator>			reverse_iterator;
 	typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
@@ -494,7 +496,7 @@ bool	operator>=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 }
 
 // Const Iterator
-
+/*
 template <typename T, typename Alloc>
 typename vector<T, Alloc>::const_iterator::reference
 	vector<T, Alloc>::const_iterator::operator*(void) const {
@@ -523,7 +525,7 @@ template <typename T, typename Alloc>
 typename vector<T, Alloc>::const_iterator::reference
 	vector<T, Alloc>::const_iterator::operator[](difference_type n) const {
 	return (this->_value[n]);
-}
+}*/
 
 }
 
