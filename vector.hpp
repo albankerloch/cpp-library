@@ -87,7 +87,10 @@ class vector {
 
 	// Member functions
 
-	explicit vector(const allocator_type &alloc = allocator_type());
+	explicit vector (const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_array(0), m_capacity(0), m_size(0) 
+	{
+	};
+	
 	explicit vector(size_type size, const value_type &val = value_type(),
 		const allocator_type &alloc = allocator_type());
 	template <class Ite>
@@ -161,13 +164,6 @@ class vector {
 	void				_cpy_content(vector &vct);
 
 }; // ************************************************** class ft::vector end //
-
-
-template <typename T, typename Alloc>
-vector<T, Alloc>::vector(const allocator_type &alloc) : \
-	m_allocator(alloc), m_array(NULL), m_capacity(0) ,  m_size(0){
-	return ;
-}
 
 template <typename T, typename Alloc>
 vector<T, Alloc>::vector(size_type size, const value_type &val,
