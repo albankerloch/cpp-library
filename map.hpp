@@ -329,7 +329,7 @@ namespace ft
 			void erase(iterator first, iterator last) 
 			{
 				while (first != last)
-					this->ft_delete_node((first++)._node);
+					this->erase(first++);
 			};
 
 			void swap(map &x) 
