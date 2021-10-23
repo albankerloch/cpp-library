@@ -91,8 +91,19 @@ class vector {
 	{
 	};
 	
-	explicit vector(size_type size, const value_type &val = value_type(),
-		const allocator_type &alloc = allocator_type());
+	explicit vector (size_type n, const value_type & val = value_type(), const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_capacity(n), m_size(n)
+	{
+		size_type i;
+
+		this->m_array = m_allocator.allocate(n);
+		i = 0;
+		while(i < n)
+		{
+			m_allocator.construct(&this->m_array[i], val);
+			i++;
+		}
+	};
+
 	template <class Ite>
 	vector(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first,
 			Ite last, const allocator_type &alloc = allocator_type());
@@ -165,13 +176,7 @@ class vector {
 
 }; // ************************************************** class ft::vector end //
 
-template <typename T, typename Alloc>
-vector<T, Alloc>::vector(size_type size, const value_type &val,
-	const allocator_type &alloc) : \
-	m_allocator(alloc), m_array(NULL),  m_capacity(0), m_size(0) {
-	this->_createm_array(size, val);
-	return ;
-}
+
 
 template <typename T, typename Alloc> template <class Ite>
 vector<T, Alloc>::vector(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first,
