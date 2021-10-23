@@ -429,28 +429,7 @@ class vector {
 		return (save_first);
 	}
 
-	void swap(vector & x)
-	{
-		T	*temp_array;
-		size_t temp_size;
-		size_t temp_capacity;
-		allocator_type	temp_allocator;
-
-		temp_array = x.m_array;
-		temp_size = x.m_size;
-		temp_capacity = x.m_capacity;
-		temp_allocator = x.m_allocator;
-
-		x.m_array = this->m_array;
-		x.m_size = this->m_size;
-		x.m_capacity = this->m_capacity;
-		x.m_allocator = this->m_allocator;
-
-		this->m_array = temp_array;
-		this->m_size = temp_size;
-		this->m_capacity = temp_capacity;
-		this->m_allocator = temp_allocator;
-	}
+	void		swap(vector &x);
 	void		clear(void);
 
 	protected:
