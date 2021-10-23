@@ -175,12 +175,29 @@ class vector {
 	}
 
 
-	// Capacity
-	size_type	size(void) const;
-	size_type	capacity(void) const;
-	size_type	max_size(void) const;
+	size_type size() const 
+	{
+		return (this->m_size);
+	}
+
+	size_type capacity() const 
+	{
+		return (this->m_capacity);
+	}
+
+	bool empty() const
+	{
+		if (this->m_size == 0)
+			return (true);
+		return (false);
+	}
+
+	size_type max_size() const 
+	{
+		return (std::numeric_limits<difference_type>::max() / (sizeof(value_type) / 2 ?: 1));
+	}
+
 	void		resize(size_type size, value_type val = value_type());
-	bool		empty(void) const;
 	void		reserve(size_type n);
 
 	// Element access
@@ -234,20 +251,6 @@ class vector {
 
 // ******************************* Capacity ********************************* //
 
-template<typename T, typename Alloc>
-typename vector<T, Alloc>::size_type vector<T, Alloc>::size(void) const {
-	return (this->m_size);
-}
-
-template<typename T, typename Alloc>
-typename vector<T, Alloc>::size_type vector<T, Alloc>::capacity(void) const {
-	return (this->m_capacity);
-}
-
-template<typename T, typename Alloc>
-typename vector<T, Alloc>::size_type vector<T, Alloc>::max_size(void) const {
-	return (std::numeric_limits<difference_type>::max() / (sizeof(value_type) / 2 ?: 1));
-}
 
 template<typename T, typename Alloc>
 void		vector<T, Alloc>::reserve(size_type n) {
@@ -280,10 +283,6 @@ void		vector<T, Alloc>::resize(size_type size, value_type val) {
 	}
 }
 
-template<typename T, typename Alloc>
-bool	vector<T, Alloc>::empty(void) const {
-	return (this->m_size == 0 ? true : false);
-}
 
 // ******************************* Ele Access ******************************* //
 
