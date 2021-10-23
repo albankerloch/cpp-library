@@ -278,10 +278,25 @@ class vector {
 		return (this->m_array[idx]);
 	}
 
-	reference			front(void);
-	const_reference		front(void) const;
-	reference			back(void);
-	const_reference		back(void) const;
+	reference front(void) 
+	{
+		return (this->m_array[0]);
+	}
+
+	const_reference front(void) const 
+	{
+		return (this->m_array[0]);
+	}
+
+	reference back(void) 
+	{
+		return (this->m_array[this->m_size - 1]);
+	}
+
+	const_reference back(void) const 
+	{
+		return (this->m_array[this->m_size - 1]);
+	}
 
 	// Modifiers
 	template <class Ite>
@@ -318,29 +333,6 @@ class vector {
 
 }; // ************************************************** class ft::vector end //
 
-
-// ******************************* Ele Access ******************************* //
-
-
-template<typename T, typename Alloc> typename vector<T, Alloc>::
-reference		vector<T, Alloc>::front(void) {
-	return (*this)[0];
-}
-
-template<typename T, typename Alloc> typename vector<T, Alloc>::
-const_reference	vector<T, Alloc>::front(void) const {
-	return (*this)[0];
-}
-
-template<typename T, typename Alloc> typename vector<T, Alloc>::
-reference		vector<T, Alloc>::back(void) {
-	return (*this)[this->m_size - 1];
-}
-
-template<typename T, typename Alloc> typename vector<T, Alloc>::
-const_reference	vector<T, Alloc>::back(void) const {
-	return (*this)[this->m_size - 1];
-}
 
 // ******************************** Modifiers ******************************* //
 
