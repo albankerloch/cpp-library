@@ -400,9 +400,57 @@ class vector {
 			*position++ = *first++;
 	}
 
-	iterator	erase(iterator ite);
-	iterator	erase(iterator first, iterator last);
-	void		swap(vector &x);
+	iterator erase (iterator position)
+	{
+		iterator save_position(position);
+
+		while (position != this->end() - 1)
+		{
+			this->m_allocator.construct(&(*position), *(position + 1));
+			position++;
+		}
+		this->m_size--;
+		return (save_position);
+	}
+
+	iterator erase(iterator first, iterator last)
+	{
+		iterator save_first(first);
+		size_t n;
+
+		n = last - first;
+		while (last != this->end())
+		{
+			this->m_allocator.construct(&(*first), *(last));
+			first++;
+			last++;
+		}
+		this->m_size = this->m_size - n;
+		return (save_first);
+	}
+
+	void swap(vector & x)
+	{
+		T	*temp_array;
+		size_t temp_size;
+		size_t temp_capacity;
+		allocator_type	temp_allocator;
+
+		temp_array = x.m_array;
+		temp_size = x.m_size;
+		temp_capacity = x.m_capacity;
+		temp_allocator = x.m_allocator;
+
+		x.m_array = this->m_array;
+		x.m_size = this->m_size;
+		x.m_capacity = this->m_capacity;
+		x.m_allocator = this->m_allocator;
+
+		this->m_array = temp_array;
+		this->m_size = temp_size;
+		this->m_capacity = temp_capacity;
+		this->m_allocator = temp_allocator;
+	}
 	void		clear(void);
 
 	protected:
@@ -425,46 +473,6 @@ class vector {
 
 // ******************************** Modifiers ******************************* //
 
-
-/*
-template<typename T, typename Alloc> template <class Ite>
-void	vector<T, Alloc>::insert(iterator position, Ite first, typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type last) {
-	difference_type const	idx = position - this->begin();
-	difference_type const	old_end_idx = this->end() - this->begin();
-	iterator				old_end, end;
-
-	this->resize(this->m_size + (ft::itlen(first, last)));
-
-	end = this->end();
-	position = this->begin() + idx;
-	old_end = this->begin() + old_end_idx;
-	while (old_end != position)
-		*--end = *--old_end;
-	while (first != last)
-		*position++ = *first++;
-}*/
-
-template<typename T, typename Alloc>
-typename vector<T, Alloc>::iterator	vector<T, Alloc>::erase(iterator ite) {
-	return (this->erase(ite, ite + 1));
-}
-
-template<typename T, typename Alloc>
-typename vector<T, Alloc>::iterator	vector<T, Alloc>::erase(iterator first, iterator last) {
-	iterator tmp = first;
-	iterator end = this->end();
-	size_type deleted = ft::itlen(first, last);
-
-	while (last != end)
-	{
-		*first = *last;
-		++first;
-		++last;
-	}
-	while (deleted-- > 0)
-		this->m_allocator.destroy(&this->m_array[--this->m_size]);
-	return (tmp);
-}
 
 template<typename T, typename Alloc>
 void	vector<T, Alloc>::swap(vector &x) {
