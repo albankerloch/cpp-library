@@ -121,7 +121,20 @@ class vector {
 		m_allocator.deallocate(this->m_array, this->m_capacity);
 	};
 
-	vector	&operator=(vector const &rhs);
+	vector & operator=(const vector  & vector_to_copy) 
+	{
+		size_t i;
+
+		this->m_size = 0;
+		this->m_capacity = 0;
+		i = 0;
+		while (i < vector_to_copy.m_size)
+		{
+			this->push_back(vector_to_copy.m_array[i]);
+			i++;
+		}
+		return *this;
+	};
 
 	// Iterators
 	iterator		begin(void);
@@ -187,17 +200,6 @@ class vector {
 
 }; // ************************************************** class ft::vector end //
 
-
-template<typename T, typename Alloc>
-vector<T, Alloc>	&vector<T, Alloc>::operator=(vector const &rhs) {
-	if (this == &rhs)
-		return (*this);
-	const_iterator first = rhs.begin();
-	const_iterator last = rhs.end();
-	size_type len = ft::itlen(first, last);
-	this->_createm_array((len > this->m_capacity) ? len : this->m_capacity, first, last);
-	return (*this);
-}
 
 // ****************************** Iterators ********************************* //
 
