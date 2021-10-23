@@ -346,7 +346,15 @@ class vector {
 		this->m_size--;
 	}
 
-	iterator	insert(iterator position, const value_type &val);
+	iterator insert (iterator position, const value_type& value)
+	{
+		difference_type ret;
+		
+		ret = position - this->begin();
+		this->insert(position, 1, value);
+		return (iterator(this->begin() + ret));
+	}     
+
 	void		insert(iterator position, size_type n, const value_type &val);
 	template <class Ite>
 		void	insert(iterator position, Ite first,
@@ -377,14 +385,6 @@ class vector {
 
 // ******************************** Modifiers ******************************* //
 
-
-template<typename T, typename Alloc> typename vector<T, Alloc>::
-iterator	vector<T, Alloc>::insert(iterator position, const value_type &val) {
-	difference_type idx = position - this->begin();
-
-	this->insert(position, 1, val);
-	return (iterator(this->begin() + idx));
-}
 
 template<typename T, typename Alloc>
 void	vector<T, Alloc>::insert(iterator position, size_type n, const value_type &val) {
