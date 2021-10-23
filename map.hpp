@@ -26,7 +26,7 @@ namespace ft
 			typedef typename allocator_type::pointer				pointer;
 			typedef typename allocator_type::const_pointer			const_pointer;
 			typedef ft::TreeNode<value_type>						node_type;
-			typedef node_type*										node_ptr;
+			typedef node_type*										node_pointer;
 			typedef ptrdiff_t										difference_type;
 			typedef size_t											size_type;
 			typedef ft::MapIterator<value_type, node_type>			iterator;
@@ -60,18 +60,18 @@ namespace ft
 
 		private:
 
-			node_ptr				m_root;
+			node_pointer			m_root;
 			key_compare				m_compare;
 			allocator_type			m_allocator;
 			size_type				m_size;
 
 		private:
 
-			void ft_insert_node(node_ptr newNode)
+			void ft_insert_node(node_pointer newNode)
 			{
-				node_ptr	*parent = &this->m_root;
-				node_ptr	*node = &this->m_root;
-				node_ptr	ghost = farRight(this->m_root);
+				node_pointer	*parent = &this->m_root;
+				node_pointer	*node = &this->m_root;
+				node_pointer	ghost = farRight(this->m_root);
 				bool		side_left = -1;
 
 				++this->m_size;
@@ -95,10 +95,10 @@ namespace ft
 				}
 			};
 
-			void ft_delete_node(node_ptr rmNode)
+			void ft_delete_node(node_pointer rmNode)
 			{
-				node_ptr	replaceNode = NULL;
-				node_ptr	*rmPlace = &this->m_root;
+				node_pointer	replaceNode = NULL;
+				node_pointer	*rmPlace = &this->m_root;
 
 				--this->m_size;
 				if (rmNode->parent)
@@ -132,7 +132,7 @@ namespace ft
 				delete rmNode;
 			};
 
-			void ft_tree_clear(node_ptr node)
+			void ft_tree_clear(node_pointer node)
 			{
 				if (node == NULL)
 					return ;
@@ -148,7 +148,7 @@ namespace ft
 
 			void ft_copy(map &src) 
 			{
-				node_ptr tmp;
+				node_pointer tmp;
 
 				this->clear();
 				tmp = this->m_root;
@@ -341,7 +341,7 @@ namespace ft
 
 			void clear() 
 			{
-				node_ptr ghost;
+				node_pointer ghost;
 				
 				ghost = this->end()._node;
 				if (this->m_size == 0)
