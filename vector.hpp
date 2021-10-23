@@ -334,7 +334,7 @@ namespace ft
 			}
 
 			template <class Ite>
-			void insert (iterator position, Ite first, typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type last)
+			void insert (iterator position, Ite first, Ite last, typename ft::enable_if<!ft::is_integral_type<Ite>::value, Ite>::type* = NULL) 
 			{
 				difference_type	idx;
 				difference_type	old_end_idx;
