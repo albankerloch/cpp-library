@@ -252,7 +252,7 @@ namespace ft
 			}
 
 			template <class Ite>
-			void assign(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first, Ite last) 
+			void assign(typename ft::enable_if<!ft::is_integer, Ite>::type first, Ite last) 
 			{
 				size_t length;
 				size_t i;
