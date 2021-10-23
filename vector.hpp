@@ -452,14 +452,21 @@ class vector {
 		this->m_allocator = temp_allocator;
 	}
 	
-	void		clear(void);
+	void clear()
+	{
+		while(this->m_size > 0)
+		{
+			m_allocator.destroy(&this->m_array[m_size]);
+			this->m_size--;
+		}
+	}
 
-	protected:
 	private:
-	allocator_type			m_allocator;
-	value_type				*m_array;
-	size_type				m_capacity;
-	size_type				m_size;
+	
+		allocator_type			m_allocator;
+		value_type				*m_array;
+		size_type				m_capacity;
+		size_type				m_size;
 
 	template <class Ite>
 	void				_createm_array(difference_type capacity, Ite first, Ite last);
@@ -469,23 +476,13 @@ class vector {
 	static void			_cpym_array(Ite start, Iterator first, Iterator last);
 	void				_cpy_content(vector &vct);
 
-}; // ************************************************** class ft::vector end //
-
-
-// ******************************** Modifiers ******************************* //
-
+};
 
 template<typename T>
 void swap(vector<T> &x, vector<T> &y) 
 {
 	x.swap(y);
 };
-
-template<typename T, typename Alloc>
-void	vector<T, Alloc>::clear(void) {
-	while (this->m_size > 0)
-		this->m_allocator.destroy(&this->m_array[--this->m_size]);
-}
 
 // ################################ Private ####################################
 
