@@ -197,8 +197,31 @@ class vector {
 		return (std::numeric_limits<difference_type>::max() / (sizeof(value_type) / 2 ?: 1));
 	}
 
+	void reserve(size_t length)
+	{
+		size_type i;
+		value_type *tmp;
+
+		if (length > this->max_size())
+			throw (std::length_error("vector : max size reached during reserve"));
+		else if (length > this->m_capacity)
+		{
+			tmp = this->m_allocator.allocate(length);
+			if (this->m_array)
+			{
+				for (i = 0; i < m_size; i++)
+				{
+					m_allocator.construct(&tmp[i], this->m_array[i]);
+					m_allocator.destroy(&this->m_array[i]);
+				}
+				m_allocator.deallocate(this->m_array, this->m_capacity);
+			}
+			this->m_array = tmp;
+			this->m_capacity = length;
+		}
+	}
+
 	void		resize(size_type size, value_type val = value_type());
-	void		reserve(size_type n);
 
 	// Element access
 	reference			operator[](size_type n);
@@ -252,14 +275,6 @@ class vector {
 // ******************************* Capacity ********************************* //
 
 
-template<typename T, typename Alloc>
-void		vector<T, Alloc>::reserve(size_type n) {
-	if (n > this->max_size())
-		throw std::length_error("allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size");
-	if (n <= this->capacity())
-		return ;
-	this->_createm_array(n, this->begin(), this->end());
-}
 
 template<typename T, typename Alloc>
 void		vector<T, Alloc>::resize(size_type size, value_type val) {
