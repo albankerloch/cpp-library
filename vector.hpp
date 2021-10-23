@@ -1,19 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   vector_decl.hpp                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mli <mli@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/01 22:46:13 by mli               #+#    #+#             */
-/*   Updated: 2021/02/18 21:58:27 by mli              ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef VECTOR_DECL_CLASS_HPP
 # define VECTOR_DECL_CLASS_HPP
 
-# include "base.hpp"
+# include "Utils.hpp"
 # include "RandomIte.hpp"
 # include "ReverseIte.hpp"
 
@@ -295,7 +283,7 @@ void		vector<T, Alloc>::resize(size_type size, value_type val) {
 	}
 	else
 	{
-		size_type const &lambda = (__APPLE__ ? this->_capacity : this->_size);
+		size_type const &lambda = (this->_size);
 
 		if (size <= this->_capacity)
 			;
@@ -332,11 +320,8 @@ reference		vector<T, Alloc>::at(size_type n) {
 	std::ostringstream ostr;
 
 	ostr << "vector";
-	if (!__APPLE__)
-	{
-		ostr << "::_M_range_check: __n (which is " << n
-			<< ") >= this->size() (which is " << this->_size << ")";
-	}
+	ostr << "::_M_range_check: __n (which is " << n
+		<< ") >= this->size() (which is " << this->_size << ")";
 	throw std::out_of_range(ostr.str());
 }
 
@@ -347,11 +332,8 @@ const_reference	vector<T, Alloc>::at(size_type n) const {
 	std::ostringstream ostr;
 
 	ostr << "vector";
-	if (!__APPLE__)
-	{
-		ostr << "::_M_range_check: __n (which is " << n
-			<< ") >= this->size() (which is " << this->_size << ")";
-	}
+	ostr << "::_M_range_check: __n (which is " << n
+		<< ") >= this->size() (which is " << this->_size << ")";
 	throw std::out_of_range(ostr.str());
 }
 
@@ -504,7 +486,7 @@ void	vector<T, Alloc>::_create_data(difference_type capacity, Ite first, Ite las
 	difference_type len = ft::itlen(first, last);
 
 	if (capacity < len || capacity < 0)
-		__APPLE__ ? throw std::length_error("vector") : throw std::bad_alloc();
+		throw std::bad_alloc();
 	res._alloc = this->_alloc;
 	res._size = len; res._capacity = capacity;
 	res._data = res._alloc.allocate(capacity);
