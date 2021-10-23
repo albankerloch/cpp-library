@@ -85,11 +85,9 @@ class vector {
 	typedef ft::reverse_iterator<iterator>			reverse_iterator;
 	typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
-	// Member functions
-
 	explicit vector (const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_array(0), m_capacity(0), m_size(0) 
 	{
-	};
+	}
 	
 	explicit vector (size_type n, const value_type & val = value_type(), const allocator_type & alloc = allocator_type()): m_allocator(alloc), m_capacity(n), m_size(n)
 	{
@@ -102,24 +100,24 @@ class vector {
 			m_allocator.construct(&this->m_array[i], val);
 			i++;
 		}
-	};
+	}
 
 	template <class Ite>
 	explicit vector(Ite first, Ite last): m_array(0), m_capacity(0), m_size(0) 
 	{
 		this->assign(first, last);
-	};
+	}
 
 	vector (const vector  & vector_to_copy) : m_allocator(vector_to_copy.m_allocator), m_array(0), m_capacity(0), m_size(0)
 	{
 		*this = vector_to_copy;
-	};
+	}
 
 	~vector() 
 	{
 		this->clear();
 		m_allocator.deallocate(this->m_array, this->m_capacity);
-	};
+	}
 
 	vector & operator=(const vector  & vector_to_copy) 
 	{
@@ -134,18 +132,48 @@ class vector {
 			i++;
 		}
 		return *this;
-	};
+	}
 
-	// Iterators
-	iterator		begin(void);
-	const_iterator	begin(void) const;
-	iterator		end(void);
-	const_iterator	end(void) const;
+	iterator begin(void) 
+	{
+		return (iterator(this->m_array));
+	}
 
-	reverse_iterator		rbegin(void);
-	const_reverse_iterator	rbegin(void) const;
-	reverse_iterator		rend(void);
-	const_reverse_iterator	rend(void) const;
+	const_iterator begin(void) const
+	{
+		return (const_iterator(this->m_array));
+	}
+
+	reverse_iterator rbegin(void) 
+	{
+		return (reverse_iterator(&(this->m_array[m_size])));
+	}
+
+	const_reverse_iterator rbegin(void) const
+	{
+		return (const_reverse_iterator(&(this->m_array[m_size])));
+	}
+
+	iterator end(void) 
+	{
+		return (iterator(&(this->m_array[m_size])));
+	}           
+
+	const_iterator end(void) const
+	{
+		return (const_iterator(&(this->m_array[m_size])));
+	}
+
+	reverse_iterator rend(void)
+	{
+		return (reverse_iterator(this->m_array));
+	}           
+
+	const_reverse_iterator rend(void) const
+	{
+		return (const_reverse_iterator(this->m_array));
+	}
+
 
 	// Capacity
 	size_type	size(void) const;
@@ -203,45 +231,6 @@ class vector {
 
 // ****************************** Iterators ********************************* //
 
-template<typename T, typename Alloc>
-typename vector<T, Alloc>::iterator vector<T, Alloc>::begin(void) {
-	return (iterator(this->m_array));
-}
-
-template<typename T, typename Alloc>
-typename vector<T, Alloc>::const_iterator vector<T, Alloc>::begin(void) const {
-	return (const_iterator(this->m_array));
-}
-
-template<typename T, typename Alloc>
-typename vector<T, Alloc>::iterator vector<T, Alloc>::end(void) {
-	return (iterator(&this->m_array[this->m_size]));
-}
-
-template<typename T, typename Alloc>
-typename vector<T, Alloc>::const_iterator vector<T, Alloc>::end(void) const {
-	return (const_iterator(&this->m_array[this->m_size]));
-}
-
-template<typename T, typename Alloc>
-typename vector<T, Alloc>::reverse_iterator vector<T, Alloc>::rbegin(void) {
-	return (reverse_iterator(&this->m_array[this->m_size]));
-}
-
-template<typename T, typename Alloc>
-typename vector<T, Alloc>::const_reverse_iterator vector<T, Alloc>::rbegin(void) const {
-	return (const_reverse_iterator(&this->m_array[this->m_size]));
-}
-
-template<typename T, typename Alloc>
-typename vector<T, Alloc>::reverse_iterator vector<T, Alloc>::rend(void) {
-	return (reverse_iterator(this->m_array));
-}
-
-template<typename T, typename Alloc>
-typename vector<T, Alloc>::const_reverse_iterator vector<T, Alloc>::rend(void) const {
-	return (const_reverse_iterator(this->m_array));
-}
 
 // ******************************* Capacity ********************************* //
 
