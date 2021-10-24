@@ -34,19 +34,21 @@ namespace ft
 
 			class value_compare : public std::binary_function<value_type, value_type, bool>
 			{
+				friend class map<key_type, mapped_type, key_compare, Alloc>;
+
 				protected :
 
 					Compare comp;
+
+					value_compare (Compare compare) : comp(compare) 
+					{
+					};
 
 				public:
 
 					typedef bool		result_type;
 					typedef value_type	first_argument_type;
 					typedef value_type	second_argument_type;
-
-					value_compare (Compare compare) : comp(compare) 
-					{
-					};
 					
 					bool operator() (const value_type& value1, const value_type& value2) const
 					{
