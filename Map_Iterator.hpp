@@ -18,7 +18,7 @@ namespace ft
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::reference			reference;
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::pointer				pointer;
 
-		public:
+		private:
 
 			node_type																						*m_node;
 
@@ -42,24 +42,29 @@ namespace ft
 			{
 			};
 
+			node_type *node() const
+			{
+				return (this->m_node); 
+			};
+
 			MapIterator	&operator=(MapIterator const &rhs)
 			{
 				if (this == &rhs)
 					return (*this);
-				this->m_node = rhs.m_node;
+				this->m_node = rhs.node();
 				return (*this);
 			};
 
 			template <class U> 
 			bool	operator==(const MapIterator<U, node_type> &rhs) const
 			{
-				return (this->m_node == rhs.m_node);
+				return (this->m_node == rhs.node());
 			};
 
 			template <class U> 
 			bool	operator!=(const MapIterator<U, node_type> &rhs) const
 			{
-				return (this->m_node != rhs.m_node);
+				return (this->m_node != rhs.node());
 			};
 
 			MapIterator &operator++(void)

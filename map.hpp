@@ -313,7 +313,7 @@ namespace ft
 
 			void erase(iterator pos) 
 			{
-				this->ft_deletem_node(pos.m_node);
+				this->ft_deletem_node(pos.node());
 			};
 
 			size_type erase(const key_type &k) 
@@ -324,7 +324,7 @@ namespace ft
 				element = this->find(k);
 				if (element == this->end())
 					return (0);
-				this->ft_deletem_node(element.m_node);
+				this->ft_deletem_node(element.node());
 				return (1);
 			};
 

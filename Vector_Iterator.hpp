@@ -17,7 +17,8 @@ namespace ft
                 typedef typename ft::iterator<ft::random_access_iterator_tag, T>::pointer               pointer;
 
             private:
-                pointer m_pointer;
+            
+                pointer                                                                                 m_pointer;
 
             public:
                 
