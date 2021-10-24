@@ -17,28 +17,6 @@
 
 namespace ft {
 
-template <typename Spe>
-RandIte<Spe>::RandIte(Spe *src) : _value(src) {
-	return ;
-}
-
-template <typename Spe>
-RandIte<Spe>::RandIte(const RandIte &src) {
-	*this = src;
-}
-
-template <typename Spe>
-RandIte<Spe>::~RandIte(void) {
-	return ;
-}
-
-template <typename Spe>
-RandIte<Spe> &RandIte<Spe>::operator=(const RandIte &rhs) {
-	if (this == &rhs)
-		return (*this);
-	this->_value = rhs._value;
-	return (*this);
-}
 
 template <typename Spe>
 bool	RandIte<Spe>::operator==(const RandIte &rhs) const {

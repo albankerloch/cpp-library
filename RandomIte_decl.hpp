@@ -18,11 +18,27 @@ namespace ft {
 		RandIte(void): _value(NULL) 
 		{
 		};
-		
-		RandIte(Spe *src);
-		RandIte(const RandIte &src);
-		virtual ~RandIte(void);
-		RandIte	&operator=(RandIte const &rhs);
+
+		RandIte(Spe *src) : _value(src)
+		{
+		};
+
+		RandIte(const RandIte &src)
+		{
+			*this = src;
+		};
+
+		virtual ~RandIte(void)
+		{
+		};
+
+		RandIte	&operator=(RandIte const &rhs)
+		{
+			if (this == &rhs)
+				return (*this);
+			this->_value = rhs._value;
+			return (*this);
+		};
 
 		bool	operator==(const RandIte &rhs) const;
 		bool	operator!=(const RandIte &rhs) const;
