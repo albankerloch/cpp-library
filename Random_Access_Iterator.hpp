@@ -10,7 +10,7 @@ namespace ft {
 	{
 		protected:
 
-		T									*_value;
+		T									*m_value;
 
 		public:
 
@@ -19,11 +19,11 @@ namespace ft {
 		typedef typename ft::iterator<ft::random_access_iterator_tag, value_type>::iterator_category	iterator_category;
 
 
-		RandomAccessIterator(void): _value(NULL) 
+		RandomAccessIterator(void): m_value(NULL) 
 		{
 		};
 
-		RandomAccessIterator(T *src) : _value(src)
+		RandomAccessIterator(T *src) : m_value(src)
 		{
 		};
 
@@ -40,79 +40,79 @@ namespace ft {
 		{
 			if (this == &rhs)
 				return (*this);
-			this->_value = rhs._value;
+			this->m_value = rhs.m_value;
 			return (*this);
 		};
 
 		bool	operator==(const RandomAccessIterator &rhs) const
 		{
-			return (this->_value == rhs._value);
+			return (this->m_value == rhs.m_value);
 		};
 
 		bool	operator!=(const RandomAccessIterator &rhs) const
 		{
-			return (this->_value != rhs._value);
+			return (this->m_value != rhs.m_value);
 		};
 
 		bool	operator<(const RandomAccessIterator &rhs) const
 		{
-			return (this->_value < rhs._value);
+			return (this->m_value < rhs.m_value);
 		};
 
 		bool	operator<=(const RandomAccessIterator &rhs) const
 		{
-			return (this->_value <= rhs._value);
+			return (this->m_value <= rhs.m_value);
 		};
 
 		bool	operator>(const RandomAccessIterator &rhs) const
 		{
-			return (this->_value > rhs._value);
+			return (this->m_value > rhs.m_value);
 		};
 
 		bool	operator>=(const RandomAccessIterator &rhs) const
 		{
-			return (this->_value >= rhs._value);
+			return (this->m_value >= rhs.m_value);
 		};
 
 		RandomAccessIterator<T>	&operator++(void)
 		{
-			++this->_value;
+			++this->m_value;
 			return (*this);
 		};
 
 		RandomAccessIterator<T>	operator++(int)
 		{
 			RandomAccessIterator<T>	tmp(*this);
-			++this->_value;
+			++this->m_value;
 			return (tmp);
 		};
 
 		RandomAccessIterator<T>	&operator--(void)
 		{
-			--this->_value;
+			--this->m_value;
 			return (*this);
 		};
 
 		RandomAccessIterator<T>	operator--(int)
 		{
 			RandomAccessIterator<T>	tmp(*this);
-			--this->_value;
+			--this->m_value;
 			return (tmp);
 		};
 
 		difference_type				operator-(const RandomAccessIterator &rhs) const
 		{
-			return (this->_value - rhs._value);
+			return (this->m_value - rhs.m_value);
 		};
 
 		RandomAccessIterator<T>			operator+(difference_type n) const
 		{
-			return (RandomAccessIterator(this->_value + n));
+			return (RandomAccessIterator(this->m_value + n));
 		};
 
 		RandomAccessIterator<T>			operator-(difference_type n) const
 		{
-			return (RandomAccessIterator(this->_value - n));
+			return (RandomAccessIterator(this->m_value - n));
 		};
 
 		friend RandomAccessIterator<T>	operator+(difference_type n, const RandomAccessIterator &rhs);

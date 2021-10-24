@@ -36,27 +36,27 @@ namespace ft
 			
 			reference operator*(void) const
 			{
-				return (*this->_value);
+				return (*this->m_value);
 			};
 
 			pointer operator->(void) const
 			{	
-				return (this->_value);
+				return (this->m_value);
 			};
 
 			ConstVectorIterator &operator+=(difference_type n)
 			{
-				this->_value += n; return *this;
+				this->m_value += n; return *this;
 			};
 
 			ConstVectorIterator &operator-=(difference_type n)
 			{
-				this->_value -= n; return *this;
+				this->m_value -= n; return *this;
 			};
 
 			reference operator[](difference_type n) const
 			{
-				return (this->_value[n]);
+				return (this->m_value[n]);
 			};
 
 			difference_type operator-(const RandomAccessIterator<value_type> &n) const 
