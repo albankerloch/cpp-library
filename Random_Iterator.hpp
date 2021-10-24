@@ -115,10 +115,7 @@ namespace ft {
 			return (RandIte(this->_value - n));
 		};
 
-		friend RandIte<T>	operator+(difference_type n, const RandIte &rhs)
-		{
-			return rhs.operator+(n); 
-		};
+		friend RandIte<T>	operator+(difference_type n, const RandIte &rhs);
 
 	};
 
