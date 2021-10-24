@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   RandomIte_decl.hpp                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mli <mli@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/09 18:56:40 by mli               #+#    #+#             */
-/*   Updated: 2021/02/08 14:04:25 by mli              ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef RANDOMITE_DECL_CLASS_HPP
 # define RANDOMITE_DECL_CLASS_HPP
 
@@ -27,7 +15,10 @@ namespace ft {
 		typedef Spe						value_type;
 		typedef ptrdiff_t				difference_type;
 
-		RandIte(void);
+		RandIte(void): _value(NULL) 
+		{
+		};
+		
 		RandIte(Spe *src);
 		RandIte(const RandIte &src);
 		virtual ~RandIte(void);

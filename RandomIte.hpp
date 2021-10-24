@@ -18,11 +18,6 @@
 namespace ft {
 
 template <typename Spe>
-RandIte<Spe>::RandIte(void) : _value(NULL) {
-	return ;
-}
-
-template <typename Spe>
 RandIte<Spe>::RandIte(Spe *src) : _value(src) {
 	return ;
 }
