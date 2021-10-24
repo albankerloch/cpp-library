@@ -1,5 +1,5 @@
-#ifndef RANDOMITE_CLASS_HPP
-# define RANDOMITE_CLASS_HPP
+#ifndef RANDOM_ACCESS_ITERATOR_HPP
+# define RANDOM_ACCESS_ITERATOR_HPP
 
 # include "Utils.hpp"
 
