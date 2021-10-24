@@ -1,5 +1,5 @@
-#ifndef MAP_ITE_CLASS_HPP
-# define MAP_ITE_CLASS_HPP
+#ifndef DEF_MAP_ITERATOR_HPP
+# define DEF_MAP_ITERATOR_HPP
 
 # include "Utils.hpp"
 
@@ -124,7 +124,8 @@ namespace ft
 				return &this->operator*();
 			};
 
-			operator MapIterator<const T, node_type>(void) const {
+			operator MapIterator<const T, node_type>(void) const 
+			{
 				return MapIterator<const T, node_type>(this->_node);
 			}
 

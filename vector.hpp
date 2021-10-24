@@ -1,5 +1,5 @@
-#ifndef VECTOR_DECL_CLASS_HPP
-# define VECTOR_DECL_CLASS_HPP
+#ifndef DEF_VECTOR_HPP
+# define DEF_VECTOR_HPP
 
 # include "Utils.hpp"
 # include "Reverse_Iterator.hpp"

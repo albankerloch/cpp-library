@@ -1,5 +1,5 @@
-#ifndef CONST_VECTOR_ITE_CLASS_HPP
-# define CONST_VECTOR_ITE_CLASS_HPP
+#ifndef DEF_CONST_VECTOR_ITERATOR_CLASS_HPP
+# define DEF_CONST_VECTOR_ITERATOR_CLASS_HPP
 
 # include "Utils.hpp"
 # include "Random_Access_Iterator.hpp"

@@ -1,5 +1,5 @@
-#ifndef REVERSEITE_CLASS_HPP
-# define REVERSEITE_CLASS_HPP
+#ifndef DEF_REVERSE_ITERATOR_HPP
+# define DEF_REVERSE_ITERATOR_HPP
 
 # include "Utils.hpp"
 

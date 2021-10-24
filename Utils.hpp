@@ -1,5 +1,5 @@
-#ifndef DEF_ALGO_HPP
-# define DEF_ALGO_HPP
+#ifndef DEF_UTILS_HPP
+# define DEF_UTILS_HPP
 
 # include <cstddef>
 # include <limits>

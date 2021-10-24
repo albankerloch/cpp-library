@@ -1,5 +1,5 @@
-#ifndef VECTOR_ITERATOR_HPP
-# define VECTOR_ITERATOR_HPP
+#ifndef DEF_VECTOR_ITERATOR_HPP
+# define DEF_VECTOR_ITERATOR_HPP
 
 # include "Utils.hpp"
 # include "Random_Access_Iterator.hpp"

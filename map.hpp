@@ -34,7 +34,7 @@ namespace ft
 
 			class value_compare : public std::binary_function<value_type, value_type, bool>
 			{
-				friend class map<key_type, mapped_type, key_compare, Alloc>;
+				friend class map;
 
 				protected :
 
