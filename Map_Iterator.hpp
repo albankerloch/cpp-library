@@ -10,6 +10,7 @@ namespace ft
 	class MapIterator : ft::iterator<ft::bidirectional_iterator_tag, T>
 	{
 		protected:
+
 			node_type						*_node;
 			MapIterator(node_type *src)
 			{ 
@@ -17,11 +18,12 @@ namespace ft
 			};
 
 		public:
+		
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::value_type 					value_type;
-			typedef value_type&																				reference;
-			typedef value_type*																				pointer;
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::difference_type		difference_type;
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::iterator_category	iterator_category;
+			typedef value_type&																				reference;
+			typedef value_type*																				pointer;
 
 
 			MapIterator(void) : _node(NULL)

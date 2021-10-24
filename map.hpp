@@ -18,7 +18,6 @@ namespace ft
 			typedef T												mapped_type;
 			typedef ft::pair<const key_type, mapped_type>			value_type;
 			typedef Compare											key_compare;
-			class													value_compare;
 			typedef Alloc											allocator_type;
 			typedef typename allocator_type::reference				reference;
 			typedef typename allocator_type::const_reference		const_reference;
@@ -55,7 +54,6 @@ namespace ft
 						return (m_compare(value1.first, value2.first));
 					}
 			};
-
 
 		private:
 
