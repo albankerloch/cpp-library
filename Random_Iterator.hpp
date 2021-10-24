@@ -5,21 +5,25 @@
 
 namespace ft {
 
-	template <typename Spe>
-	class RandIte : ft::iterator<ft::random_access_iterator_tag, Spe>
+	template <typename T>
+	class RandIte : ft::iterator<ft::random_access_iterator_tag, T>
 	{
 		protected:
-		Spe									*_value;
+
+		T									*_value;
 
 		public:
-		typedef Spe						value_type;
-		typedef ptrdiff_t				difference_type;
+
+		typedef T																						value_type;
+		typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::difference_type		difference_type;
+		typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::iterator_category	iterator_category;
+
 
 		RandIte(void): _value(NULL) 
 		{
 		};
 
-		RandIte(Spe *src) : _value(src)
+		RandIte(T *src) : _value(src)
 		{
 		};
 
@@ -70,28 +74,28 @@ namespace ft {
 			return (this->_value >= rhs._value);
 		};
 
-		RandIte<Spe>	&operator++(void)
+		RandIte<T>	&operator++(void)
 		{
 			++this->_value;
 			return (*this);
 		};
 
-		RandIte<Spe>	operator++(int)
+		RandIte<T>	operator++(int)
 		{
-			RandIte<Spe>	tmp(*this);
+			RandIte<T>	tmp(*this);
 			++this->_value;
 			return (tmp);
 		};
 
-		RandIte<Spe>	&operator--(void)
+		RandIte<T>	&operator--(void)
 		{
 			--this->_value;
 			return (*this);
 		};
 
-		RandIte<Spe>	operator--(int)
+		RandIte<T>	operator--(int)
 		{
-			RandIte<Spe>	tmp(*this);
+			RandIte<T>	tmp(*this);
 			--this->_value;
 			return (tmp);
 		};
@@ -101,17 +105,17 @@ namespace ft {
 			return (this->_value - rhs._value);
 		};
 
-		RandIte<Spe>			operator+(difference_type n) const
+		RandIte<T>			operator+(difference_type n) const
 		{
 			return (RandIte(this->_value + n));
 		};
 
-		RandIte<Spe>			operator-(difference_type n) const
+		RandIte<T>			operator-(difference_type n) const
 		{
 			return (RandIte(this->_value - n));
 		};
 
-		friend RandIte<Spe>	operator+(difference_type n, const RandIte &rhs)
+		friend RandIte<T>	operator+(difference_type n, const RandIte &rhs)
 		{
 			return rhs.operator+(n); 
 		};
