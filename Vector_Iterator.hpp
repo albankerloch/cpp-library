@@ -97,13 +97,24 @@ namespace ft
 			{ 
 				return rai::operator--(0); 
 			};
-
+/*
 			friend VectorIterator operator+(difference_type n, const VectorIterator &rhs) 
 			{
 				return rhs.operator+(n);
-			};
+			};*/
 
 	};
+
+	template<typename T>
+    ft::VectorIterator<T> operator+(
+        typename ft::VectorIterator<T>::difference_type n,
+        typename ft::VectorIterator<T>& rai)
+        {
+            return (&(*rai) + n);
+        }
+
+
+	
 }
 
 #endif
