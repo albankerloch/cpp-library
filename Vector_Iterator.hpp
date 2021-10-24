@@ -17,7 +17,6 @@ namespace ft
 			typedef typename ft::iterator<ft::random_access_iterator_tag, value_type>::iterator_category	iterator_category;
 			typedef value_type&																				reference;
 			typedef value_type*																				pointer;
-			typedef RandomAccessIterator<value_type> 														rai;
 
 		private:
 
@@ -66,36 +65,36 @@ namespace ft
 
 			difference_type operator-(const RandomAccessIterator<value_type> &n) const 
 			{
-				return rai::operator-(n);
+				return RandomAccessIterator<value_type>::operator-(n);
 			};
 
 			VectorIterator operator-(difference_type n) const 
 			{
-				return rai::operator-(n);
+				return RandomAccessIterator<value_type>::operator-(n);
 			};
 
 			VectorIterator operator+(difference_type n) const 
 			{
-				return rai::operator+(n); 
+				return RandomAccessIterator<value_type>::operator+(n); 
 			};
 
 			VectorIterator &operator++(void) 
 			{
-				rai::operator++(); return *this;
+				RandomAccessIterator<value_type>::operator++(); return *this;
 			};
 			VectorIterator operator++(int)
 			{ 
-				return rai::operator++(0); 
+				return RandomAccessIterator<value_type>::operator++(0); 
 			};
 
 			VectorIterator &operator--(void)
 			{
-				rai::operator--(); return *this; 
+				RandomAccessIterator<value_type>::operator--(); return *this; 
 			};
 
 			VectorIterator operator--(int) 
 			{ 
-				return rai::operator--(0); 
+				return RandomAccessIterator<value_type>::operator--(0); 
 			};
 	};
 
