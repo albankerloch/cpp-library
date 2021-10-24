@@ -56,6 +56,7 @@ namespace ft {
 
 		bool	operator<(const RandomAccessIterator &rhs) const
 		{
+			std::cout << "---> test" << std::endl;
 			return (this->_value < rhs._value);
 		};
 
