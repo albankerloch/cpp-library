@@ -135,12 +135,13 @@ namespace ft
 				return this->_base.operator<=(rhs.base()); 
 			};
 
-			friend reverse_iterator	operator+(difference_type n, const reverse_iterator &rhs)
-			{ 
-				return rhs.operator+(n); 
-			};
-
 	};
+
+	template<typename T>
+    ft::reverse_iterator<T> operator+(typename ft::reverse_iterator<T>::difference_type n, typename ft::reverse_iterator<T>& rhs)
+	{
+		return (rhs.operator+(n));
+	}	
 
 }
 
