@@ -9,6 +9,13 @@ namespace ft
 	template <typename T, typename node_type>
 	class MapIterator : ft::iterator<ft::bidirectional_iterator_tag, T>
 	{
+
+		template <class, class, class, class>
+		friend class map;
+
+		template <class, class>
+		friend class MapIterator;
+
 		protected:
 
 			node_type						*_node;
@@ -18,7 +25,7 @@ namespace ft
 			};
 
 		public:
-		
+
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::value_type 					value_type;
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::difference_type		difference_type;
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::iterator_category	iterator_category;
@@ -120,12 +127,6 @@ namespace ft
 			operator MapIterator<const T, node_type>(void) const {
 				return MapIterator<const T, node_type>(this->_node);
 			}
-
-			template <class, class, class, class>
-			friend class map;
-
-			template <class, class>
-			friend class MapIterator;
 
 	};
 
