@@ -11,7 +11,10 @@ namespace ft
 	{
 		protected:
 			node_type						*_node;
-			MapIterator(node_type *src);
+			MapIterator(node_type *src)
+			{ 
+				this->_node = src; 
+			};
 
 		public:
 			typedef T						value_type;
@@ -22,7 +25,13 @@ namespace ft
 			MapIterator(void) : _node(NULL)
 			{
 			};
-			MapIterator(const MapIterator &src);
+
+			MapIterator(const MapIterator &src)
+			{
+				*this = src; 
+			};
+
+			
 			virtual ~MapIterator(void);
 			MapIterator	&operator=(MapIterator const &rhs);
 
@@ -48,11 +57,6 @@ namespace ft
 			friend class MapIterator;
 
 	};
-	template <typename T, typename node_type>
-	MapIterator<T, node_type>::MapIterator(node_type *src) { this->_node = src; }
-
-	template <typename T, typename node_type>
-	MapIterator<T, node_type>::MapIterator(const MapIterator &src) { *this = src; }
 
 	template <typename T, typename node_type>
 	MapIterator<T, node_type>::~MapIterator(void) { return ; }
