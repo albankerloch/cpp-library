@@ -18,7 +18,8 @@
 namespace ft {
 
 	template <typename Spe>
-	class RandIte {
+	class RandIte : ft::iterator<ft::random_access_iterator_tag, Spe>
+	{
 		protected:
 		Spe									*_value;
 
