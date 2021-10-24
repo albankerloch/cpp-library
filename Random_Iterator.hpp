@@ -1,5 +1,5 @@
-#ifndef RANDOMITE_DECL_CLASS_HPP
-# define RANDOMITE_DECL_CLASS_HPP
+#ifndef RANDOMITE_CLASS_HPP
+# define RANDOMITE_CLASS_HPP
 
 # include "Utils.hpp"
 
@@ -105,10 +105,17 @@ namespace ft {
 		{
 			return (RandIte(this->_value + n));
 		};
-		
-		RandIte<Spe>			operator-(difference_type n) const;
+
+		RandIte<Spe>			operator-(difference_type n) const
+		{
+			return (RandIte(this->_value - n));
+		};
+
 		friend RandIte<Spe>	operator+(difference_type n, const RandIte &rhs)
-			{ return rhs.operator+(n); };
+		{
+			return rhs.operator+(n); 
+		};
+
 	};
 
 }
