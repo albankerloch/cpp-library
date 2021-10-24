@@ -27,45 +27,49 @@ namespace ft
                 typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type            value_type;
                 typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type       difference_type;
                 typedef typename ft::iterator<ft::random_access_iterator_tag, T>::reference             reference;
-                typedef typename ft::iterator<ft::random_access_iterator_tag, T>::pointer       pointer;
-                
-                
-         
-                random_access_iterator(void)
-                :
-                    _elem(u_nullptr)
-                {}
-             
-                random_access_iterator(pointer elem)
-                :
-                    _elem(elem)
-                {}
+                typedef typename ft::iterator<ft::random_access_iterator_tag, T>::pointer               pointer;
 
-                random_access_iterator(const random_access_iterator& op)
-                :
-                    _elem(op._elem)
-                {}
+            private:
+                pointer m_pointer;
+
+            public:
+                
+                random_access_iterator(void): m_pointer(NULL)
+                {
+                };
+             
+                random_access_iterator(pointer elem) : m_pointer(elem)
+                {
+                };
+
+                random_access_iterator(const random_access_iterator& op) : m_pointer(op.m_pointer)
+                {
+                };
 
                 random_access_iterator &operator=(const random_access_iterator& op)
                 {
                     if (this == &op)
 		                return (*this);
-                    this->_elem = op._elem;
+                    this->m_pointer = op.m_pointer;
                     return (*this);
-                }
+                };
 
-                virtual ~random_access_iterator() {}
+                virtual ~random_access_iterator()
+                {
+                };
 
                 pointer base() const
-                { return (this->_elem); }
+                {
+                    return (this->m_pointer); 
+                };
 
-                reference operator*(void) const { return (*_elem); }
+                reference operator*(void) const { return (*m_pointer); }
 
                 pointer operator->(void) { return &(this->operator*()); }
 
                 random_access_iterator& operator++(void)
                 {
-                    _elem++;
+                    m_pointer++;
                     return (*this);
                 }
 
@@ -78,7 +82,7 @@ namespace ft
 
                 random_access_iterator& operator--(void)
                 {
-                    _elem--;
+                    m_pointer--;
                     return (*this);
                 }
 
@@ -89,29 +93,27 @@ namespace ft
                     return (rtn);
                 }
 
-                random_access_iterator operator+(difference_type n) const { return (_elem + n); }
+                random_access_iterator operator+(difference_type n) const { return (m_pointer + n); }
 
-                random_access_iterator operator-(difference_type n) const { return (_elem - n); }
+                random_access_iterator operator-(difference_type n) const { return (m_pointer - n); }
 
                 random_access_iterator& operator+=(difference_type n)
                 {
-                    _elem += n;
+                    m_pointer += n;
                     return (*this);
                 }
 
                 random_access_iterator& operator-=(difference_type n)
                 {
-                    _elem -= n;
+                    m_pointer -= n;
                     return (*this);
                 }
 
                 reference operator[](difference_type n) { return (*(operator+(n))); }
 
                 operator random_access_iterator<const T> () const
-                { return (random_access_iterator<const T>(this->_elem)); }
+                { return (random_access_iterator<const T>(this->m_pointer)); }
 
-                private:
-                    pointer _elem;
         };
 
     template <typename T>
