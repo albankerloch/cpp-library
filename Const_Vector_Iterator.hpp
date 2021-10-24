@@ -2,26 +2,26 @@
 # define CONST_VECTOR_ITE_CLASS_HPP
 
 # include "Utils.hpp"
-# include "Random_Iterator.hpp"
+# include "Random_Access_Iterator.hpp"
 
 namespace ft 
 {
 
 	template <typename T>
-	class ConstVectorIterator : public RandIte<T> 
+	class ConstVectorIterator : public RandomAccessIterator<T> 
 	{
 		public:
-			typedef T						value_type;
-			typedef ptrdiff_t				difference_type;
-			typedef const value_type&		reference;
-			typedef const value_type*		pointer;
-			typedef RandIte<value_type>		super;
+			typedef T																						value_type;
+			typedef typename ft::iterator<ft::random_access_iterator_tag, value_type>::difference_type		difference_type;
+			typedef typename ft::iterator<ft::random_access_iterator_tag, value_type>::iterator_category	iterator_category;
+			typedef const value_type*																		pointer;
+			typedef RandomAccessIterator<value_type>		super;
 
 
 		public:
-			ConstVectorIterator(value_type *src) : RandIte<value_type>(src) {};
-			ConstVectorIterator(void) : RandIte<value_type>() {};
-			ConstVectorIterator(const RandIte<value_type> &src) : RandIte<value_type>(src) {};
+			ConstVectorIterator(value_type *src) : RandomAccessIterator<value_type>(src) {};
+			ConstVectorIterator(void) : RandomAccessIterator<value_type>() {};
+			ConstVectorIterator(const RandomAccessIterator<value_type> &src) : RandomAccessIterator<value_type>(src) {};
 			
 			reference			operator*(void) const;
 			pointer				operator->(void) const;
@@ -29,7 +29,7 @@ namespace ft
 			ConstVectorIterator			&operator-=(difference_type n);
 			reference			operator[](difference_type n) const;
 
-			difference_type		operator-(const RandIte<value_type> &n) const { return super::operator-(n); };
+			difference_type		operator-(const RandomAccessIterator<value_type> &n) const { return super::operator-(n); };
 			ConstVectorIterator			operator-(difference_type n) const { return super::operator-(n); };
 			ConstVectorIterator			operator+(difference_type n) const { return super::operator+(n); };
 			friend ConstVectorIterator		operator+(difference_type n, const ConstVectorIterator &rhs) { return rhs.operator+(n); };
