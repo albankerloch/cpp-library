@@ -23,15 +23,15 @@ namespace ft
                 
                 random_access_iterator(void): m_pointer(NULL)
                 {
-                };
-             
+                }
+
                 random_access_iterator(pointer elem) : m_pointer(elem)
                 {
-                };
+                }
 
                 random_access_iterator(const random_access_iterator& op) : m_pointer(op.m_pointer)
                 {
-                };
+                }
 
                 random_access_iterator &operator=(const random_access_iterator& op)
                 {

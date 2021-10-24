@@ -3,7 +3,7 @@
 
 # include "Utils.hpp"
 # include "Vector_Iterator.hpp"
-# include "Reverse_Iterator2.hpp"
+# include "Reverse_Iterator.hpp"
 
 namespace ft 
 {
@@ -250,10 +250,13 @@ namespace ft
 
 			template <class Ite>
 			void assign(Ite first, Ite last, typename ft::enable_if<!ft::is_integral_type<Ite>::value, Ite>::type* = NULL) 
-			{
+			{					
 				size_t length;
 				size_t i;
-				
+				bool is_valid;
+
+				if (!(is_valid = ft::is_input_iterator_tagged<typename ft::iterator_traits<Ite>::iterator_category>::value))
+					throw (ft::InvalidIteratorException<typename ft::is_input_iterator_tagged<typename ft::iterator_traits<Ite>::iterator_category >::type>());
 				length = ft::itlen(first, last);
 				if (length > this->m_capacity)
 					this->reserve(length);
@@ -337,7 +340,10 @@ namespace ft
 				difference_type	old_end_idx;
 				iterator		old_end;
 				iterator		end;
+				bool is_valid;
 
+				if (!(is_valid = ft::is_input_iterator_tagged<typename ft::iterator_traits<Ite>::iterator_category>::value))
+					throw (ft::InvalidIteratorException<typename ft::is_input_iterator_tagged<typename ft::iterator_traits<Ite>::iterator_category >::type>());
 				idx = position - this->begin();
 				old_end_idx = this->end() - this->begin();
 				this->resize(this->m_size + (ft::itlen(first, last)));

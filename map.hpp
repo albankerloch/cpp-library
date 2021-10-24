@@ -303,6 +303,10 @@ namespace ft
 			template <class Ite>
 			void insert(Ite first, Ite last) 
 			{
+				bool is_valid;
+
+				if (!(is_valid = ft::is_input_iterator_tagged<typename ft::iterator_traits<Ite>::iterator_category>::value))
+					throw (ft::InvalidIteratorException<typename ft::is_input_iterator_tagged<typename ft::iterator_traits<Ite>::iterator_category >::type>());
 				while (first != last)
 					this->insert(*first++);
 			};

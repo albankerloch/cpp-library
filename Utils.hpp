@@ -88,6 +88,90 @@ namespace ft
 			typedef Category    iterator_category;
 	};
 
+	template <bool is_valid, typename T>
+	struct valid_iterator_tag_res 
+	{ 
+		typedef T type; 
+		const static bool value = is_valid; 
+	};
+    
+    template <typename T>
+	struct is_input_iterator_tagged : public valid_iterator_tag_res<false, T>
+	{ 
+	};
+
+    template <>
+	struct is_input_iterator_tagged<std::random_access_iterator_tag> : public valid_iterator_tag_res<true, std::random_access_iterator_tag>
+	{ 
+	};
+
+    template <>
+	struct is_input_iterator_tagged<std::bidirectional_iterator_tag> : public valid_iterator_tag_res<true, std::bidirectional_iterator_tag> 
+	{ 
+	};
+
+   template <>
+	struct is_input_iterator_tagged<std::forward_iterator_tag> : public valid_iterator_tag_res<true, std::forward_iterator_tag> 
+	{ 
+	};
+
+    template <>
+	struct is_input_iterator_tagged<std::input_iterator_tag> : public valid_iterator_tag_res<true, std::input_iterator_tag> 
+	{ 
+	};
+
+    template <>
+	struct is_input_iterator_tagged<ft::random_access_iterator_tag> : public valid_iterator_tag_res<true, ft::random_access_iterator_tag>
+	{ 
+	};
+
+    template <>
+	struct is_input_iterator_tagged<ft::bidirectional_iterator_tag> : public valid_iterator_tag_res<true, ft::bidirectional_iterator_tag> 
+	{ 
+	};
+
+    template <>
+	struct is_input_iterator_tagged<ft::forward_iterator_tag> : public valid_iterator_tag_res<true, ft::forward_iterator_tag> 
+	{ 
+	};
+
+    template <>
+	struct is_input_iterator_tagged<ft::input_iterator_tag> : public valid_iterator_tag_res<true, ft::input_iterator_tag> 
+	{ 
+	};
+
+    template <typename T>
+    class InvalidIteratorException : public std::exception
+    {
+        private:
+
+            std::string m_msg;
+        
+        public :
+
+            InvalidIteratorException () throw() 
+			{
+				m_msg = "Is invalid iterator tag : " + std::string(typeid(T).name()); 
+			};
+
+            InvalidIteratorException (const InvalidIteratorException&) throw()
+			{ 
+			};
+
+            InvalidIteratorException& operator= (const InvalidIteratorException&) throw()
+			{ 
+			};
+
+            virtual ~InvalidIteratorException() throw()
+			{ 
+			};
+
+            virtual const char* what() const throw() 
+			{ 
+				return (m_msg.c_str()); 
+			};
+    };
+
 	template<bool B, class T = void>
 	struct enable_if 
 	{
