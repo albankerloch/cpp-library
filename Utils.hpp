@@ -63,20 +63,6 @@ namespace ft
         typedef T&                         		reference;
     };
 	
-	template<class InputIterator>
-	typename ft::iterator_traits<InputIterator>::difference_type distance (InputIterator first, InputIterator last)
-	{
-		typename ft::iterator_traits<InputIterator>::difference_type ret;
-		
-		ret = 0;
-		while (first != last)
-		{
-			first++;
-			ret++;
-		}
-		return (ret);
-	};
-
 	template <class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&>
 	class iterator
 	{
