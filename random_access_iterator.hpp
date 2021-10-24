@@ -329,7 +329,7 @@ namespace ft
     ** if upper than "rhs", otherwise false.
     */
     template <typename T>
-    typename ft::random_access_iterator<T>::difference_type
+    bool
     operator>(const ft::random_access_iterator<T> lhs,
               const ft::random_access_iterator<T> rhs)
     {
@@ -339,7 +339,7 @@ namespace ft
     /* For iterator > const_iterator */
     template<typename T_L,
              typename T_R>
-    typename ft::random_access_iterator<T_L>::difference_type
+    bool
     operator>(const ft::random_access_iterator<T_L> lhs,
               const ft::random_access_iterator<T_R> rhs)
     {
@@ -382,7 +382,7 @@ namespace ft
     ** if upper or equal than "rhs", otherwise false.
     */
     template <typename T>
-    typename ft::random_access_iterator<T>::difference_type
+    bool
     operator>=(const ft::random_access_iterator<T> lhs,
               const ft::random_access_iterator<T> rhs)
     {
@@ -392,7 +392,7 @@ namespace ft
     /* For iterator >= const_iterator */
     template<typename T_L,
              typename T_R>
-    typename ft::random_access_iterator<T_L>::difference_type
+    bool
     operator>=(const ft::random_access_iterator<T_L> lhs,
               const ft::random_access_iterator<T_R> rhs)
     {
