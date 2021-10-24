@@ -17,7 +17,12 @@ namespace ft
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::iterator_category	iterator_category;
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::reference			reference;
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::pointer				pointer;
+
+		public:
+
 			node_type																						*m_node;
+
+		public:
 
 			MapIterator(node_type *src)
 			{ 
