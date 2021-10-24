@@ -65,7 +65,7 @@ namespace ft
 
 		private:
 
-			void ft_insert_node(node_pointer newNode)
+			void ft_insertm_node(node_pointer newNode)
 			{
 				node_pointer	*parent = &this->m_root;
 				node_pointer	*node = &this->m_root;
@@ -93,7 +93,7 @@ namespace ft
 				}
 			};
 
-			void ft_delete_node(node_pointer rmNode)
+			void ft_deletem_node(node_pointer rmNode)
 			{
 				node_pointer	replaceNode = NULL;
 				node_pointer	*rmPlace = &this->m_root;
@@ -289,7 +289,7 @@ namespace ft
 
 				res.second = !this->count(value.first);
 				if (!this->count(value.first))
-					this->ft_insert_node(new node_type(value));
+					this->ft_insertm_node(new node_type(value));
 				res.first = this->find(value.first);
 				return (res);
 			};
@@ -309,7 +309,7 @@ namespace ft
 
 			void erase(iterator pos) 
 			{
-				this->ft_delete_node(pos._node);
+				this->ft_deletem_node(pos.m_node);
 			};
 
 			size_type erase(const key_type &k) 
@@ -320,7 +320,7 @@ namespace ft
 				element = this->find(k);
 				if (element == this->end())
 					return (0);
-				this->ft_delete_node(element._node);
+				this->ft_deletem_node(element.m_node);
 				return (1);
 			};
 

@@ -10,30 +10,21 @@ namespace ft
 	class MapIterator : ft::iterator<ft::bidirectional_iterator_tag, T>
 	{
 
-		template <class, class, class, class>
-		friend class map;
-
-		template <class, class>
-		friend class MapIterator;
-
-		protected:
-
-			node_type						*_node;
-			MapIterator(node_type *src)
-			{ 
-				this->_node = src; 
-			};
-
 		public:
 
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::value_type 					value_type;
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::difference_type		difference_type;
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::iterator_category	iterator_category;
-			typedef value_type&																				reference;
-			typedef value_type*																				pointer;
+			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::reference			reference;
+			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::pointer				pointer;
+			node_type																						*m_node;
 
+			MapIterator(node_type *src)
+			{ 
+				this->m_node = src; 
+			};
 
-			MapIterator(void) : _node(NULL)
+			MapIterator(void) : m_node(NULL)
 			{
 			};
 
@@ -50,83 +41,85 @@ namespace ft
 			{
 				if (this == &rhs)
 					return (*this);
-				this->_node = rhs._node;
+				this->m_node = rhs.m_node;
 				return (*this);
 			};
 
-			template <class U> bool	operator==(const MapIterator<U, node_type> &rhs) const
+			template <class U> 
+			bool	operator==(const MapIterator<U, node_type> &rhs) const
 			{
-				return (this->_node == rhs._node);
+				return (this->m_node == rhs.m_node);
 			};
 
-			template <class U> bool	operator!=(const MapIterator<U, node_type> &rhs) const
+			template <class U> 
+			bool	operator!=(const MapIterator<U, node_type> &rhs) const
 			{
-				return (this->_node != rhs._node);
+				return (this->m_node != rhs.m_node);
 			};
 
-			MapIterator		&operator++(void)
+			MapIterator &operator++(void)
 			{
-				if (this->_node->right != NULL)
-					this->_node = farLeft(this->_node->right);
+				if (this->m_node->right != NULL)
+					this->m_node = farLeft(this->m_node->right);
 				else
 				{
-					node_type	*child = this->_node;
+					node_type	*child = this->m_node;
 
-					this->_node = this->_node->parent;
-					while (this->_node && child == this->_node->right)
+					this->m_node = this->m_node->parent;
+					while (this->m_node && child == this->m_node->right)
 					{
-						child = this->_node;
-						this->_node = this->_node->parent;
+						child = this->m_node;
+						this->m_node = this->m_node->parent;
 					}
 				}
 				return (*this);
 			};
 
-			MapIterator		operator++(int)
+			MapIterator operator++(int)
 			{
 				MapIterator	tmp(*this);
 				++(*this);
 				return (tmp);
 			};
 
-			MapIterator		&operator--(void)
+			MapIterator &operator--(void)
 			{
-				if (this->_node->left != NULL)
-					this->_node = farRight(this->_node->left);
+				if (this->m_node->left != NULL)
+					this->m_node = farRight(this->m_node->left);
 				else
 				{
-					node_type	*child = this->_node;
+					node_type	*child = this->m_node;
 
-					this->_node = this->_node->parent;
-					while (this->_node && child == this->_node->left)
+					this->m_node = this->m_node->parent;
+					while (this->m_node && child == this->m_node->left)
 					{
-						child = this->_node;
-						this->_node = this->_node->parent;
+						child = this->m_node;
+						this->m_node = this->m_node->parent;
 					}
 				}
 				return (*this);
 			};
 
-			MapIterator		operator--(int)
+			MapIterator operator--(int)
 			{
 				MapIterator	tmp(*this);
 				--(*this);
 				return (tmp);
 			};
 
-			reference	operator*(void) const
+			reference operator*(void) const
 			{
-				return (this->_node->data);
+				return (this->m_node->data);
 			};
 
-			pointer		operator->(void) const
+			pointer operator->(void) const
 			{
 				return &this->operator*();
 			};
 
 			operator MapIterator<const T, node_type>(void) const 
 			{
-				return MapIterator<const T, node_type>(this->_node);
+				return MapIterator<const T, node_type>(this->m_node);
 			}
 
 	};
