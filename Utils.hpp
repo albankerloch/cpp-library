@@ -12,7 +12,7 @@
 
 namespace ft 
 {
-	
+	/*
 	struct input_iterator_tag 
 	{	
 	};
@@ -86,7 +86,7 @@ namespace ft
 			typedef Pointer     pointer;
 			typedef Reference   reference;
 			typedef Category    iterator_category;
-	};
+	};*/
 
 	template<bool B, class T = void>
 	struct enable_if 
