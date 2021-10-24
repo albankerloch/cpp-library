@@ -70,13 +70,42 @@ namespace ft {
 			return (this->_value >= rhs._value);
 		};
 
-		RandIte<Spe>	&operator++(void);
-		RandIte<Spe>	operator++(int);
-		RandIte<Spe>	&operator--(void);
-		RandIte<Spe>	operator--(int);
+		RandIte<Spe>	&operator++(void)
+		{
+			++this->_value;
+			return (*this);
+		};
 
-		difference_type				operator-(const RandIte &rhs) const;
-		RandIte<Spe>			operator+(difference_type n) const;
+		RandIte<Spe>	operator++(int)
+		{
+			RandIte<Spe>	tmp(*this);
+			++this->_value;
+			return (tmp);
+		};
+
+		RandIte<Spe>	&operator--(void)
+		{
+			--this->_value;
+			return (*this);
+		};
+
+		RandIte<Spe>	operator--(int)
+		{
+			RandIte<Spe>	tmp(*this);
+			--this->_value;
+			return (tmp);
+		};
+
+		difference_type				operator-(const RandIte &rhs) const
+		{
+			return (this->_value - rhs._value);
+		};
+
+		RandIte<Spe>			operator+(difference_type n) const
+		{
+			return (RandIte(this->_value + n));
+		};
+		
 		RandIte<Spe>			operator-(difference_type n) const;
 		friend RandIte<Spe>	operator+(difference_type n, const RandIte &rhs)
 			{ return rhs.operator+(n); };

@@ -19,43 +19,6 @@ namespace ft {
 
 
 template <typename Spe>
-RandIte<Spe> &RandIte<Spe>::operator++(void) {
-	++this->_value;
-	return (*this);
-}
-
-template <typename Spe>
-RandIte<Spe> RandIte<Spe>::operator++(int) {
-	RandIte<Spe>	tmp(*this);
-	++this->_value;
-	return (tmp);
-}
-
-template <typename Spe>
-RandIte<Spe>& RandIte<Spe>::operator--(void) {
-	--this->_value;
-	return (*this);
-}
-
-template <typename Spe>
-RandIte<Spe> RandIte<Spe>::operator--(int) {
-	RandIte<Spe>	tmp(*this);
-	--this->_value;
-	return (tmp);
-}
-
-template <typename Spe>
-typename RandIte<Spe>::difference_type
-	RandIte<Spe>::operator-(const RandIte &rhs) const {
-	return (this->_value - rhs._value);
-}
-
-template <typename Spe>
-RandIte<Spe> RandIte<Spe>::operator+(difference_type n) const {
-	return (RandIte(this->_value + n));
-}
-
-template <typename Spe>
 RandIte<Spe> RandIte<Spe>::operator-(difference_type n) const {
 	return (RandIte(this->_value - n));
 }
