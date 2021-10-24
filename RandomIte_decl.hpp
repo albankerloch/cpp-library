@@ -50,22 +50,8 @@ namespace ft {
 		RandIte<Spe>			operator-(difference_type n) const;
 		friend RandIte<Spe>	operator+(difference_type n, const RandIte &rhs)
 			{ return rhs.operator+(n); };
+	};
 
-		/* Cannnot do reversed subtraction
-		friend RandIte<Spe>	operator-(difference_type n, const RandIte &rhs)
-			{ return (RandIte(rhs._value - n)); };
-		*/
+}
 
-		/* Declared in sub-classes:
-		reference	operator*(void) const;
-		pointer		operator->(void) const;
-		reference			operator+=(difference_type n);
-		reference			operator-=(difference_type n);
-		reference			operator[](difference_type n);
-		*/
-
-	}; // ************************************************* class RandIte end //
-
-} // ******************************************************* ft namespace end //
-
-#endif // ************************************** RANDOMITE_DECL_CLASS_HPP end //
+#endif
