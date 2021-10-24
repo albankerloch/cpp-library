@@ -40,12 +40,35 @@ namespace ft {
 			return (*this);
 		};
 
-		bool	operator==(const RandIte &rhs) const;
-		bool	operator!=(const RandIte &rhs) const;
-		bool	operator<(const RandIte &rhs) const;
-		bool	operator<=(const RandIte &rhs) const;
-		bool	operator>(const RandIte &rhs) const;
-		bool	operator>=(const RandIte &rhs) const;
+		bool	operator==(const RandIte &rhs) const
+		{
+			return (this->_value == rhs._value);
+		};
+
+		bool	operator!=(const RandIte &rhs) const
+		{
+			return (this->_value != rhs._value);
+		};
+
+		bool	operator<(const RandIte &rhs) const
+		{
+			return (this->_value < rhs._value);
+		};
+
+		bool	operator<=(const RandIte &rhs) const
+		{
+			return (this->_value <= rhs._value);
+		};
+
+		bool	operator>(const RandIte &rhs) const
+		{
+			return (this->_value > rhs._value);
+		};
+
+		bool	operator>=(const RandIte &rhs) const
+		{
+			return (this->_value >= rhs._value);
+		};
 
 		RandIte<Spe>	&operator++(void);
 		RandIte<Spe>	operator++(int);
