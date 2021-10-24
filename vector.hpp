@@ -2,11 +2,9 @@
 # define VECTOR_DECL_CLASS_HPP
 
 # include "Utils.hpp"
-# include "utils.hpp"
-# include "random_access_iterator.hpp"
-/*# include "Reverse_Iterator.hpp"
+# include "Reverse_Iterator.hpp"
 # include "Vector_Iterator.hpp"
-# include "Const_Vector_Iterator.hpp"*/
+# include "Const_Vector_Iterator.hpp"
 
 namespace ft 
 {
@@ -25,8 +23,8 @@ namespace ft
 		typedef ptrdiff_t									difference_type;
 		typedef size_t										size_type;
 
-		typedef ft::random_access_iterator<value_type>				iterator;
-		typedef ft::random_access_iterator<const value_type>			const_iterator;
+		typedef ft::VectorIterator<value_type>				iterator;
+		typedef ft::ConstVectorIterator<value_type>			const_iterator;
 		typedef ft::reverse_iterator<iterator>			reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
