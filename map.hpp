@@ -34,21 +34,23 @@ namespace ft
 
 			class value_compare : public std::binary_function<value_type, value_type, bool>
 			{
+				protected :
+
+					Compare comp;
+
 				public:
 
 					typedef bool		result_type;
 					typedef value_type	first_argument_type;
 					typedef value_type	second_argument_type;
 
-					Compare m_compare;
-
-					value_compare (Compare compare) : m_compare(compare) 
+					value_compare (Compare compare) : comp(compare) 
 					{
 					};
 					
 					bool operator() (const value_type& value1, const value_type& value2) const
 					{
-						return (m_compare(value1.first, value2.first));
+						return (comp(value1.first, value2.first));
 					};
 			};
 
@@ -66,7 +68,7 @@ namespace ft
 				node_pointer	*parent = &this->m_root;
 				node_pointer	*node = &this->m_root;
 				node_pointer	ghost = farRight(this->m_root);
-				bool		side_left = -1;
+				bool			side_left = -1;
 
 				++this->m_size;
 				while (*node && *node != ghost)
