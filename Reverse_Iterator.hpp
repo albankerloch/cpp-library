@@ -104,11 +104,6 @@ namespace ft
 				return *this->operator+(n); 
 			};
 
-			friend reverse_iterator	operator+(difference_type n, const reverse_iterator &rhs)
-			{ 
-				return rhs.operator+(n); 
-			};
-
 			template <class U> bool	operator==(const reverse_iterator<U> &rhs) const 
 			{ 
 				return this->_base.operator==(rhs.base()); 
@@ -138,6 +133,11 @@ namespace ft
 			template <class U> bool	operator>=(const reverse_iterator<U> &rhs) const 
 			{ 
 				return this->_base.operator<=(rhs.base()); 
+			};
+
+			friend reverse_iterator	operator+(difference_type n, const reverse_iterator &rhs)
+			{ 
+				return rhs.operator+(n); 
 			};
 
 	};

@@ -73,11 +73,6 @@ namespace ft
 				return RandomAccessIterator<value_type>::operator+(n); 
 			};
 
-			friend ConstVectorIterator operator+(difference_type n, const ConstVectorIterator &rhs) 
-			{ 
-				return rhs.operator+(n); 
-			};
-
 			ConstVectorIterator &operator++(void) 
 			{ 
 				RandomAccessIterator<value_type>::operator++(); return *this; 
@@ -99,6 +94,12 @@ namespace ft
 			};
 
 	};
+
+	template<typename T>
+    ft::ConstVectorIterator<T> operator+(typename ft::ConstVectorIterator<T>::difference_type n, typename ft::ConstVectorIterator<T>& rhs)
+	{
+		return (rhs.operator+(n));
+	}	
 }
 
 #endif
