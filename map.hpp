@@ -63,6 +63,7 @@ namespace ft
 			allocator_type			m_allocator;
 			size_type				m_size;
 			node_pointer			m_ghost;
+			node_pointer			m_start;
 
 		private:
 
@@ -82,6 +83,7 @@ namespace ft
 				{
 					newNode->parent = (*parent);
 					*node = newNode;
+					this->m_start = farLeft(this->m_root);
 				}
 				else
 				{
@@ -91,6 +93,7 @@ namespace ft
 					this->m_ghost->parent = new_far_right;
 					new_far_right->right = this->m_ghost;
 					this->m_ghost = farRight(this->m_root);
+					this->m_start = farLeft(this->m_root);
 				}
 			};
 
@@ -130,6 +133,7 @@ namespace ft
 				*rmPlace = replaceNode;
 				delete rmNode;
 				this->m_ghost = farRight(this->m_root);
+				this->m_start = farLeft(this->m_root);
 			};
 
 			void ft_tree_clear(node_pointer node)
@@ -157,6 +161,7 @@ namespace ft
 				this->m_allocator = src.m_allocator;
 				this->m_size = src.m_size;
 				this->m_ghost = src.m_ghost;
+				this->m_start = src.m_start;
 				src.m_root = tmp; 
 				src.m_size = 0;
 				tmp = NULL;
@@ -168,6 +173,7 @@ namespace ft
 			{
 				this->m_root = new node_type;
 				this->m_ghost = farRight(this->m_root);
+				this->m_start = farLeft(this->m_root);
 			};
 
 			template <class Ite>
@@ -175,6 +181,7 @@ namespace ft
 			{
 				this->m_root = new node_type;
 				this->m_ghost = farRight(this->m_root);
+				this->m_start = farLeft(this->m_root);
 				this->insert(first, last);
 			};
 
@@ -182,6 +189,7 @@ namespace ft
 			{
 				this->m_root = new node_type;
 				this->m_ghost = farRight(this->m_root);
+				this->m_start = farLeft(this->m_root);
 				*this = other;
 			};
 
@@ -207,12 +215,12 @@ namespace ft
 
 			iterator begin() 
 			{
-				return iterator(farLeft(this->m_root));
+				return iterator(this->m_start);
 			};
 
 			const_iterator begin() const 
 			{
-				return const_iterator(farLeft(this->m_root));
+				return const_iterator(this->m_start);
 			};
 
 			iterator end() 
