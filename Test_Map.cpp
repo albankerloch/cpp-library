@@ -7,9 +7,8 @@ void PrintMap(NAMESPACE::map<Key, T> *stl, std::string str = "test")
 	typename NAMESPACE::map<Key, T>::iterator it_stl;
 	size_t i;
 
-
 	std::cout << "------------------------------------ " << str << std::endl;
-	std::cout << " SIZES : STL = "<< stl->size() << std::endl;
+	std::cout << " SIZES : = "<< stl->size() << std::endl;
 	it_stl = stl->begin();
 	i = 0;
 	while(i < stl->size())
