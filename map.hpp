@@ -65,19 +65,18 @@ namespace ft
 
 		private:
 
-			void ft_insertm_node(node_pointer newNode)
+			void ft_insert_node(node_pointer newNode)
 			{
 				node_pointer	*parent = &this->m_root;
 				node_pointer	*node = &this->m_root;
 				node_pointer	ghost = farRight(this->m_root);
-				bool			side_left = -1;
+				node_pointer	new_far_right;
 
 				++this->m_size;
 				while (*node && *node != ghost)
 				{
 					parent = node;
-					side_left = this->m_compare(newNode->data.first, (*node)->data.first);
-					node = (side_left ? &(*node)->left : &(*node)->right);
+					node = (this->m_compare(newNode->data.first, (*node)->data.first) ? &(*node)->left : &(*node)->right);
 				}
 				if (*node == NULL)
 				{
@@ -88,8 +87,9 @@ namespace ft
 				{
 					*node = newNode;
 					newNode->parent = ghost->parent;
-					ghost->parent = farRight(newNode);
-					farRight(newNode)->right = ghost;
+					new_far_right = farRight(newNode);
+					ghost->parent = new_far_right;
+					new_far_right->right = ghost;
 				}
 			};
 
@@ -288,8 +288,8 @@ namespace ft
 				ft::pair<iterator, bool> res;
 
 				res.second = !this->count(value.first);
-				if (!this->count(value.first))
-					this->ft_insertm_node(new node_type(value));
+				if (res.second)
+					this->ft_insert_node(new node_type(value));
 				res.first = this->find(value.first);
 				return (res);
 			};

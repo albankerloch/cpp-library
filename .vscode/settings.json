@@ -44,6 +44,9 @@
         "map": "cpp",
         "functional": "cpp",
         "iterator": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "chrono": "cpp",
+        "ctime": "cpp",
+        "ratio": "cpp"
     }
 }

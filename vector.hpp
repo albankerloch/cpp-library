@@ -214,16 +214,16 @@ namespace ft
 				return (this->m_array[idx]);
 			}
 
-			reference at(size_type idx) 
+			reference at(size_type idx)
 			{
-				if (idx >= this->m_size)
+				if (idx < 0 || idx >= this->m_size)
 					throw std::out_of_range("At : index out of range");
 				return (this->m_array[idx]);
 			}
 
 			const_reference at(size_type idx) const 
 			{
-				if (idx >= this->m_size)
+				if (idx < 0 || idx >= this->m_size)
 					throw std::out_of_range("At : index out of range");
 				return (this->m_array[idx]);
 			}
@@ -288,7 +288,7 @@ namespace ft
 			void push_back(value_type value)
 			{
 				if (this->m_size == this->m_capacity)
-					this->reserve(this->m_capacity + 1);
+					this->reserve(this->m_capacity + 1000000);
 				m_allocator.construct(&m_array[this->m_size], value);
 				this->m_size++;
 			}
@@ -387,9 +387,9 @@ namespace ft
 
 			void swap(vector & x)
 			{
-				T	*temp_array;
-				size_t temp_size;
-				size_t temp_capacity;
+				T				*temp_array;
+				size_t 			temp_size;
+				size_t 			temp_capacity;
 				allocator_type	temp_allocator;
 
 				temp_array = x.m_array;

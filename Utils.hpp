@@ -9,6 +9,7 @@
 # include <string>
 # include <memory>
 # include <iterator>
+# include <stdexcept>
 
 namespace ft 
 {
