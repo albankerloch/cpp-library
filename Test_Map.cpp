@@ -24,30 +24,26 @@ void ft_constructor(void)
 {
 
 	NAMESPACE::map<std::string, int> V1_STL;
-	PrintMap(&V1_STL);
+	PrintMap(&V1_STL, "Constructor - default");
  
 	NAMESPACE::map<int, char> VCHAR2;
 	VCHAR2[1]='B';
-	PrintMap(&VCHAR2);
+	PrintMap(&VCHAR2, "Constructor - default with char");
 
 	NAMESPACE::map<int, int> V2;
 	V2[1]=3;
-	PrintMap(&V2);
+	PrintMap(&V2, "Constructor - fill");
 
 	V2[2]=4;
 	NAMESPACE::map<int, int> V3 (V2.begin(),V2.end());
 	PrintMap(&V2, "Constructor - range");
-/*
-	map<int, int>V4STL (V3STL);
+
 	NAMESPACE::map<int, int>V4(V3);
-	CompareMap(&V4, &V4STL, "Constructor - copy");
+	PrintMap(&V4,  "Constructor - copy");
 
-	V2STL = V4STL;
 	V2 = V4;
-	CompareMap(&V1, &V1_STL, "Constructor - operator = ");
-
+	PrintMap(&V2, "Constructor - operator = ");
 	PrintMap(&V2);
-	STLPrintMap(&V2STL);*/
 }
 
 
