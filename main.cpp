@@ -6,19 +6,25 @@ void ft_test_stack(void);
 
 int main(void)
 {
-	std::time_t tbegin;
-	std::time_t tend;
+	std::time_t vtbegin;
+	std::time_t vtend;
+	std::time_t stbegin;
+	std::time_t stend;
+	std::time_t mtbegin;
+	std::time_t mtend;
     
-    tbegin = std::time(NULL);
+    vtbegin = std::time(NULL);
     //ft_test_vector();
-    tend = std::time(NULL);
-    std::cout << "Vector time : " << tbegin - tend << std::endl;
-    tbegin = std::time(NULL);
+    vtend = std::time(NULL);
+    std::cout << "=====================================================> Vector time : " << vtbegin - vtend << std::endl;
+    stbegin = std::time(NULL);
     //ft_test_stack();
-    tend = std::time(NULL);
-    std::cout << "Stack time : " << tbegin - tend << std::endl;
-    tbegin = std::time(NULL);
+    stend = std::time(NULL);
+    std::cout << "=====================================================> Stack  time : " << stbegin - stend << std::endl;
+    mtbegin = std::time(NULL);
     ft_test_map();
-    tend = std::time(NULL);
-    std::cout << "Map time : " << tbegin - tend << std::endl;
+    mtend = std::time(NULL);
+    std::cout << "=====================================================> Vector time : " << vtbegin - vtend << std::endl;
+    std::cout << "=====================================================> Stack  time : " << stbegin - stend << std::endl;
+    std::cout << "=====================================================> Map    time : " << stbegin - stend << std::endl << std::endl;
 }
