@@ -62,6 +62,7 @@ namespace ft
 			key_compare				m_compare;
 			allocator_type			m_allocator;
 			size_type				m_size;
+			node_pointer			m_ghost;
 
 		private:
 
@@ -69,11 +70,10 @@ namespace ft
 			{
 				node_pointer	*parent = &this->m_root;
 				node_pointer	*node = &this->m_root;
-				node_pointer	ghost = farRight(this->m_root);
 				node_pointer	new_far_right;
 
 				++this->m_size;
-				while (*node && *node != ghost)
+				while (*node && *node != this->m_ghost)
 				{
 					parent = node;
 					node = (this->m_compare(newNode->data.first, (*node)->data.first) ? &(*node)->left : &(*node)->right);
@@ -86,10 +86,11 @@ namespace ft
 				else
 				{
 					*node = newNode;
-					newNode->parent = ghost->parent;
+					newNode->parent = this->m_ghost->parent;
 					new_far_right = farRight(newNode);
-					ghost->parent = new_far_right;
-					new_far_right->right = ghost;
+					this->m_ghost->parent = new_far_right;
+					new_far_right->right = this->m_ghost;
+					this->m_ghost = farRight(this->m_root);
 				}
 			};
 
@@ -128,6 +129,7 @@ namespace ft
 				}
 				*rmPlace = replaceNode;
 				delete rmNode;
+				this->m_ghost = farRight(this->m_root);
 			};
 
 			void ft_tree_clear(node_pointer node)
@@ -154,7 +156,9 @@ namespace ft
 				this->m_compare = src.m_compare;
 				this->m_allocator = src.m_allocator;
 				this->m_size = src.m_size;
-				src.m_root = tmp; src.m_size = 0;
+				this->m_ghost = src.m_ghost;
+				src.m_root = tmp; 
+				src.m_size = 0;
 				tmp = NULL;
 			};
 
@@ -163,18 +167,21 @@ namespace ft
 			explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
 			{
 				this->m_root = new node_type;
+				this->m_ghost = farRight(this->m_root);
 			};
 
 			template <class Ite>
 			map(Ite first, Ite last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type(), typename ft::enable_if<!ft::is_integral_type<Ite>::value, Ite>::type* = NULL) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
 			{
 				this->m_root = new node_type;
+				this->m_ghost = farRight(this->m_root);
 				this->insert(first, last);
 			};
 
 			map(const map &other) : m_root(), m_compare(key_compare()), m_allocator(allocator_type()), m_size(0) 
 			{
 				this->m_root = new node_type;
+				this->m_ghost = farRight(this->m_root);
 				*this = other;
 			};
 
@@ -210,12 +217,12 @@ namespace ft
 
 			iterator end() 
 			{
-				return iterator(farRight(this->m_root));
+				return iterator(this->m_ghost);
 			};
 
 			const_iterator end() const 
 			{
-				return const_iterator(farRight(this->m_root));
+				return const_iterator(this->m_ghost);
 			};
 
 			reverse_iterator rbegin() 
