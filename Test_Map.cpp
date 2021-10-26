@@ -3,11 +3,13 @@
 #include "map.hpp"
 
 template <typename Key, typename T>
-void PrintMap(NAMESPACE::map<Key, T> *stl) 
+void PrintMap(NAMESPACE::map<Key, T> *stl, std::string str = "test") 
 {
 	typename NAMESPACE::map<Key, T>::iterator it_stl;
 	size_t i;
 
+
+	std::cout << "------------------------------------ " << str << std::endl;
 	std::cout << " SIZES : STL = "<< stl->size() << std::endl;
 	it_stl = stl->begin();
 	i = 0;
@@ -22,31 +24,22 @@ void ft_constructor(void)
 {
 
 	NAMESPACE::map<std::string, int> V1_STL;
-
-	NAMESPACE::map<std::string, int>::const_iterator it_stl_const = V1_STL.begin();
-
-	(void)it_stl_const;
-
 	PrintMap(&V1_STL);
  
 	NAMESPACE::map<int, char> VCHAR2;
 	VCHAR2[1]='B';
 	PrintMap(&VCHAR2);
-/*
-	ft::map<int, int> V2;
-	map<int, int> V2STL;
-	V2STL[1]=3;
+
+	NAMESPACE::map<int, int> V2;
 	V2[1]=3;
-	CompareMap(&V2, &V2STL, "Constructor - fill");
+	PrintMap(&V2);
 
-	V2STL[2]=4;
 	V2[2]=4;
-	map<int, int>  V3STL (V2STL.begin(),V2STL.end());
-	ft::map<int, int> V3 (V2.begin(),V2.end());
-	CompareMap(&V3, &V3STL, "Constructor - range");
-
+	NAMESPACE::map<int, int> V3 (V2.begin(),V2.end());
+	PrintMap(&V2, "Constructor - range");
+/*
 	map<int, int>V4STL (V3STL);
-	ft::map<int, int>V4(V3);
+	NAMESPACE::map<int, int>V4(V3);
 	CompareMap(&V4, &V4STL, "Constructor - copy");
 
 	V2STL = V4STL;
