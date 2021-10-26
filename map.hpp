@@ -69,10 +69,12 @@ namespace ft
 
 			void ft_insert_node(node_pointer newNode)
 			{
-				node_pointer	*parent = &this->m_root;
-				node_pointer	*node = &this->m_root;
+				node_pointer	*parent;
+				node_pointer	*node;
 				node_pointer	new_far_right;
 
+				parent = &this->m_root;
+				node = &this->m_root;
 				++this->m_size;
 				while (*node && *node != this->m_ghost)
 				{
@@ -85,7 +87,7 @@ namespace ft
 					*node = newNode;
 					this->m_start = farLeft(this->m_root);
 				}
-				else
+				else if (*node == this->m_ghost)
 				{
 					*node = newNode;
 					newNode->parent = this->m_ghost->parent;
@@ -93,6 +95,12 @@ namespace ft
 					this->m_ghost->parent = new_far_right;
 					new_far_right->right = this->m_ghost;
 					this->m_ghost = farRight(this->m_root);
+					this->m_start = farLeft(this->m_root);
+				}
+				else
+				{
+					*node = newNode;
+					newNode->parent = this->m_ghost->parent;
 					this->m_start = farLeft(this->m_root);
 				}
 			};

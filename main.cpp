@@ -11,7 +11,8 @@
 #include <stdlib.h>
 #include <ctime>
 
-#define MAX_RAM 429496729
+//#define MAX_RAM 429496729
+#define MAX_RAM 429496
 #define BUFFER_SIZE 4096
 struct Buffer
 {
@@ -60,12 +61,13 @@ int main(int argc, char** argv) {
 	const int seed = atoi(argv[1]);
 	srand(seed);
 
+	NAMESPACE::map<int, int> map_int;
+/*
 	NAMESPACE::vector<std::string> vector_str;
 	NAMESPACE::vector<int> vector_int;
 	NAMESPACE::stack<int> stack_int;
 	NAMESPACE::vector<Buffer> vector_buffer;
 	NAMESPACE::stack<Buffer, std::deque<int> > stack_deq_buffer;
-	NAMESPACE::map<int, int> map_int;
 
 	for (int i = 0; i < COUNT; i++)
 	{
@@ -97,7 +99,7 @@ int main(int argc, char** argv) {
 	{
 		//NORMAL ! :P
 	}
-
+*/
 	for (int i = 0; i < COUNT; ++i)
 	{
 		ran = rand();
