@@ -96,7 +96,7 @@ namespace ft
 				}
 			};
 
-			void ft_deletem_node(node_pointer rmNode)
+			void ft_delete_node(node_pointer rmNode)
 			{
 				node_pointer	replaceNode = NULL;
 				node_pointer	*rmPlace = &this->m_root;
@@ -316,7 +316,7 @@ namespace ft
 
 			void erase(iterator pos) 
 			{
-				this->ft_deletem_node(pos.node());
+				this->ft_delete_node(pos.node());
 			};
 
 			size_type erase(const key_type &k) 
@@ -327,7 +327,7 @@ namespace ft
 				element = this->find(k);
 				if (element == this->end())
 					return (0);
-				this->ft_deletem_node(element.node());
+				this->ft_delete_node(element.node());
 				return (1);
 			};
 
