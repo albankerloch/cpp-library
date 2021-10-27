@@ -236,43 +236,43 @@ namespace ft
 	bool operator== (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs)
 	{
 		return (lhs.first == rhs.first && lhs.second == rhs.second);
-	};
+	}
 
     template <class T1, class T2>
 	bool operator!= (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs)
 	{
 		return !(lhs == rhs);
-	};
+	}
     
     template <class T1, class T2>
 	bool operator<  (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs)
 	{
 		return (lhs.first < rhs.first || (!(rhs.first < lhs.first) && lhs.second < rhs.second));
-	};
+	}
 
     template <class T1, class T2>
 	bool operator<= (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs)
 	{
 		return !(rhs < lhs);
-	};
+	}
 
     template <class T1, class T2>
 	bool operator>  (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs)
 	{
 		return (rhs < lhs);
-	};
+	}
   
     template <class T1, class T2>
 	bool operator>= (const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs)
 	{
 		return !(lhs < rhs);
-	};
+	}
     
     template <class T1, class T2>
 	ft::pair<T1,T2> make_pair(T1 x, T2 y)
 	{
 		return (ft::pair<T1, T2>(x, y));
-	};
+	}
 
 	template <bool is_integral, typename T>
 	struct is_integral_res 
@@ -317,11 +317,6 @@ namespace ft
 	};
 
     template <>
-    struct is_integral_type<long long int> : public is_integral_res<true, long long int>
-	{ 
-	};
-
-    template <>
     struct is_integral_type<unsigned char> : public is_integral_res<true, unsigned char>
 	{ 
 	};
@@ -341,11 +336,6 @@ namespace ft
 	{ 
 	};
     
-    template <>
-    struct is_integral_type<unsigned long long int> : public is_integral_res<true, unsigned long long int>
-	{ 
-	};
-
     template <typename T>
     struct is_integral : public is_integral_type<T> 
 	{ 
