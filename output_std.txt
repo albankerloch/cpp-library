@@ -198,7 +198,7 @@ Resize 100
  SHOW : at pos 12 got 666
  SHOW : at pos 13 got 666
  SHOW : at pos 14 got 666
-=====================================================> Vector time 1625
+=====================================================> Vector time 1163
 
 <====================================< Stack test >====================================>
 
@@ -212,6 +212,24 @@ Resize 100
 ------------------------------------ Constructor - operator = 
  SIZE : = 1
  SHOW : at pos 0 got 1
+------------------------------------ Push_back - default
+ SIZE : = 2
+ SHOW : at pos 0 got 55
+ SHOW : at pos 1 got 5
+------------------------------------ Push_back again - default
+ SIZE : = 4
+ SHOW : at pos 0 got 51
+ SHOW : at pos 1 got 51
+ SHOW : at pos 2 got 55
+ SHOW : at pos 3 got 5
+------------------------------------ Pop_back - default
+ SIZE : = 3
+ SHOW : at pos 0 got 51
+ SHOW : at pos 1 got 55
+ SHOW : at pos 2 got 5
+------------------------------------ Pop_back again - default
+ SIZE : = 1
+ SHOW : at pos 0 got 5
 ------------------------------------ Relationnal operator
 Operator == 1
 Operator != 0
@@ -221,7 +239,14 @@ Operator == 0
 Operator != 1
 Operator == 0
 Operator != 1
-=====================================================> Stack  time 405
+------------------------------------ Capacity
+ SIZE : = 1
+ SHOW : at pos 0 got 3
+Size 1
+Empty 0
+Size 0
+Empty 1
+=====================================================> Stack  time 292
 
 <====================================< Map test >====================================>
 
@@ -274,5 +299,5 @@ Begin (1 | 5)
 Rbegin (2 | 6)
 End (2 | 6)
 Rend (1 | 5)
-=====================================================> Map    time 463
+=====================================================> Map    time 316
 
