@@ -25,7 +25,7 @@ namespace ft
 	};
 
 	template <typename T>
-	TreeNode<T>	*farRight(TreeNode<T> *node) 
+	TreeNode<T>	*SeekRight(TreeNode<T> *node) 
 	{
 		while (node->right != NULL)
 			node = node->right;
@@ -33,7 +33,7 @@ namespace ft
 	}
 
 	template <typename T>
-	TreeNode<T>	*farLeft(TreeNode<T> *node) 
+	TreeNode<T>	*SeekLeft(TreeNode<T> *node) 
 	{
 		while (node->left != NULL)
 			node = node->left;

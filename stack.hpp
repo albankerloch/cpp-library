@@ -18,7 +18,7 @@ namespace ft
 
         protected :
         
-           container_type m_ctnr;
+           container_type       m_ctnr;
 
         public :
 

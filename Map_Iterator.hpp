@@ -69,11 +69,13 @@ namespace ft
 
 			MapIterator &operator++(void)
 			{
+				node_type	*child;
+
 				if (this->m_node->right != NULL)
-					this->m_node = farLeft(this->m_node->right);
+					this->m_node = SeekLeft(this->m_node->right);
 				else
 				{
-					node_type	*child = this->m_node;
+					child = this->m_node;
 
 					this->m_node = this->m_node->parent;
 					while (this->m_node && child == this->m_node->right)
@@ -94,11 +96,13 @@ namespace ft
 
 			MapIterator &operator--(void)
 			{
+				node_type	*child;
+
 				if (this->m_node->left != NULL)
-					this->m_node = farRight(this->m_node->left);
+					this->m_node = SeekRight(this->m_node->left);
 				else
 				{
-					node_type	*child = this->m_node;
+					child = this->m_node;
 
 					this->m_node = this->m_node->parent;
 					while (this->m_node && child == this->m_node->left)
@@ -130,7 +134,7 @@ namespace ft
 			operator MapIterator<const T, node_type>(void) const 
 			{
 				return MapIterator<const T, node_type>(this->m_node);
-			}
+			};
 
 	};
 

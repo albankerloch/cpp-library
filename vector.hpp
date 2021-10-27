@@ -28,10 +28,10 @@ namespace ft
 
 		private:
 		
-			allocator_type			m_allocator;
-			value_type				*m_array;
-			size_type				m_capacity;
-			size_type				m_size;
+			allocator_type											m_allocator;
+			value_type												*m_array;
+			size_type												m_capacity;
+			size_type												m_size;
 
 		public: 
 
