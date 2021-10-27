@@ -66,7 +66,7 @@ void ft_stack_begin_end()
 	std::cout << "End " <<  *(V1.end() - 1) << std::endl;
 	std::cout << "rEnd " <<  *V1.rend() << std::endl;
 }
-
+*/
 void ft_stack_relationnal_operator(void)
 {
 	std::cout << "------------------------------------ " << "Relationnal operator" << std::endl;
@@ -74,20 +74,33 @@ void ft_stack_relationnal_operator(void)
 	NAMESPACE::stack<int> V2 (3, 39);
 	NAMESPACE::stack<int> V3 (4, 39);
 
+	V1.push(39);
+	V1.push(39);
+	V1.push(39);
+
+	V2.push(39);
+	V2.push(39);
+	V2.push(39);
+
+	V3.push(39);
+	V3.push(39);
+	V3.push(39);
+	V3.push(39);
+
 	std::cout << "Operator == " <<  (V1 == V2) << std::endl;
 	std::cout << "Operator != " << (V1 != V2) << std::endl;
 	std::cout << "Operator == " <<  (V1 == V3) <<  std::endl;
 	std::cout << "Operator != " << (V1 != V3) << std::endl;
 
-	V1.push_back(3);
-	V2.push_back(4);
+	V1.push(3);
+	V2.push(4);
 	
 	std::cout << "Operator == " <<  (V1 == V2) << std::endl;
 	std::cout << "Operator != " << (V1 != V2) << std::endl;
 	std::cout << "Operator == " <<  (V1 == V3) <<  std::endl;
 	std::cout << "Operator != " << (V1 != V3) << std::endl;
 }
-
+/*
 void ft_stack_access(void)
 {
 	NAMESPACE::stack<int> V1 (3, 39);
@@ -159,24 +172,6 @@ void ft_stack_push_pop_back(void)
 	V1.pop_back();
 	Printstack(&V1, "Pop_back again - default");
 }
-
-void ft_stack_assign(void)
-{
-	NAMESPACE::stack<int> V1 (3, 39);
-	NAMESPACE::stack<int> V2 (3,50);
-
-	V1.assign(++V2.begin(), V2.end());
-	Printstack(&V1, "Assign - with iterator");
-
-	V1.assign(7, 21);
-	Printstack(&V1, "Assign - with value");
-
-	NAMESPACE::stack<std::string> VCHAR2(1,"Test");
-	Printstack(&VCHAR2, "Assign - with string value");
-
-	NAMESPACE::stack<std::string> VCHAR3(0,"Test");
-	Printstack(&VCHAR3, "Assign - with size at 0");
-}
 */
 void ft_stack_constructor(void)
 {
@@ -197,13 +192,10 @@ void ft_stack_constructor(void)
 void ft_test_stack(void)
 {
    ft_stack_constructor();
- /*  ft_stack_assign();
-   ft_stack_push_pop_back();
+ /*  ft_stack_push_pop_back();
    ft_stack_insert_erase();
-   ft_stack_swap();
-   ft_stack_clear();
-   ft_stack_access();
+   ft_stack_access();*/
    ft_stack_relationnal_operator();
-   ft_stack_begin_end();
+ /*  ft_stack_begin_end();
    ft_stack_capacity();*/
 }
