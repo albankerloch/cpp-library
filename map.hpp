@@ -203,42 +203,42 @@ namespace ft
 
 			iterator begin() 
 			{
-				return iterator(SeekLeft(this->m_root));
+				return (iterator(SeekLeft(this->m_root)));
 			};
 
 			const_iterator begin() const 
 			{
-				return const_iterator(SeekLeft(this->m_root));
+				return (const_iterator(SeekLeft(this->m_root)));
 			};
 
 			iterator end() 
 			{
-				return iterator(SeekRight(this->m_root));
+				return (iterator(SeekRight(this->m_root)));
 			};
 
 			const_iterator end() const 
 			{
-				return const_iterator(SeekRight(this->m_root));
+				return (const_iterator(SeekRight(this->m_root)));
 			};
 
 			reverse_iterator rbegin() 
 			{
-				return reverse_iterator(this->end());
+				return (reverse_iterator(this->end()));
 			};
 
 			const_reverse_iterator rbegin() const 
 			{
-				return const_reverse_iterator(this->end());
+				return (const_reverse_iterator(this->end()));
 			};
 
 			reverse_iterator rend() 
 			{
-				return reverse_iterator(this->begin());
+				return (reverse_iterator(this->begin()));
 			};
 
 			const_reverse_iterator rend() const 
 			{
-				return const_reverse_iterator(this->begin());
+				return (const_reverse_iterator(this->begin()));
 			};
 
 			mapped_type & operator[](const key_type &key) 
@@ -258,7 +258,7 @@ namespace ft
 				it = this->find(k);
 				if (it == this->end())
 					throw std::out_of_range("map::at:  key not found");
-				return it->second;
+				return (it->second);
 			};	
 
 			const mapped_type& at(const key_type& k) const 
@@ -268,7 +268,7 @@ namespace ft
 				it = this->find(k);
 				if (it == this->end())
 					throw std::out_of_range("map::at:  key not found");
-				return it->second;
+				return (it->second);
 			};	
 
 			bool empty() const 
@@ -300,7 +300,7 @@ namespace ft
 			iterator insert(iterator position, const value_type &val) 
 			{
 				(void)(position);
-				return this->insert(val).first;
+				return (this->insert(val).first);
 			};
 
 			template <class Ite>
@@ -322,7 +322,6 @@ namespace ft
 			size_type erase(const key_type &k) 
 			{
 				iterator element;
-				
 				
 				element = this->find(k);
 				if (element == this->end())
@@ -502,7 +501,7 @@ namespace ft
 	bool	operator==(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs) 
 	{
 		if (lhs.size() != rhs.size())
-			return false;
+			return (false);
 		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	}
 
