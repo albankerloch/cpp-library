@@ -70,9 +70,9 @@ void ft_stack_begin_end()
 void ft_stack_relationnal_operator(void)
 {
 	std::cout << "------------------------------------ " << "Relationnal operator" << std::endl;
-	NAMESPACE::stack<int> V1 (3, 39);
-	NAMESPACE::stack<int> V2 (3, 39);
-	NAMESPACE::stack<int> V3 (4, 39);
+	NAMESPACE::stack<int> V1;
+	NAMESPACE::stack<int> V2;
+	NAMESPACE::stack<int> V3;
 
 	V1.push(39);
 	V1.push(39);
