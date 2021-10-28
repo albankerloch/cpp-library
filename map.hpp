@@ -125,7 +125,7 @@ namespace ft
 						std::cout << "L---- ";
 						indent += "|  ";
 					}
-					std::cout << root->m_data.first << std::endl;
+					std::cout << root->m_data.first << " | " << root->m_data.second << std::endl;
 					ft_print_tree(root->m_left, indent, false);
 					ft_print_tree(root->m_right, indent, true);
 				}
@@ -133,21 +133,19 @@ namespace ft
 
 			explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
 			{
-				this->ft_init_tree();
+				this->m_root = NULL;
 			};
 
-			template <class Ite>
+/*			template <class Ite>
 			map(Ite first, Ite last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type(), typename ft::enable_if<!ft::is_integral_type<Ite>::value, Ite>::type* = NULL) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
 			{
-				this->ft_init_tree();
+				this->m_root = NULL;
 				this->insert(first, last);
-			};
+			};*/
 
 			~map()
 			{
 //				this->clear();
-				node_allocator.destroy(this->m_root);
-				node_allocator.deallocate(this->m_root, 1);
 			};
 
 			ft::pair<iterator, bool> insert(const value_type &value) 
@@ -155,31 +153,14 @@ namespace ft
 				ft::pair<iterator, bool> ret;
 
 				ret.second = true;
-				this->ft_insert_node(this->m_root, value);
+				this->m_root = this->ft_insert_node(this->m_root, value);
 				ret.first = iterator(this->m_root);
 				return (ret);
 			};
 
-			iterator insert(iterator position, const value_type &val) 
-			{
-				(void)(position);
-				return (this->insert(val).first);
-			};
-
-			template <class Ite>
-			void insert(Ite first, Ite last) 
-			{
-				bool is_valid;
-
-				if (!(is_valid = ft::is_input_iterator_tagged<typename ft::iterator_traits<Ite>::iterator_category>::value))
-					throw (ft::InvalidIteratorException<typename ft::is_input_iterator_tagged<typename ft::iterator_traits<Ite>::iterator_category >::type>());
-				while (first != last)
-					this->insert(*first++);
-			};
-
 			mapped_type & operator[](const key_type &key) 
 			{
-				return (this->insert(value_type(key, mapped_type())).first->second);
+				return ((this->insert(value_type(key, mapped_type())).first)->second);
 			};
 
 			size_type size() const
