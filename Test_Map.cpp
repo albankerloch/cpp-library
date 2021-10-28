@@ -126,9 +126,9 @@ void ft_begin_end()
 void ft_test_map(void)
 {
    ft_constructor();
- /*  ft_insert_erase();
+   ft_insert_erase();
    ft_swap();
    ft_clear();
    ft_access();
-   ft_begin_end();*/
+   ft_begin_end();
 }

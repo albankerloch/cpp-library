@@ -9,7 +9,7 @@
 namespace ft 
 {
 
-	template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<pair<const Key,T> > >
+	template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key,T> > >
 	class map 
 	{
 		public:
@@ -61,15 +61,14 @@ namespace ft
 			key_compare				m_compare;
 			allocator_type			m_allocator;
 			size_type				m_size;
+			value_type				*m_storage;
 
 		private:
 
 			node_pointer ft_new_node(value_type value)
 			{
-				node_pointer tmp;
-
-				tmp = new ft::TreeNode<value_type>(value);
-				return (tmp);				
+				this->m_storage = this->m_allocator.allocate(this->m_size + 1);
+				return (ft::TreeNode<value_type>(this->m_allocator.construct(&this->m_storage[this->m_size + 1], value)));				
 			}
 
 			void ft_insert_node(node_pointer newNode)
