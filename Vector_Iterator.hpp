@@ -58,7 +58,7 @@ namespace ft
 
                 pointer operator->(void) 
                 { 
-                    return &(this->operator*()); 
+                    return (&(this->operator*())); 
                 };
 
                 random_access_iterator& operator++(void)
@@ -70,6 +70,7 @@ namespace ft
                 random_access_iterator operator++(int)
                 {
                     random_access_iterator rtn(*this);
+
                     operator++();
                     return (rtn);
                 };
@@ -83,6 +84,7 @@ namespace ft
                 random_access_iterator operator--(int)
                 {
                     random_access_iterator rtn(*this);
+                    
                     operator--();
                     return (rtn);
                 };
