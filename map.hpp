@@ -14,23 +14,22 @@ namespace ft
 	{
 		public:
 
-			typedef Key												key_type;
-			typedef T												mapped_type;
-			typedef ft::pair<const key_type, mapped_type>			value_type;
-			typedef Compare											key_compare;
-			typedef Alloc											allocator_type;
-			typedef typename allocator_type::reference				reference;
-			typedef typename allocator_type::const_reference		const_reference;
-			typedef typename allocator_type::pointer				pointer;
-			typedef typename allocator_type::const_pointer			const_pointer;
-			typedef ft::TreeNode<value_type>						node_type;
-			typedef node_type*										node_pointer;
-			typedef ptrdiff_t										difference_type;
-			typedef size_t											size_type;
-			typedef ft::MapIterator<value_type, node_type>			iterator;
-			typedef ft::MapIterator<const value_type, node_type>	const_iterator;
-			typedef ft::reverse_iterator<iterator>					reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
+			typedef Key																key_type;
+			typedef T																mapped_type;
+			typedef ft::pair<const key_type, mapped_type>							value_type;
+			typedef Compare															key_compare;
+			typedef Alloc															allocator_type;
+			typedef typename allocator_type::reference								reference;
+			typedef typename allocator_type::const_reference						const_reference;
+			typedef typename allocator_type::pointer								pointer;
+			typedef typename allocator_type::const_pointer							const_pointer;
+			typedef ft::TreeNode<value_type>*										node_pointer;
+			typedef ptrdiff_t														difference_type;
+			typedef size_t															size_type;
+			typedef ft::MapIterator<value_type, ft::TreeNode<value_type> >			iterator;
+			typedef ft::MapIterator<const value_type, ft::TreeNode<value_type> >	const_iterator;
+			typedef ft::reverse_iterator<iterator>									reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>							const_reverse_iterator;
 
 			class value_compare : public std::binary_function<value_type, value_type, bool>
 			{
@@ -69,12 +68,7 @@ namespace ft
 			{
 				node_pointer tmp;
 
-				tmp = new ft::TreeNode<value_type>();
-				tmp->right = NULL;
-				tmp->left = NULL;
-				tmp->parent = NULL;
-				tmp->height = 0;
-				tmp->data = value;
+				tmp = new ft::TreeNode<value_type>(value);
 				return (tmp);				
 			}
 
@@ -208,19 +202,19 @@ namespace ft
 
 			explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
 			{
-				this->m_root = new node_type;
+				this->m_root = new ft::TreeNode<value_type>;
 			};
 
 			template <class Ite>
 			map(Ite first, Ite last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type(), typename ft::enable_if<!ft::is_integral_type<Ite>::value, Ite>::type* = NULL) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
 			{
-				this->m_root = new node_type;
+				this->m_root = new ft::TreeNode<value_type>;
 				this->insert(first, last);
 			};
 
 			map(const map &other) : m_root(), m_compare(key_compare()), m_allocator(allocator_type()), m_size(0) 
 			{
-				this->m_root = new node_type;
+				this->m_root = new ft::TreeNode<value_type>;
 				*this = other;
 			};
 
@@ -335,7 +329,7 @@ namespace ft
 
 				ret.second = !this->count(value.first);
 				if (ret.second)
-					this->ft_insert_node(new node_type(value));
+					this->ft_insert_node(new ft::TreeNode<value_type>(value));
 				ret.first = this->find(value.first);
 				return (ret);
 			};
