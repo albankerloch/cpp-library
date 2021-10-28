@@ -23,7 +23,6 @@ namespace ft
 			typedef typename allocator_type::const_reference						const_reference;
 			typedef typename allocator_type::pointer								pointer;
 			typedef typename allocator_type::const_pointer							const_pointer;
-			typedef ft::TreeNode<value_type>*										node_pointer;
 			typedef ptrdiff_t														difference_type;
 			typedef size_t															size_type;
 			typedef ft::MapIterator<value_type, ft::TreeNode<value_type> >			iterator;
@@ -57,18 +56,25 @@ namespace ft
 
 		private:
 
-			node_pointer			m_root;
-			key_compare				m_compare;
-			allocator_type			m_allocator;
-			size_type				m_size;
-			value_type				*m_storage;
+			typedef typename allocator_type::template rebind<ft::TreeNode<ft::pair<const Key,T> > >::other	type_node_allocator;
+			typedef typename type_node_allocator::pointer													node_pointer;
+			type_node_allocator																				node_allocator;
+			
+			node_pointer																					m_root;
+			key_compare																						m_compare;
+			allocator_type																					m_allocator;
+			size_type																						m_size;
+			node_pointer																					*m_storage;
 
 		private:
 
 			node_pointer ft_new_node(value_type value)
 			{
+				node_pointer tmp;
+
 				this->m_storage = this->m_allocator.allocate(this->m_size + 1);
-				return (ft::TreeNode<value_type>(this->m_allocator.construct(&this->m_storage[this->m_size + 1], value)));				
+				tmp = this->m_allocator.construct(&this->m_storage[this->m_size + 1], value);
+				return (tmp);				
 			}
 
 			void ft_insert_node(node_pointer newNode)

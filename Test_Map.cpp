@@ -29,7 +29,7 @@ void ft_constructor(void)
 	NAMESPACE::map<std::string, int> V1_STL;
 	PrintMap(&V1_STL, "Constructor - default");
  
-	NAMESPACE::map<int, char> VCHAR2;
+/*	NAMESPACE::map<int, char> VCHAR2;
 	VCHAR2[1]='B';
 	PrintMap(&VCHAR2, "Constructor - default with char");
 
@@ -46,7 +46,7 @@ void ft_constructor(void)
 	PrintMap(&V4,  "Constructor - copy");
 
 	V2 = V4;
-	PrintMap(&V2, "Constructor - operator = ");
+	PrintMap(&V2, "Constructor - operator = ");*/
 }
 
 void ft_insert_erase(void)
@@ -126,9 +126,9 @@ void ft_begin_end()
 void ft_test_map(void)
 {
    ft_constructor();
-   ft_insert_erase();
+  /* ft_insert_erase();
    ft_swap();
    ft_clear();
    ft_access();
-   ft_begin_end();
+   ft_begin_end();*/
 }
