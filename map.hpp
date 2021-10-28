@@ -82,6 +82,13 @@ namespace ft
 				return (new_node);
 			};
 
+			void ft_insert_node(const value_type & value)
+			{
+				node_pointer new_node;
+
+				new_node = ft_create_node(value);				
+			};
+
 			void ft_delete_node(node_pointer node)
 			{
 				ft_disconnect(node);
@@ -132,7 +139,32 @@ namespace ft
 				node_allocator.deallocate(this->m_last_node, 1);
 			};
 
+			ft::pair<iterator, bool> insert(const value_type &value) 
+			{
+				ft::pair<iterator, bool> ret;
 
+				ret.second = true;
+				this->ft_insert_node(value);
+				ret.first = iterator(this->m_last_node);
+				return (ret);
+			};
+
+			iterator insert(iterator position, const value_type &val) 
+			{
+				(void)(position);
+				return (this->insert(val).first);
+			};
+
+			template <class Ite>
+			void insert(Ite first, Ite last) 
+			{
+				bool is_valid;
+
+				if (!(is_valid = ft::is_input_iterator_tagged<typename ft::iterator_traits<Ite>::iterator_category>::value))
+					throw (ft::InvalidIteratorException<typename ft::is_input_iterator_tagged<typename ft::iterator_traits<Ite>::iterator_category >::type>());
+				while (first != last)
+					this->insert(*first++);
+			};
 
 			size_type size() const
 			{
