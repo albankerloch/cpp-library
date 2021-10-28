@@ -76,7 +76,6 @@ namespace ft
 				else
 				{
 					child = this->m_node;
-
 					this->m_node = this->m_node->parent;
 					while (this->m_node && child == this->m_node->right)
 					{
@@ -90,6 +89,7 @@ namespace ft
 			MapIterator operator++(int)
 			{
 				MapIterator	tmp(*this);
+
 				++(*this);
 				return (tmp);
 			};
@@ -103,7 +103,6 @@ namespace ft
 				else
 				{
 					child = this->m_node;
-
 					this->m_node = this->m_node->parent;
 					while (this->m_node && child == this->m_node->left)
 					{
@@ -117,6 +116,7 @@ namespace ft
 			MapIterator operator--(int)
 			{
 				MapIterator	tmp(*this);
+
 				--(*this);
 				return (tmp);
 			};
@@ -128,12 +128,12 @@ namespace ft
 
 			pointer operator->(void) const
 			{
-				return &this->operator*();
+				return (&this->operator*());
 			};
 
 			operator MapIterator<const T, node_type>(void) const 
 			{
-				return MapIterator<const T, node_type>(this->m_node);
+				return (MapIterator<const T, node_type>(this->m_node));
 			};
 
 	};

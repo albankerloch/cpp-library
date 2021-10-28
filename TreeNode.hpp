@@ -9,18 +9,19 @@ namespace ft
    	class TreeNode
 	{
 		public :
-		typedef T	data_type;
-		data_type	data;
-		TreeNode 	*left;
-		TreeNode 	*right;
-		TreeNode 	*parent;
-		bool		end;
+
+			typedef T	data_type;
+			data_type	data;
+			TreeNode 	*left;
+			TreeNode 	*right;
+			TreeNode 	*parent;
+			bool		end;
 
 		public:
 
-		TreeNode(const data_type &src = data_type()) : data(src), left(NULL), right(NULL), parent(NULL), end(false)
-		{
-		};
+			TreeNode(const data_type &src = data_type()) : data(src), left(NULL), right(NULL), parent(NULL), end(false)
+			{
+			};
 
 	};
 

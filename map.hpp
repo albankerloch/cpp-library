@@ -96,55 +96,56 @@ namespace ft
 				}
 			};
 
-			void ft_delete_node(node_pointer rmNode)
+			void ft_delete_node(node_pointer deleteNode)
 			{
-				node_pointer	replaceNode = NULL;
-				node_pointer	*rmPlace = &this->m_root;
+				node_pointer	replaceNode;
+				node_pointer	*node;
 
-				--this->m_size;
-				if (rmNode->parent)
-					rmPlace = (rmNode->parent->left == rmNode ? &rmNode->parent->left : &rmNode->parent->right);
-				if (rmNode->left == NULL && rmNode->right == NULL)
-					;
-				else if (rmNode->left == NULL)
-					replaceNode = rmNode->right;
+				node = &this->m_root;
+				this->m_size--;
+				if (deleteNode->parent)
+					node = (deleteNode->parent->left == deleteNode ? &deleteNode->parent->left : &deleteNode->parent->right);
+				if (deleteNode->left == NULL && deleteNode->right == NULL)
+					replaceNode = NULL;
+				else if (deleteNode->left == NULL)
+					replaceNode = deleteNode->right;
 				else
 				{
-					replaceNode = SeekRight(rmNode->left);
-					if (replaceNode != rmNode->left)
+					replaceNode = SeekRight(deleteNode->left);
+					if (replaceNode != deleteNode->left)
 						if ((replaceNode->parent->right = replaceNode->left))
 							replaceNode->left->parent = replaceNode->parent;
 				}
 				if (replaceNode)
 				{
-					replaceNode->parent = rmNode->parent;
-					if (rmNode->left && rmNode->left != replaceNode)
+					replaceNode->parent = deleteNode->parent;
+					if (deleteNode->left && deleteNode->left != replaceNode)
 					{
-						replaceNode->left = rmNode->left;
+						replaceNode->left = deleteNode->left;
 						replaceNode->left->parent = replaceNode;
 					}
-					if (rmNode->right && rmNode->right != replaceNode)
+					if (deleteNode->right && deleteNode->right != replaceNode)
 					{
-						replaceNode->right = rmNode->right;
+						replaceNode->right = deleteNode->right;
 						replaceNode->right->parent = replaceNode;
 					}
 				}
-				*rmPlace = replaceNode;
-				delete rmNode;
+				*node = replaceNode;
+				delete deleteNode;
 			};
 
 			void ft_tree_clear(node_pointer node)
 			{
 				if (node == NULL)
-					return ;
+					return;
 				this->ft_tree_clear(node->left);
 				this->ft_tree_clear(node->right);
 				delete node;
 			};
 
-			bool ft_key_compare(const key_type &k1, const key_type &k2)  const 
+			bool ft_key_compare(const key_type &key1, const key_type &key2)  const 
 			{
-				return (!this->m_compare(k1, k2) && !this->m_compare(k2, k1));
+				return (!(this->m_compare(key1, key2)) && !(this->m_compare(key2, key1)));
 			};
 
 			void ft_copy(map &src) 
@@ -157,7 +158,8 @@ namespace ft
 				this->m_compare = src.m_compare;
 				this->m_allocator = src.m_allocator;
 				this->m_size = src.m_size;
-				src.m_root = tmp; src.m_size = 0;
+				src.m_root = tmp; 
+				src.m_size = 0;
 				tmp = NULL;
 			};
 
@@ -251,21 +253,21 @@ namespace ft
 				return (this->insert(value_type(key, mapped_type()))).first->second;
 			};
 
-			mapped_type& at(const key_type& k)
+			mapped_type& at(const key_type& key)
 			{
 				iterator it;
 				
-				it = this->find(k);
+				it = this->find(key);
 				if (it == this->end())
 					throw std::out_of_range("map::at:  key not found");
 				return (it->second);
 			};	
 
-			const mapped_type& at(const key_type& k) const 
+			const mapped_type& at(const key_type& key) const 
 			{
 				const_iterator it;
 				
-				it = this->find(k);
+				it = this->find(key);
 				if (it == this->end())
 					throw std::out_of_range("map::at:  key not found");
 				return (it->second);
@@ -288,13 +290,13 @@ namespace ft
 
 			ft::pair<iterator, bool> insert(const value_type &value) 
 			{
-				ft::pair<iterator, bool> res;
+				ft::pair<iterator, bool> ret;
 
-				res.second = !this->count(value.first);
-				if (res.second)
+				ret.second = !this->count(value.first);
+				if (ret.second)
 					this->ft_insert_node(new node_type(value));
-				res.first = this->find(value.first);
-				return (res);
+				ret.first = this->find(value.first);
+				return (ret);
 			};
 
 			iterator insert(iterator position, const value_type &val) 
@@ -314,16 +316,16 @@ namespace ft
 					this->insert(*first++);
 			};
 
-			void erase(iterator pos) 
+			void erase(iterator position) 
 			{
-				this->ft_delete_node(pos.node());
+				this->ft_delete_node(position.node());
 			};
 
-			size_type erase(const key_type &k) 
+			size_type erase(const key_type &key) 
 			{
 				iterator element;
 				
-				element = this->find(k);
+				element = this->find(key);
 				if (element == this->end())
 					return (0);
 				this->ft_delete_node(element.node());
@@ -361,7 +363,7 @@ namespace ft
 				return (value_compare(key_compare()));
 			};
 
-			iterator find(const key_type &k) 
+			iterator find(const key_type &key) 
 			{
 				iterator it;
 				iterator ite;
@@ -370,14 +372,14 @@ namespace ft
 				ite = this->end();
 				while (it != ite)
 				{
-					if (this->ft_key_compare(it->first, k))
-						break ;
-					++it;
+					if (this->ft_key_compare(it->first, key))
+						break;
+					it++;
 				}
 				return (it);
 			};
 
-			const_iterator find(const key_type &k) const 
+			const_iterator find(const key_type &key) const 
 			{
 				const_iterator it;
 				const_iterator ite;
@@ -386,14 +388,14 @@ namespace ft
 				ite = this->end();
 				while (it != ite)
 				{
-					if (this->ft_key_compare(it->first, k))
-						break ;
-					++it;
+					if (this->ft_key_compare(it->first, key))
+						break;
+					it++;
 				}
 				return (it);
 			};
 
-			size_type count(const key_type &k) const 
+			size_type count(const key_type &key) const 
 			{
 				size_type		ret;
 				const_iterator it;
@@ -404,16 +406,16 @@ namespace ft
 				ret = 0;
 				while (it != ite)
 				{
-					if (this->ft_key_compare((it++)->first, k))
+					if (this->ft_key_compare((it++)->first, key))
 					{
-						++ret;
-						break ;
+						ret++;
+						break;
 					}
 				}
 				return (ret);
 			};
 
-			iterator lower_bound(const key_type &k) 
+			iterator lower_bound(const key_type &key) 
 			{
 				iterator it;
 				iterator ite;
@@ -422,14 +424,14 @@ namespace ft
 				ite = this->end();
 				while (it != ite)
 				{
-					if (!this->m_compare(it->first, k))
+					if (!this->m_compare(it->first, key))
 						break;
-					++it;
+					it++;
 				}
 				return (it);
 			};
 
-			const_iterator lower_bound(const key_type &k) const 
+			const_iterator lower_bound(const key_type &key) const 
 			{
 				const_iterator it;
 				const_iterator ite;
@@ -438,14 +440,14 @@ namespace ft
 				ite = this->end();
 				while (it != ite)
 				{
-					if (!this->m_compare(it->first, k))
+					if (!this->m_compare(it->first, key))
 						break;
-					++it;
+					it++;
 				}
 				return (it);
 			};
 
-			iterator upper_bound(const key_type &k) 
+			iterator upper_bound(const key_type &key) 
 			{
 				iterator it;
 				iterator ite;
@@ -454,14 +456,14 @@ namespace ft
 				ite = this->end();
 				while (it != ite)
 				{
-					if (this->m_compare(k, it->first))
+					if (this->m_compare(key, it->first))
 						break;
-					++it;
+					it++;
 				}
 				return (it);
 			};
 
-			const_iterator upper_bound(const key_type &k) const 
+			const_iterator upper_bound(const key_type &key) const 
 			{
 				const_iterator it;
 				const_iterator ite;
@@ -470,29 +472,29 @@ namespace ft
 				ite = this->end();
 				while (it != ite)
 				{
-					if (this->m_compare(k, it->first))
+					if (this->m_compare(key, it->first))
 						break;
-					++it;
+					it++;
 				}
 				return (it);
 			};
 
-			ft::pair<const_iterator,const_iterator> equal_range(const key_type &k) const 
+			ft::pair<const_iterator,const_iterator> equal_range(const key_type &key) const 
 			{
-				ft::pair<const_iterator, const_iterator> res;
+				ft::pair<const_iterator, const_iterator> ret;
 
-				res.first = this->lower_bound(k);
-				res.second = this->upper_bound(k);
-				return (res);
+				ret.first = this->lower_bound(key);
+				ret.second = this->upper_bound(key);
+				return (ret);
 			};
 
-			ft::pair<iterator,iterator>	equal_range(const key_type &k) 
+			ft::pair<iterator,iterator>	equal_range(const key_type &key) 
 			{
-				ft::pair<iterator, iterator> res;
+				ft::pair<iterator, iterator> ret;
 
-				res.first = this->lower_bound(k);
-				res.second = this->upper_bound(k);
-				return (res);
+				ret.first = this->lower_bound(key);
+				ret.second = this->upper_bound(key);
+				return (ret);
 			};
 
 	}; 
@@ -508,19 +510,19 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	bool	operator!=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs) 
 	{
-		return !(lhs == rhs);
+		return (!(lhs == rhs));
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	bool	operator< (const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs) 
 	{
-		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	bool	operator<=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs) 
 	{
-		return !(rhs < lhs);
+		return (!(rhs < lhs));
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -532,7 +534,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	bool	operator>=(const map<Key, T, Compare, Alloc> &lhs, const map<Key, T, Compare, Alloc> &rhs) 
 	{
-		return !(lhs < rhs);
+		return (!(lhs < rhs));
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
