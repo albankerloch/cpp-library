@@ -65,6 +65,19 @@ namespace ft
 
 		private:
 
+			node_pointer ft_new_node(value_type value)
+			{
+				node_pointer tmp;
+
+				tmp = new ft::TreeNode<value_type>();
+				tmp->right = NULL;
+				tmp->left = NULL;
+				tmp->parent = NULL;
+				tmp->height = 0;
+				tmp->data = value;
+				return (tmp);				
+			}
+
 			void ft_insert_node(node_pointer newNode)
 			{
 				node_pointer	*parent;
@@ -164,6 +177,34 @@ namespace ft
 			};
 
 		public :
+
+			void print_tree()
+			{
+				std::string indent;
+
+				ft_print_tree(this->m_root, indent, true);
+			};
+
+			void ft_print_tree(node_pointer root, std::string indent, bool last) 
+			{
+				if (root != NULL) 
+				{
+					std::cout << indent;
+					if (last) 
+					{
+						std::cout << "R---- ";
+						indent += "   ";
+					} 
+					else 
+					{
+						std::cout << "L---- ";
+						indent += "|  ";
+					}
+					std::cout << root->data.first << std::endl;
+					ft_print_tree(root->left, indent, false);
+					ft_print_tree(root->right, indent, true);
+				}
+			};
 
 			explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
 			{

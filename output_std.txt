@@ -198,7 +198,7 @@ Resize 100
  SHOW : at pos 12 got 666
  SHOW : at pos 13 got 666
  SHOW : at pos 14 got 666
-=====================================================> Vector time 830
+=====================================================> Vector time 1098
 
 <====================================< Stack test >====================================>
 
@@ -246,7 +246,7 @@ Size 1
 Empty 0
 Size 0
 Empty 1
-=====================================================> Stack  time 149
+=====================================================> Stack  time 244
 
 <====================================< Map test >====================================>
 
@@ -254,40 +254,26 @@ Empty 1
  SIZES : = 0
 ------------------------------------ Constructor - default with char
  SIZES : = 1
- Value : STL = 1 and B at position 0
 ------------------------------------ Constructor - fill
  SIZES : = 1
- Value : STL = 1 and 3 at position 0
 ------------------------------------ Constructor - range
  SIZES : = 2
- Value : STL = 1 and 3 at position 0
- Value : STL = 2 and 4 at position 1
 ------------------------------------ Constructor - copy
  SIZES : = 2
- Value : STL = 1 and 3 at position 0
- Value : STL = 2 and 4 at position 1
 ------------------------------------ Constructor - operator = 
  SIZES : = 2
- Value : STL = 1 and 3 at position 0
- Value : STL = 2 and 4 at position 1
 ------------------------------------ Insert - one element
  SIZES : = 1
- Value : STL = 1 and 5 at position 0
 ------------------------------------ Insert again - one element
  SIZES : = 2
- Value : STL = 1 and 5 at position 0
- Value : STL = 2 and 3 at position 1
 ------------------------------------ Erase - one element
  SIZES : = 1
- Value : STL = 2 and 3 at position 0
 ------------------------------------ Erase - one range
  SIZES : = 1
- Value : STL = 2 and 3 at position 0
 ------------------------------------ Swap - first element
  SIZES : = 0
 ------------------------------------ Swap - second element
  SIZES : = 1
- Value : STL = 1 and 5 at position 0
 ------------------------------------ Clear - default
  SIZES : = 0
 ------------------------------------ Size of plenty
@@ -299,5 +285,5 @@ Begin (1 | 5)
 Rbegin (2 | 6)
 End (2 | 6)
 Rend (1 | 5)
-=====================================================> Map    time 159
+=====================================================> Map    time 213
 

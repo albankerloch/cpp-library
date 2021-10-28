@@ -1,10 +1,10 @@
 #include <map>
-#include "Map.hpp"
+#include "map.hpp"
 
 template <typename Key, typename T>
 void PrintMap(NAMESPACE::map<Key, T> *stl, std::string str = "test") 
 {
-	typename NAMESPACE::map<Key, T>::iterator it_stl;
+	/*typename NAMESPACE::map<Key, T>::iterator it_stl;
 	size_t i;
 
 	std::cout << "------------------------------------ " << str << std::endl;
@@ -15,7 +15,12 @@ void PrintMap(NAMESPACE::map<Key, T> *stl, std::string str = "test")
 	{
 		std::cout << " Value : STL = " << it_stl->first << " and " << it_stl->second << " at position " << i++ << std::endl;
 		it_stl++;
-	}
+	}*/
+
+	std::cout << "------------------------------------ " << str << std::endl;
+	std::cout << " SIZES : = "<< stl->size() << std::endl;
+	stl->print_tree();
+
 }
 
 void ft_constructor(void)
@@ -33,6 +38,7 @@ void ft_constructor(void)
 	PrintMap(&V2, "Constructor - fill");
 
 	V2[2]=4;
+	V2[-2]=4;
 	NAMESPACE::map<int, int> V3 (V2.begin(),V2.end());
 	PrintMap(&V2, "Constructor - range");
 
@@ -120,9 +126,9 @@ void ft_begin_end()
 void ft_test_map(void)
 {
    ft_constructor();
-   ft_insert_erase();
+ /*  ft_insert_erase();
    ft_swap();
    ft_clear();
    ft_access();
-   ft_begin_end();
+   ft_begin_end();*/
 }

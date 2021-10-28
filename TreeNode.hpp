@@ -15,12 +15,19 @@ namespace ft
 			TreeNode 	*left;
 			TreeNode 	*right;
 			TreeNode 	*parent;
-			bool		end;
+			int			height;
 
 		public:
 
-			TreeNode(const data_type &src = data_type()) : data(src), left(NULL), right(NULL), parent(NULL), end(false)
+			TreeNode(const data_type &src = data_type()) : data(src), left(NULL), right(NULL), parent(NULL), height(0)
 			{
+			};
+
+			int get_height(TreeNode *node) 
+			{
+				if (node == NULL)
+					return (0);
+				return node->height;
 			};
 
 	};
@@ -40,6 +47,7 @@ namespace ft
 			node = node->left;
 		return (node);
 	}
+
 }
 
 #endif
