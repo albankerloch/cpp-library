@@ -9,17 +9,18 @@ namespace ft
    	class TreeNode
 	{
 		public :
+    
+			TreeNode 	*m_left;
+			TreeNode 	*m_right;
+			TreeNode 	*m_parent;
+			int			m_height;
+			T			m_data;
 
-			typedef T	data_type;
-			data_type	data;
-			TreeNode 	*left;
-			TreeNode 	*right;
-			TreeNode 	*parent;
-			int			height;
-
-		public:
-
-			TreeNode(const data_type &src = data_type()) : data(src), left(NULL), right(NULL), parent(NULL), height(0)
+			TreeNode(): m_left(NULL), m_right(NULL), m_parent(NULL), m_height(0) 
+			{
+			};
+			
+			TreeNode(T const & elem): m_left(NULL), m_right(NULL), m_parent(NULL), m_height(0), m_data(elem) 
 			{
 			};
 
@@ -29,24 +30,7 @@ namespace ft
 					return (0);
 				return node->height;
 			};
-
 	};
-
-	template <typename T>
-	TreeNode<T>	*SeekRight(TreeNode<T> *node) 
-	{
-		while (node->right != NULL)
-			node = node->right;
-		return (node);
-	}
-
-	template <typename T>
-	TreeNode<T>	*SeekLeft(TreeNode<T> *node) 
-	{
-		while (node->left != NULL)
-			node = node->left;
-		return (node);
-	}
 
 }
 

@@ -48,7 +48,7 @@ void ft_constructor(void)
 	V2 = V4;
 	PrintMap(&V2, "Constructor - operator = ");*/
 }
-
+/*
 void ft_insert_erase(void)
 {
 	std::map<int, int> V1STL;
@@ -121,7 +121,7 @@ void ft_begin_end()
 	std::cout << "Rbegin (" << V1.rbegin()->first << " | " <<  V1.rbegin()->second << ")" << std::endl;
 	std::cout << "End (" << (--V1.end())->first << " | " <<  (--V1.end())->second << ")" << std::endl;
 	std::cout << "Rend (" << (--V1.rend())->first << " | " <<  (--V1.rend())->second << ")" << std::endl;
-}
+}*/
 
 void ft_test_map(void)
 {
