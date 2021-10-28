@@ -29,10 +29,10 @@ void ft_constructor(void)
 	NAMESPACE::map<std::string, int> V1_STL;
 	PrintMap(&V1_STL, "Constructor - default");
  
-/*	NAMESPACE::map<int, char> VCHAR2;
+	NAMESPACE::map<int, char> VCHAR2;
 	VCHAR2[1]='B';
 	PrintMap(&VCHAR2, "Constructor - default with char");
-
+/*
 	NAMESPACE::map<int, int> V2;
 	V2[1]=3;
 	PrintMap(&V2, "Constructor - fill");

@@ -64,12 +64,11 @@ namespace ft
 			key_compare																						m_compare;
 			allocator_type																					m_allocator;
 			size_type																						m_size;
-			node_pointer																					m_last_node;
 
 			void ft_init_tree(void)
 			{
-				this->m_last_node = node_allocator.allocate(1);
-				node_allocator.construct(m_last_node, ft::TreeNode<value_type>());
+				this->m_root = node_allocator.allocate(1);
+				node_allocator.construct(m_root, ft::TreeNode<value_type>());
 			};
 
 			node_pointer ft_create_node(const value_type & data)
@@ -82,11 +81,16 @@ namespace ft
 				return (new_node);
 			};
 
-			void ft_insert_node(const value_type & value)
+			node_pointer ft_insert_node(node_pointer node, value_type value)
 			{
-				node_pointer new_node;
-
-				new_node = ft_create_node(value);				
+				if (node == NULL)
+					return (ft_create_node(value));
+				if (this->m_compare(value.first, node->m_data.first))
+					node->m_left = ft_insert_node(node->m_left, value);
+				else if (this->m_compare(node->m_data.first, value.first))
+					node->m_right = ft_insert_node(node->m_right, value);
+				return (node);
+								
 			};
 
 			void ft_delete_node(node_pointer node)
@@ -132,11 +136,18 @@ namespace ft
 				this->ft_init_tree();
 			};
 
+			template <class Ite>
+			map(Ite first, Ite last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type(), typename ft::enable_if<!ft::is_integral_type<Ite>::value, Ite>::type* = NULL) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
+			{
+				this->ft_init_tree();
+				this->insert(first, last);
+			};
+
 			~map()
 			{
 //				this->clear();
-				node_allocator.destroy(this->m_last_node);
-				node_allocator.deallocate(this->m_last_node, 1);
+				node_allocator.destroy(this->m_root);
+				node_allocator.deallocate(this->m_root, 1);
 			};
 
 			ft::pair<iterator, bool> insert(const value_type &value) 
@@ -144,8 +155,8 @@ namespace ft
 				ft::pair<iterator, bool> ret;
 
 				ret.second = true;
-				this->ft_insert_node(value);
-				ret.first = iterator(this->m_last_node);
+				this->ft_insert_node(this->m_root, value);
+				ret.first = iterator(this->m_root);
 				return (ret);
 			};
 
@@ -164,6 +175,11 @@ namespace ft
 					throw (ft::InvalidIteratorException<typename ft::is_input_iterator_tagged<typename ft::iterator_traits<Ite>::iterator_category >::type>());
 				while (first != last)
 					this->insert(*first++);
+			};
+
+			mapped_type & operator[](const key_type &key) 
+			{
+				return (this->insert(value_type(key, mapped_type())).first->second);
 			};
 
 			size_type size() const

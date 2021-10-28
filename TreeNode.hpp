@@ -16,11 +16,11 @@ namespace ft
 			int			m_height;
 			T			m_data;
 
-			TreeNode(): m_left(NULL), m_right(NULL), m_parent(NULL), m_height(0) 
+			TreeNode(): m_left(NULL), m_right(NULL), m_parent(NULL), m_height(1) 
 			{
 			};
 			
-			TreeNode(T const & elem): m_left(NULL), m_right(NULL), m_parent(NULL), m_height(0), m_data(elem) 
+			TreeNode(T const & elem): m_left(NULL), m_right(NULL), m_parent(NULL), m_height(1), m_data(elem) 
 			{
 			};
 

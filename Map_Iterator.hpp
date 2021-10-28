@@ -123,7 +123,7 @@ namespace ft
 
 			reference operator*(void) const
 			{
-				return (this->m_node->data);
+				return (this->m_node->m_data);
 			};
 
 			pointer operator->(void) const
