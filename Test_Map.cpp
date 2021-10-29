@@ -32,14 +32,17 @@ void ft_constructor(void)
 	NAMESPACE::map<int, char> VCHAR2;
 	VCHAR2[1]='B';
 	PrintMap(&VCHAR2, "Constructor - default with char");
-/*
+
 	NAMESPACE::map<int, int> V2;
-	V2[1]=3;
+	V2[2]=3;
 	PrintMap(&V2, "Constructor - fill");
 
-	V2[2]=4;
-	V2[-2]=4;
-	NAMESPACE::map<int, int> V3 (V2.begin(),V2.end());
+//	V2[-2]=4;
+	V2[0]=4;
+//	V2[-1]=4;
+	//V2[4]=4;
+	PrintMap(&V2, "Constructor - fill");
+/*	NAMESPACE::map<int, int> V3 (V2.begin(),V2.end());
 	PrintMap(&V2, "Constructor - range");
 
 	NAMESPACE::map<int, int>V4(V3);

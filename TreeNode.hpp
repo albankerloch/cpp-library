@@ -24,13 +24,40 @@ namespace ft
 			{
 			};
 
-			int get_height(TreeNode *node) 
-			{
-				if (node == NULL)
-					return (0);
-				return node->height;
-			};
+			
 	};
+
+	template <typename T>
+	int get_balance_factor(TreeNode<T> *node) 
+	{
+		if (node == NULL)
+			return (0);
+		return (get_height(node->m_left) - get_height(node->m_right));
+	};
+
+	template <typename T>
+	int get_height(TreeNode<T> *node) 
+	{
+		if (node == NULL)
+			return (0);
+		return node->m_height;
+	};
+
+	template <typename T>
+	TreeNode<T>	*SeekRight(TreeNode<T> *node) 
+	{
+		while (node->m_right != NULL)
+			node = node->m_right;
+		return (node);
+	}
+
+	template <typename T>
+	TreeNode<T>	*SeekLeft(TreeNode<T> *node) 
+	{
+		while (node->m_left != NULL)
+			node = node->m_left;
+		return (node);
+	}
 
 }
 

@@ -10,6 +10,7 @@
 # include <memory>
 # include <iterator>
 # include <stdexcept>
+# include <algorithm>  
 
 namespace ft 
 {
@@ -198,6 +199,7 @@ namespace ft
 		}
 		return true;
 	}
+
 
     template <class T1, class T2>
 	struct pair
