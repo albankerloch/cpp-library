@@ -39,8 +39,8 @@ void ft_constructor(void)
 
 	V2[-2]=4;
 	V2[0]=4;
-	//V2[-1]=4;
-	//V2[4]=4;
+	V2[-1]=4;
+	V2[4]=4;
 	PrintMap(&V2, "Constructor - fill");
 /*	NAMESPACE::map<int, int> V3 (V2.begin(),V2.end());
 	PrintMap(&V2, "Constructor - range");
