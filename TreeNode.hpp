@@ -23,7 +23,6 @@ namespace ft
 			TreeNode(T const & elem): m_left(NULL), m_right(NULL), m_parent(NULL), m_height(1), m_data(elem) 
 			{
 			};
-
 			
 	};
 
@@ -40,7 +39,7 @@ namespace ft
 	{
 		if (node == NULL)
 			return (0);
-		return node->m_height;
+		return (node->m_height);
 	};
 
 	template <typename T>

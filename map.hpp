@@ -71,13 +71,15 @@ namespace ft
 				node_allocator.construct(m_root, ft::TreeNode<value_type>());
 			};
 
-			node_pointer ft_create_node(const value_type & data)
+			node_pointer ft_create_node(node_pointer parent, const value_type & data)
 			{
 				node_pointer new_node;
 				
 				new_node = node_allocator.allocate(1);
 				node_allocator.construct(new_node, ft::TreeNode<value_type>(data));
+				new_node->m_parent = parent;
 				this->m_size = this->m_size  + 1;
+				std::cout << " node created " << new_node->m_data.first << " - " << new_node->m_data.second << " - " << new_node->m_height << " - " << std::endl;
 				return (new_node);
 			};
 
@@ -88,7 +90,11 @@ namespace ft
 				node_pointer T2 = x->m_right;
 
 				x->m_right = y;
+				y->m_parent = x;
+				x->m_parent = NULL;
 				y->m_left = T2;
+				if (T2)
+					T2->m_parent = y;
 				y->m_height = std::max(get_height(y->m_left), get_height(y->m_right)) + 1;
 				x->m_height = std::max(get_height(x->m_left), get_height(x->m_right)) + 1;
 				return (x);
@@ -100,22 +106,28 @@ namespace ft
 				node_pointer T2 = y->m_left;
 				
 				y->m_left = x;
+				x->m_parent = y;
+				y->m_parent = NULL;
 				x->m_right = T2;
+				if (T2)
+					T2->m_parent = x;
 				x->m_height = std::max(get_height(y->m_left), get_height(y->m_right)) + 1;
 				y->m_height = std::max(get_height(y->m_left), get_height(y->m_right)) + 1;
 				return (y);
 			}
 
-			node_pointer ft_insert_node(node_pointer node, value_type value)
+			node_pointer ft_insert_node(node_pointer node, node_pointer parent, value_type value)
 			{
 				int balance_factor;
 
 				if (node == NULL)
-					return (ft_create_node(value));
+					return (ft_create_node(parent, value));
 				if (this->m_compare(value.first, node->m_data.first))
-					node->m_left = ft_insert_node(node->m_left, value);
+				{
+					node->m_left = ft_insert_node(node->m_left, node, value);
+				}
 				else if (this->m_compare(node->m_data.first, value.first))
-					node->m_right = ft_insert_node(node->m_right, value);
+					node->m_right = ft_insert_node(node->m_right, node, value);
 				else
 					return (node);
 				
@@ -130,6 +142,7 @@ namespace ft
 					} 
 					else if (this->m_compare(node->m_left->m_data.first, value.first))	
 					{
+						std::cout << "test" << std::endl;
 						node->m_left = ft_left_rotate(node->m_left);
 						return (ft_right_rotate(node));
 					}
@@ -181,7 +194,10 @@ namespace ft
 						std::cout << "L---- ";
 						indent += "|  ";
 					}
-					std::cout << root->m_data.first << " | " << root->m_data.second << " | " << root->m_height << std::endl;
+					if (root->m_parent)
+						std::cout << root->m_data.first << " | " << root->m_data.second << " | " << root->m_height << " << " << root->m_parent->m_data.first << std::endl;
+					else
+						std::cout << root->m_data.first << " | " << root->m_data.second << " | " << root->m_height << std::endl;
 					ft_print_tree(root->m_left, indent, false);
 					ft_print_tree(root->m_right, indent, true);
 				}
@@ -280,7 +296,7 @@ namespace ft
 				ft::pair<iterator, bool> ret;
 
 				ret.second = true;
-				this->m_root = this->ft_insert_node(this->m_root, value);
+				this->m_root = this->ft_insert_node(this->m_root, NULL, value);
 				ret.first = iterator(this->m_root);
 				return (ret);
 			};

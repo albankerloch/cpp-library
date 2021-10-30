@@ -72,7 +72,16 @@ namespace ft
 				if (this->m_node->m_right == NULL)
 				{
 					std::cout << "test NULL"  << std::endl;
-					this->m_node = SeekLeft(this->m_node->m_right);
+					while(this->m_node->m_left)
+					{
+						std::cout << "this->m_node->m_left" << this->m_node->m_left->m_data.first << std::endl;
+						if (this->m_node->m_left->m_right)
+						{
+							this->m_node = this->m_node->m_left->m_right;
+							break;
+						}
+						this->m_node = this->m_node->m_left->m_right;
+					}
 				}
 				else
 				{
