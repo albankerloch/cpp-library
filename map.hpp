@@ -111,7 +111,7 @@ namespace ft
 				x->m_right = T2;
 				if (T2)
 					T2->m_parent = x;
-				x->m_height = std::max(get_height(y->m_left), get_height(y->m_right)) + 1;
+				x->m_height = std::max(get_height(x->m_left), get_height(x->m_right)) + 1;
 				y->m_height = std::max(get_height(y->m_left), get_height(y->m_right)) + 1;
 				return (y);
 			}
