@@ -7,7 +7,7 @@
 namespace ft	{
 
 	template< class T, class Compare, typename node_type>
-	class map_iterator : public ft::iterator<ft::bidirectional_iterator_tag, T > 
+	class bidirectional_iterator : public ft::iterator<ft::bidirectional_iterator_tag, T > 
 	{
 
 		template< typename _k, typename _t, typename _c, typename _a>
@@ -30,24 +30,24 @@ namespace ft	{
 
 		public:
 
-			map_iterator( node_type* ptr = NULL, node_type* dumbNode = NULL, const key_compare& comp = key_compare()) : m_pointer(ptr),  m_ghost(dumbNode), m_compare(comp)
+			bidirectional_iterator( node_type* ptr = NULL, node_type* dumbNode = NULL, const key_compare& comp = key_compare()) : m_pointer(ptr),  m_ghost(dumbNode), m_compare(comp)
 			{
 			};
 
-			map_iterator(const map_iterator<T, Compare, node_type> & itSrc) : m_pointer(itSrc.base()), m_ghost(itSrc.getGhostNode()),m_compare(itSrc.getCompare())		
+			bidirectional_iterator(const bidirectional_iterator<T, Compare, node_type> & itSrc) : m_pointer(itSrc.base()), m_ghost(itSrc.getGhostNode()),m_compare(itSrc.getCompare())		
 			{
 			};
 
-			~map_iterator()
+			~bidirectional_iterator()
 			{
 			};
 
-			operator map_iterator<const T, Compare, node_type>() const 
+			operator bidirectional_iterator<const T, Compare, node_type>() const 
 			{
-				return (map_iterator<const T, Compare, node_type>(this->m_pointer, this->m_ghost , this->m_compare));
+				return (bidirectional_iterator<const T, Compare, node_type>(this->m_pointer, this->m_ghost , this->m_compare));
 			};
 
-			map_iterator& operator=( const map_iterator &src)	
+			bidirectional_iterator& operator=( const bidirectional_iterator &src)	
 			{
 				if (*this != src)	
 				{
@@ -58,7 +58,7 @@ namespace ft	{
 				return (*this);
 			}
 
-			map_iterator& operator++() 
+			bidirectional_iterator& operator++() 
 			{
 				if (m_pointer == m_ghost)
 					m_pointer = m_ghost->left;
@@ -81,15 +81,15 @@ namespace ft	{
 				return (*this);
 			}
 
-			map_iterator operator++(int) 
+			bidirectional_iterator operator++(int) 
 			{
-				map_iterator tmp(*this);
+				bidirectional_iterator tmp(*this);
 
 				operator++();
 				return tmp;
 			}
 
-			map_iterator &operator--() 
+			bidirectional_iterator &operator--() 
 			{
 				if (m_pointer == m_ghost)
 					m_pointer = m_ghost->right;
@@ -112,9 +112,9 @@ namespace ft	{
 				return (*this);
 			}
 
-			map_iterator operator--(int) 
+			bidirectional_iterator operator--(int) 
 			{
-				map_iterator tmp(*this);
+				bidirectional_iterator tmp(*this);
 
 				operator--();
 				return (tmp);
@@ -194,13 +194,13 @@ namespace ft	{
 		};
 
 		template <typename T, typename T2, typename Compare, typename node_type> 
-		bool operator==(const map_iterator<T, Compare, node_type>& rhs, const map_iterator<T2, Compare, node_type>& lhs)	
+		bool operator==(const bidirectional_iterator<T, Compare, node_type>& rhs, const bidirectional_iterator<T2, Compare, node_type>& lhs)	
 		{ 
 			return (lhs.base() == rhs.base());
 		};
 
 		template <typename T, typename T2, typename Compare, typename node_type> 
-		bool operator!=(const map_iterator<T, Compare, node_type>& rhs, const map_iterator<T2, Compare, node_type>& lhs)		
+		bool operator!=(const bidirectional_iterator<T, Compare, node_type>& rhs, const bidirectional_iterator<T2, Compare, node_type>& lhs)		
 		{ 
 			return (lhs.base() != rhs.base());
 		};

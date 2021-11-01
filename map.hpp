@@ -52,11 +52,11 @@ namespace ft	{
 			typedef typename Allocator::pointer				pointer;
 			typedef typename Allocator::const_pointer		const_pointer;
 
-			typedef typename ft::map_iterator<value_type, Compare, ft::TreeNode<value_type> >	iterator;
-			typedef typename ft::map_iterator<const value_type, Compare, ft::TreeNode<value_type> >	const_iterator;
+			typedef typename ft::bidirectional_iterator<value_type, Compare, ft::TreeNode<value_type> >	iterator;
+			typedef typename ft::bidirectional_iterator<const value_type, Compare, ft::TreeNode<value_type> >	const_iterator;
 
-            typedef typename ft::reverse_iterator<map_iterator<value_type, Compare, ft::TreeNode<value_type> > > reverse_iterator;
-            typedef typename ft::reverse_iterator<map_iterator<const value_type, Compare, ft::TreeNode<value_type> > >  const_reverse_iterator;
+            typedef typename ft::reverse_iterator<bidirectional_iterator<value_type, Compare, ft::TreeNode<value_type> > > reverse_iterator;
+            typedef typename ft::reverse_iterator<bidirectional_iterator<const value_type, Compare, ft::TreeNode<value_type> > >  const_reverse_iterator;
 
 		private:
 
