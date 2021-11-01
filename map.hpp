@@ -1,17 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   map.hpp                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bvalette <bvalette@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/07 08:28:02 by bvalette          #+#    #+#             */
-/*   Updated: 2021/06/09 10:53:53 by bvalette         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#ifndef MAP_HPP
-# define MAP_HPP
+#ifndef DEF_MAP_HPP
+# define DEF_MAP_HPP
 
 # include "Utils.hpp"
 # include "Map_Iterator.hpp"
@@ -22,19 +10,12 @@
 # include <limits>
 # include <cstddef>
 
-#ifndef DEBUG_MODE
-# define DEBUG_MODE 0
-#endif
+namespace ft	
+{
 
-namespace ft	{
-
-
-
-	template< 	class Key,
-				class T,
-				class Compare = std::less<Key>,
-				class Allocator = std::allocator< ft::TreeNode<ft::pair<const Key, T> > > >
-	class map {
+	template< 	class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator< ft::TreeNode<ft::pair<const Key, T> > > >
+	class map 
+	{
 
 		public:
 
@@ -42,35 +23,20 @@ namespace ft	{
 			typedef T										mapped_type;
 			typedef ft::pair<const key_type, mapped_type>	value_type;
 			typedef	Compare									key_compare;
-
 			typedef size_t									size_type;
 			typedef std::ptrdiff_t							difference_type;
-
 			typedef Allocator								allocator_type;
 			typedef typename Allocator::reference			reference;
 			typedef typename Allocator::const_reference		const_reference;
 			typedef typename Allocator::pointer				pointer;
 			typedef typename Allocator::const_pointer		const_pointer;
-
 			typedef typename ft::bidirectional_iterator<value_type, Compare, ft::TreeNode<value_type> >	iterator;
 			typedef typename ft::bidirectional_iterator<const value_type, Compare, ft::TreeNode<value_type> >	const_iterator;
-
             typedef typename ft::reverse_iterator<bidirectional_iterator<value_type, Compare, ft::TreeNode<value_type> > > reverse_iterator;
             typedef typename ft::reverse_iterator<bidirectional_iterator<const value_type, Compare, ft::TreeNode<value_type> > >  const_reverse_iterator;
 
-		private:
-
-			typedef typename ft::TreeNode<value_type>		node_type;
-
-/******************************************************************************.
-.******************************************************************************.
-.*********** NESTED CLASSES          ******************************************.
-.******************************************************************************.
-.******************************************************************************/
-
-		public:
-
-			class value_compare	{
+			class value_compare	
+			{
 
 				friend class map<Key, T, Compare, Allocator>;
 
@@ -90,12 +56,17 @@ namespace ft	{
 					Compare				_comp;
 			};
 
-/******************************************************************************.
-.******************************************************************************.
-.*********** CONSTRUCTORS DESTRUCTOR           ********************************.
-.******************************************************************************.
-.******************************************************************************/
 
+		private:
+
+			typedef typename ft::TreeNode<value_type>		node_type;
+
+		protected:
+				node_type*				_head;
+				node_type*				_dumbNode;
+				size_type				_size;
+				allocator_type		 	_allocNode;
+				Compare	const			_comp;
 
 		public:
 
@@ -130,143 +101,28 @@ namespace ft	{
 				}
 			};
 
-			/**
-			 * @brief Default Constructor
-			*/
-			explicit
-			map( const Compare& comp = key_compare(),
-			const allocator_type & userAlloc = allocator_type() )	: 	_head(NULL),
-																		_dumbNode(NULL),
-																		_size(0),
-																		_allocNode(userAlloc),
-																		_comp(comp)				{
-				if (DEBUG_MODE == 1)
-					std::cout << "CONSTRUCTOR --> DEFAULT explicit " << __func__ << std::endl;
 
+			explicit map( const Compare& comp = key_compare(), const allocator_type & userAlloc = allocator_type())	: _head(NULL), _dumbNode(NULL), _size(0), _allocNode(userAlloc), _comp(comp)				
+			{
 				btree_init_dumbNode();
-			}
+			};
 
-
-			/**
-			 * @brief Range Constructor
-			*/
 			template <class InputIterator>
-			map (InputIterator first, InputIterator last,
-				const key_compare& comp = key_compare(),
-				const allocator_type& userAlloc = allocator_type() ) :	_head(NULL),
-																		_dumbNode(NULL),
-																		_size(0),
-																		_allocNode(userAlloc),
-																		_comp(comp)				{
-
-				if (DEBUG_MODE == 1)
-					std::cout << "CONSTRUCTOR --> Range ! " << __func__ << std::endl;
+			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(),   const allocator_type& userAlloc = allocator_type() ) :	_head(NULL), _dumbNode(NULL), _size(0), _allocNode(userAlloc), _comp(comp)				
+			{
 				insert(first, last);
 			}
 
-			/**
-			 * @brief Copy Constructor
-			*/
-			map( map const & src ) :	_head(NULL),
-												_dumbNode(NULL),
-												_size(0),
-												_allocNode(src._allocNode),
-												_comp(src._comp)				{
-
-				if (DEBUG_MODE == 1)
-					std::cout << "CONSTRUCTOR --> copy " << __func__ << std::endl;
-
+			map( map const & src ) : _head(NULL), _dumbNode(NULL), _size(0), _allocNode(src._allocNode), _comp(src._comp)				
+			{
 				insert(src.begin(), src.end());
 			}
 
-
-			~map( void )	{
-
-				if (DEBUG_MODE == 1) std::cout << "DESTRUCTOR --> " << __func__ << std::endl;
+			~map()	
+			{
 				clear();
 			}
 
-/******************************************************************************.
-.******************************************************************************.
-.*********** PRIVATE VARIABLES  ***********************************************.
-.******************************************************************************.
-.******************************************************************************/
-
-			protected:
-				node_type*				_head;
-				node_type*				_dumbNode; // allow to point to element after last.
-				size_type				_size;
-				allocator_type		 	_allocNode;
-				Compare	const			_comp;
-
-/******************************************************************************.
-.******************************************************************************.
-.*********** 🚧  DEBUG 🚧             ******************************************.
-.******************************************************************************.
-.******************************************************************************/
-
-			private:
-			// public:
-				void
-				debugPrintTree()	{
-
-					if (DEBUG_MODE < 2)
-						return ;
-					std::cout << "***********************************" << std::endl;
-					std::cout << __func__ << "_head is pointing to:  " << _head << std::endl;
-					std::cout << "_dumbNode is... : " << std::endl;
-					debugPrintNode(_dumbNode);
-					std::cout << "Printing tree of size  " << _size << std::endl;
-
-					std::cout << "****************ITERATORES*******************" << std::endl;
-					iterator it = begin();
-					iterator ite = end();
-
-					for(; it != ite; ++it)	{
-						debugPrintNode(it.base());
-					}
-					std::cout << "***********************************" << std::endl;
-				}
-
-				static void
-				debugPrintNode( node_type* node )	{
-
-					if (DEBUG_MODE < 2)
-						return ;
-					if (node != NULL)	{
-						std::cout << std::endl;
-						std::cout << __func__ << std::endl;
-						std::cout << "NODE   " << node << std::endl;
-						std::cout << "--- KEY    " << node->item.first << std::endl;
-						std::cout << "--  VAL    " << node->item.second << std::endl;
-						std::cout << "parent " << node->parent;
-						if (node->parent != NULL)
-							std::cout << "(" << node->parent->item.first << ";" << node->parent->item.second << ")" << std::endl;
-						else
-							std::cout << "--> THIS NODE IS _HEAD" << std::endl;
-
-						std::cout << " left   " << node->left;
-						if (node->left != NULL)
-							std::cout << "(" << node->left->item.first << ";" << node->left->item.second << ")";
-						std::cout << std::endl;
-						std::cout << " right  " << node->right;
-						if (node->right != NULL)
-							std::cout << "(" << node->right->item.first << ";" << node->right->item.second << ")";
-						std::cout << std::endl;
-						std::cout << std::endl;
-					}
-					else
-						std::cout << __func__ << "Called with null" << std::endl;
-
-				}
-
-/******************************************************************************.
-.******************************************************************************.
-.*********** PUBLIC MEMBER FUNCTIONS ******************************************.
-.******************************************************************************.
-.******************************************************************************/
-
-		public:
 
 			bool		empty( void ) const		{ return (_size == 0); }
 			size_type	size( void ) const 		{ return (_size); }
@@ -418,7 +274,6 @@ namespace ft	{
 				if (posPtr == NULL)
 					return (iterator());
 				if (position != end() && lower_bound(val.first) == position)	{
-					if (DEBUG_MODE >= 2) std::cout << __func__ << ":	 Insert with optimization." << std::endl;
 					return (btree_insert_data(posPtr->parent, &posPtr, val).first);
 				}
 				else
@@ -537,7 +392,6 @@ namespace ft	{
 			void
 			clear( void )			{
 
-				if (DEBUG_MODE >= 3) std::cout << __func__ << std::endl;
 				freeAllNodes(_head);
 				freeNode(_dumbNode);
 				_size = 0;
