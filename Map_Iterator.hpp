@@ -16,7 +16,6 @@ namespace ft	{
 		public:
 
 			typedef	Compare										key_compare;
-
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, T >	iterator;
 			typedef typename iterator::value_type										value_type;
 			typedef typename iterator::difference_type									difference_type;
@@ -34,8 +33,14 @@ namespace ft	{
 
 			~map_iterator( void )	{}
 
+			operator map_iterator<const T, Compare, map_node>(void) const 
+			{
+				return (map_iterator<const T, Compare, map_node>(this->_ptr, this->_btreeDumdNode , this->_comp));
+			};
+
 			map_iterator&
-			operator=( const map_iterator& src )	{
+			operator=( const map_iterator& src )	
+			{
 				if (*this != src)	{
 					_ptr = src.getPtr();
 					_btreeDumdNode = src.getDumbNode();
@@ -113,6 +118,7 @@ namespace ft	{
 
 			reference
 			operator*()	const			{ return (_ptr->item); }
+
 
 		private:
 
