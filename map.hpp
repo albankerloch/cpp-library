@@ -363,16 +363,15 @@ namespace ft
 				freeNode(deadNode);
 			};
 
-			size_type erase( const key_type& k )	
+			size_type erase(const key_type& key)	
 			{
-
-				node_type*	target = btree_search_key(_head, k);
-				if (target == NULL)
-					return 0;
-				else	{
-					erase(iterator(target, _dumbNode, m_compare));
-					return 1;
-				}
+				iterator element;
+				
+				element = this->find(key);
+				if (element == this->end())
+					return (0);
+				this->erase(iterator(element.base(), _dumbNode, m_compare));
+				return (1);
 			};
 
 			void erase (iterator first, iterator last)	
@@ -381,14 +380,20 @@ namespace ft
 					this->erase(first++);
 			}
 
-			void
-			swap (map& src)	{
+			void swap (map& src)	
+			{
+				if (this->_head != src._head)	
+				{
+					node_type*				tmp_head;
+					node_type*				tmp_dumbNode;
+					size_t					tmp_size;
+					allocator_type 			tmp_allocNode;
 
-				if (this->_head != src._head)	{
-					node_type*				tmp_head = src._head;
-					node_type*				tmp_dumbNode = src._dumbNode;
-					size_t					tmp_size = src._size;
-					allocator_type 			tmp_allocNode = src._allocNode;
+
+					tmp_head = src._head;
+					tmp_dumbNode = src._dumbNode;
+					tmp_size = src._size;
+					tmp_allocNode = src._allocNode;
 
 					src._head = this->_head;
 					src._dumbNode = this->_dumbNode;
@@ -402,15 +407,17 @@ namespace ft
 				}
 			}
 
-			map&
-			operator= (const map& src)	{
-
-				if (this->_head != src._head)	{
+			map& operator= (const map& src)	
+			{
+				if (this->_head != src._head)	
+				{
 
 					clear();
 
-					if (src.empty() == false)	{
-						if (src.size() > 2)	{
+					if (src.empty() == false)	
+					{
+						if (src.size() > 2)	
+						{
 							const_iterator	half = src.begin();
 							for (size_t i = 0; i < src.size() / 2; i++)
 								half++;
