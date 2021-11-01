@@ -61,12 +61,15 @@ namespace ft
 
 		private:
 
-			typedef typename ft::TreeNode<value_type>		node_type;
-			node_type*				m_root;
-			node_type*				m_ghost;
-			size_type				m_size;
-			allocator_type		 	m_allocator;
-			Compare	const			m_compare;
+			typedef typename allocator_type::template rebind<ft::TreeNode<ft::pair<const Key,T> > >::other		type_node_allocator;
+			typedef typename type_node_allocator::pointer														node_pointer;
+			typedef typename ft::TreeNode<value_type>															node_type;
+			type_node_allocator																					m_node_allocator;
+			node_type*																							m_root;
+			node_type*																							m_ghost;
+			size_type																							m_size;
+			allocator_type		 																				m_allocator;
+			Compare	const																						m_compare;
 
 		public:
 
@@ -561,8 +564,8 @@ namespace ft
 			{
 				if (m_ghost == NULL)	
 				{
-					m_ghost = m_allocator.allocate(1);
-					m_allocator.construct(m_ghost, node_type(value_type()));
+					m_ghost = m_node_allocator.allocate(1);
+					m_node_allocator.construct(m_ghost, node_type(value_type()));
 					m_ghost->left = m_root;
 					m_ghost->right = m_root;
 				}
@@ -571,8 +574,8 @@ namespace ft
 			node_type* btree_create_node(node_type* parent, key_type k, mapped_type val)	
 			{
 
-				node_type*	newNode = m_allocator.allocate(1);
-				m_allocator.construct(newNode, node_type(value_type(k ,val)));
+				node_type*	newNode = m_node_allocator.allocate(1);
+				m_node_allocator.construct(newNode, node_type(value_type(k ,val)));
 				newNode->parent = parent;
 				return (newNode);
 			}
@@ -653,8 +656,8 @@ namespace ft
 			{
 				if (node != NULL)	
 				{
-					m_allocator.destroy(node);
-					m_allocator.deallocate(node, 1);
+					m_node_allocator.destroy(node);
+					m_node_allocator.deallocate(node, 1);
 				}
 			}
 
@@ -669,7 +672,7 @@ namespace ft
 
 			allocator_type get_allocator() const	
 			{
-				return m_allocator();
+				return m_node_allocator();
 			}
 
 	};
