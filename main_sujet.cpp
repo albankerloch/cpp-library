@@ -62,7 +62,6 @@ int main(int argc, char** argv) {
 	srand(seed);
 
 	NAMESPACE::map<int, int> map_int;
-/*
 	NAMESPACE::vector<std::string> vector_str;
 	NAMESPACE::vector<int> vector_int;
 	NAMESPACE::stack<int> stack_int;
@@ -99,7 +98,6 @@ int main(int argc, char** argv) {
 	{
 		//NORMAL ! :P
 	}
-*/
 	for (int i = 0; i < COUNT; ++i)
 	{
 		ran = rand();
@@ -118,7 +116,6 @@ int main(int argc, char** argv) {
 		//std::cout << "access " << access << " value " << map_int[access] << std::endl;
 	}
 	std::cout << "should be constant with the same seed: " << sum << std::endl;
-
 	{
 		NAMESPACE::map<int, int> copy = map_int;
 	}

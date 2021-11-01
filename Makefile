@@ -1,10 +1,12 @@
 
 
 CC = clang++
-SRCS_FILES = main.cpp \
+# SRCS_FILES = main.cpp \
 			 Test_Map.cpp \
 			 Test_Vector.cpp \
 			 Test_Stack.cpp
+
+SRCS_FILES = main_sujet.cpp
 
 NAME = ft_containers
 OBJS_PATH = ./OBJS_FT/
@@ -14,7 +16,7 @@ CFLAGS = -Wall -Wextra -Werror -std=c++98 -DNAMESPACE=ft
 STD_NAME = std_containers
 STD_OBJS_PATH = ./OBJS_STD/
 STD_OBJS = ${addprefix ${STD_OBJS_PATH}, ${SRCS_FILES:.cpp=.o}}
-STD_CFLAGS = -Wall -Wextra -Werror -std=c++98 -DNAMESPACE=ft
+STD_CFLAGS = -Wall -Wextra -Werror -std=c++98 -DNAMESPACE=std
 
 all: ${NAME}
 
