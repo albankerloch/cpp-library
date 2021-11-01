@@ -23,17 +23,17 @@ namespace ft	{
 
 		private:
 
-			node_type*																				_ptr;
-			node_type*																				_btreeDumdNode;
-			Compare																					_comp;
+			node_type*																				m_pointer;
+			node_type*																				m_ghost;
+			Compare																					m_compare;
 
 		public:
 
-			map_iterator( node_type* ptr = NULL, node_type* dumbNode = NULL, const key_compare& comp = key_compare()) : _ptr(ptr),  _btreeDumdNode(dumbNode), _comp(comp)
+			map_iterator( node_type* ptr = NULL, node_type* dumbNode = NULL, const key_compare& comp = key_compare()) : m_pointer(ptr),  m_ghost(dumbNode), m_compare(comp)
 			{
 			};
 
-			map_iterator(const map_iterator<T, Compare, node_type> & itSrc) : _ptr(itSrc.base()), _btreeDumdNode(itSrc.getDumbNode()),_comp(itSrc.getComp())		
+			map_iterator(const map_iterator<T, Compare, node_type> & itSrc) : m_pointer(itSrc.base()), m_ghost(itSrc.getGhostNode()),m_compare(itSrc.getCompare())		
 			{
 			};
 
@@ -43,37 +43,37 @@ namespace ft	{
 
 			operator map_iterator<const T, Compare, node_type>() const 
 			{
-				return (map_iterator<const T, Compare, node_type>(this->_ptr, this->_btreeDumdNode , this->_comp));
+				return (map_iterator<const T, Compare, node_type>(this->m_pointer, this->m_ghost , this->m_compare));
 			};
 
 			map_iterator& operator=( const map_iterator &src)	
 			{
 				if (*this != src)	
 				{
-					_ptr = src.base();
-					_btreeDumdNode = src.getDumbNode();
-					_comp = src.getComp();
+					m_pointer = src.base();
+					m_ghost = src.getGhostNode();
+					m_compare = src.getCompare();
 				}
 				return (*this);
 			}
 
 			map_iterator& operator++() 
 			{
-				if (_ptr == _btreeDumdNode)
-					_ptr = _btreeDumdNode->left;
-				else if (isLastNode(_ptr) == true)
-					_ptr = _btreeDumdNode;
-				else if (isLeaf(_ptr) == true)	
+				if (m_pointer == m_ghost)
+					m_pointer = m_ghost->left;
+				else if (isLastNode(m_pointer) == true)
+					m_pointer = m_ghost;
+				else if (isLeaf(m_pointer) == true)	
 				{
-					if (_ptr == _ptr->parent->left)
-						_ptr = _ptr->parent;
+					if (m_pointer == m_pointer->parent->left)
+						m_pointer = m_pointer->parent;
 					else
 						getNextBranch();
 				}
 				else	
 				{
-					if (_ptr->right != NULL)
-						_ptr = getFarLeft(_ptr->right);
+					if (m_pointer->right != NULL)
+						m_pointer = getFarLeft(m_pointer->right);
 					else
 						getNextBranch();
 				}
@@ -90,21 +90,21 @@ namespace ft	{
 
 			map_iterator &operator--() 
 			{
-				if (_ptr == _btreeDumdNode)
-					_ptr = _btreeDumdNode->right;
-				else if (isFirstNode(_ptr) == true)
-					_ptr = _btreeDumdNode;
-				else if (isLeaf(_ptr) == true)	
+				if (m_pointer == m_ghost)
+					m_pointer = m_ghost->right;
+				else if (isFirstNode(m_pointer) == true)
+					m_pointer = m_ghost;
+				else if (isLeaf(m_pointer) == true)	
 				{
-					if (_ptr == _ptr->parent->right)
-						_ptr = _ptr->parent;
+					if (m_pointer == m_pointer->parent->right)
+						m_pointer = m_pointer->parent;
 					else
 						getPreviousBranch();
 				}
 				else	
 				{
-					if (_ptr->left != NULL)
-						_ptr = getFarRight(_ptr->left);
+					if (m_pointer->left != NULL)
+						m_pointer = getFarRight(m_pointer->left);
 					else
 						getPreviousBranch();
 				}
@@ -121,37 +121,37 @@ namespace ft	{
  
 			pointer	operator->() const		
 			{ 
-				return (&_ptr->item); 
+				return (&m_pointer->item); 
 			};
 
 			node_type *base() const
 			{
-				return (this->_ptr); 
+				return (this->m_pointer); 
 			};
 
 			reference operator*() const			
 			{ 
-				return (_ptr->item); 
+				return (m_pointer->item); 
 			};
 
 
 		private:
 
-			node_type* getDumbNode() const 
+			node_type* getGhostNode() const 
 			{ 
-				return (_btreeDumdNode);	
+				return (m_ghost);	
 			};
 
-			Compare getComp() const 	
+			Compare getCompare() const 	
 			{ 
-				return (_comp);	
+				return (m_compare);	
 			};
 
 			node_type* getPosParent() const	
 			{
 
-				if (_ptr != NULL)
-					return (_ptr->parent);
+				if (m_pointer != NULL)
+					return (m_pointer->parent);
 				return (NULL);
 			};
 
@@ -159,10 +159,10 @@ namespace ft	{
 			{
 				node_type*		cursor;
 				
-				cursor = _ptr->parent;
-				while (cursor != NULL && _comp(cursor->item.first, _ptr->item.first) == true)
+				cursor = m_pointer->parent;
+				while (cursor != NULL && m_compare(cursor->item.first, m_pointer->item.first) == true)
 					cursor = cursor->parent;
-				_ptr = cursor;
+				m_pointer = cursor;
 			};
 
 			void
@@ -170,10 +170,10 @@ namespace ft	{
 			{
 				node_type*		cursor;
 				
-				cursor = _ptr->parent;
-				while (cursor != NULL && _comp(_ptr->item.first, cursor->item.first) == true)
+				cursor = m_pointer->parent;
+				while (cursor != NULL && m_compare(m_pointer->item.first, cursor->item.first) == true)
 					cursor = cursor->parent;
-				_ptr = cursor;
+				m_pointer = cursor;
 			};
 
 			node_type* getFarLeft( node_type* cursor )	
@@ -193,12 +193,12 @@ namespace ft	{
 
 			bool isFirstNode( node_type* p )	
 			{
-				return (p == _btreeDumdNode->left);
+				return (p == m_ghost->left);
 			};
 
 			bool isLastNode( node_type* p )	
 			{
-				return (p == _btreeDumdNode->right);
+				return (p == m_ghost->right);
 			};
 
 			bool isLeaf(node_type* node)	
