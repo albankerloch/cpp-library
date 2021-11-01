@@ -7,22 +7,17 @@
 
 namespace ft	{
 
-	template< 	class Key,
-				class T,
-				class Compare,
-				typename map_node, bool B>
-	class map_iterator : public ft::iterator_base<ft::bidirectional_iterator_tag, ft::pair<const Key, T>, B > {
+	template< class T, class Compare, typename map_node>
+	class map_iterator : public ft::iterator<ft::bidirectional_iterator_tag, T > {
 
 		template< typename _k, typename _t, typename _c, typename _a>
 		friend class map;
-
-		friend class map_iterator<Key, T, Compare, map_node, !B>;
 
 		public:
 
 			typedef	Compare										key_compare;
 
-			typedef typename ft::iterator_base<ft::bidirectional_iterator_tag, ft::pair<const Key, T>, B>			iterator;
+			typedef typename ft::iterator<ft::bidirectional_iterator_tag, T >	iterator;
 			typedef typename iterator::value_type										value_type;
 			typedef typename iterator::difference_type									difference_type;
 			typedef typename iterator::reference										reference;
@@ -33,7 +28,7 @@ namespace ft	{
 															_btreeDumdNode(dumbNode),
 															_comp(comp)		{}
 
-			map_iterator(const map_iterator<Key, T, Compare, map_node, false>& itSrc) :	_ptr(itSrc.getPtr()),
+			map_iterator(const map_iterator<T, Compare, map_node> & itSrc) :	_ptr(itSrc.getPtr()),
 														_btreeDumdNode(itSrc.getDumbNode()),
 														_comp(itSrc.getComp())		{}
 
@@ -106,19 +101,15 @@ namespace ft	{
 				operator--();
 				return tmp;
 			}
-
-			bool
-			operator==(const map_iterator<Key, T, Compare, map_node, true>& rhs) const	{ return _ptr==rhs.getPtr(); }
-			bool
-			operator==(const map_iterator<Key, T, Compare, map_node, false>& rhs) const	{ return _ptr==rhs.getPtr(); }
-
-			bool
-			operator!=(const map_iterator<Key, T, Compare, map_node, true>& rhs) const	{ return _ptr!=rhs.getPtr(); }
-			bool
-			operator!=(const map_iterator<Key, T, Compare, map_node, false>& rhs) const	{ return _ptr!=rhs.getPtr(); }
-
+ 
 			pointer
 			operator->()	const		{ return (&_ptr->item); }
+
+
+			map_node *base() const
+			{
+				return (this->_ptr); 
+			};
 
 			reference
 			operator*()	const			{ return (_ptr->item); }
@@ -146,10 +137,9 @@ namespace ft	{
 			void
 			getNextBranch( void )	{
 
-				Key				startKey = _ptr->item.first;
 				map_node*		cursor = _ptr->parent;
 
-				while (cursor != NULL && _comp(cursor->item.first, startKey) == true)
+				while (cursor != NULL && _comp(cursor->item.first, _ptr->item.first) == true)
 					cursor = cursor->parent;
 				_ptr = cursor;
 			}
@@ -157,10 +147,9 @@ namespace ft	{
 			void
 			getPreviousBranch( void )	{
 
-				Key				startKey = _ptr->item.first;
 				map_node*		cursor = _ptr->parent;
 
-				while (cursor != NULL && _comp(startKey, cursor->item.first) == true)
+				while (cursor != NULL && _comp(_ptr->item.first, cursor->item.first) == true)
 					cursor = cursor->parent;
 				_ptr = cursor;
 			}
@@ -198,6 +187,18 @@ namespace ft	{
 
 
 		}; //----------------- Class map_iterator
+
+		template <typename T, typename T2, typename Compare, typename map_node> 
+		bool operator==(const map_iterator<T, Compare, map_node>& rhs, const map_iterator<T2, Compare, map_node>& lhs)	
+		{ 
+			return (lhs.base() == rhs.base());
+		};
+
+		template <typename T, typename T2, typename Compare, typename map_node> 
+		bool operator!=(const map_iterator<T, Compare, map_node>& rhs, const map_iterator<T2, Compare, map_node>& lhs)		
+		{ 
+			return (lhs.base() != rhs.base());
+		};
 
 
 } // ----------------- ft namespace

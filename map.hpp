@@ -67,11 +67,11 @@ namespace ft	{
 			typedef typename Allocator::pointer				pointer;
 			typedef typename Allocator::const_pointer		const_pointer;
 
-			typedef typename ft::map_iterator<Key, T, Compare, ft::map_node<value_type>, false>	iterator;
-			typedef typename ft::map_iterator<Key, T, Compare, ft::map_node<value_type>, true>	const_iterator;
+			typedef typename ft::map_iterator<value_type, Compare, ft::map_node<value_type> >	iterator;
+			typedef typename ft::map_iterator<const value_type, Compare, ft::map_node<value_type> >	const_iterator;
 
-            typedef typename ft::reverse_iterator<map_iterator<Key, T, Compare, ft::map_node<value_type>, false> > reverse_iterator;
-            typedef typename ft::reverse_iterator<map_iterator<Key, T, Compare, ft::map_node<value_type>, true> >  const_reverse_iterator;
+            typedef typename ft::reverse_iterator<map_iterator<value_type, Compare, ft::map_node<value_type> > > reverse_iterator;
+            typedef typename ft::reverse_iterator<map_iterator<const value_type, Compare, ft::map_node<value_type> > >  const_reverse_iterator;
 
 		private:
 
@@ -113,6 +113,38 @@ namespace ft	{
 
 
 		public:
+
+		void print_tree()
+			{
+				std::string indent;
+
+				ft_print_tree(this->_head, indent, true);
+			};
+
+			void ft_print_tree(node_type *root, std::string indent, bool last) 
+			{
+				if (root != NULL) 
+				{
+					std::cout << indent;
+					if (last) 
+					{
+						std::cout << "R---- ";
+						indent += "   ";
+					} 
+					else 
+					{
+						std::cout << "L---- ";
+						indent += "|  ";
+					}
+					if (root->parent)
+						std::cout << root->item.first << " | " << root->item.second << " << " << root->parent->item.first << std::endl;
+					else
+						std::cout << root->item.first << " | " << root->item.second << std::endl;
+					ft_print_tree(root->left, indent, false);
+					ft_print_tree(root->right, indent, true);
+				}
+			};
+
 			/**
 			 * @brief Default Constructor
 			*/

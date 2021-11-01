@@ -4,7 +4,7 @@
 template <typename Key, typename T>
 void PrintMap(NAMESPACE::map<Key, T> *stl, std::string str = "test") 
 {
-	typename NAMESPACE::map<Key, T>::iterator it_stl;
+/*	typename NAMESPACE::map<Key, T>::iterator it_stl;
 	size_t i;
 
 	std::cout << "------------------------------------ " << str << std::endl;
@@ -16,11 +16,10 @@ void PrintMap(NAMESPACE::map<Key, T> *stl, std::string str = "test")
 		std::cout << " Value : STL = " << it_stl->first << " and " << it_stl->second << " at position " << i++ << std::endl;
 		it_stl++;
 	}
-/*
+*/
 	std::cout << "------------------------------------ " << str << std::endl;
 	std::cout << " SIZES : = "<< stl->size() << std::endl;
 	stl->print_tree();
-	*/
 
 }
 
