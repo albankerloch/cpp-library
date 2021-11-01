@@ -41,7 +41,7 @@ namespace ft	{
 			{
 			};
 
-			operator map_iterator<const T, Compare, node_type>(void) const 
+			operator map_iterator<const T, Compare, node_type>() const 
 			{
 				return (map_iterator<const T, Compare, node_type>(this->_ptr, this->_btreeDumdNode , this->_comp));
 			};
@@ -80,7 +80,7 @@ namespace ft	{
 				return (*this);
 			}
 
-			map_iterator operator++( int ) 
+			map_iterator operator++(int) 
 			{
 				map_iterator tmp(*this);
 
@@ -88,7 +88,7 @@ namespace ft	{
 				return tmp;
 			}
 
-			map_iterator &operator--( void ) 
+			map_iterator &operator--() 
 			{
 				if (_ptr == _btreeDumdNode)
 					_ptr = _btreeDumdNode->right;
@@ -129,77 +129,84 @@ namespace ft	{
 				return (this->_ptr); 
 			};
 
-			reference
-			operator*()	const			{ return (_ptr->item); }
+			reference operator*() const			
+			{ 
+				return (_ptr->item); 
+			};
 
 
 		private:
 
-			node_type*			getDumbNode(void) const { return (_btreeDumdNode);	}
-			Compare				getComp(void) const 	{ return (_comp);	}
+			node_type* getDumbNode() const 
+			{ 
+				return (_btreeDumdNode);	
+			};
 
-			node_type*			getPosParent(void) const	
+			Compare getComp() const 	
+			{ 
+				return (_comp);	
+			};
+
+			node_type* getPosParent() const	
 			{
 
 				if (_ptr != NULL)
 					return (_ptr->parent);
 				return (NULL);
-			}
+			};
 
-
-			void
-			getNextBranch( void )	{
-
-				node_type*		cursor = _ptr->parent;
-
+			void getNextBranch()	
+			{
+				node_type*		cursor;
+				
+				cursor = _ptr->parent;
 				while (cursor != NULL && _comp(cursor->item.first, _ptr->item.first) == true)
 					cursor = cursor->parent;
 				_ptr = cursor;
-			}
+			};
 
 			void
-			getPreviousBranch( void )	{
-
-				node_type*		cursor = _ptr->parent;
-
+			getPreviousBranch()	
+			{
+				node_type*		cursor;
+				
+				cursor = _ptr->parent;
 				while (cursor != NULL && _comp(_ptr->item.first, cursor->item.first) == true)
 					cursor = cursor->parent;
 				_ptr = cursor;
-			}
+			};
 
-			static	node_type*
-			getFarLeft( node_type* cursor )	{
+			node_type* getFarLeft( node_type* cursor )	
+			{
 
 				while (cursor != NULL && cursor->left != NULL)
 					cursor = cursor->left;
 				return (cursor);
-			}
+			};
 
-			static	node_type*
-			getFarRight( node_type* cursor )	{
-
+			node_type* getFarRight( node_type* cursor )	
+			{
 				while (cursor != NULL && cursor->right != NULL)
 					cursor = cursor->right;
 				return (cursor);
-			}
+			};
 
-			bool
-			isFirstNode( node_type* p )	{
+			bool isFirstNode( node_type* p )	
+			{
 				return (p == _btreeDumdNode->left);
-			}
+			};
 
-			bool
-			isLastNode( node_type* p )	{
+			bool isLastNode( node_type* p )	
+			{
 				return (p == _btreeDumdNode->right);
-			}
+			};
 
-			static	bool
-			isLeaf(node_type* node)	{
+			bool isLeaf(node_type* node)	
+			{
 				return (node->left == NULL && node->right == NULL);
-			}
+			};
 
-
-		}; //----------------- Class map_iterator
+		};
 
 		template <typename T, typename T2, typename Compare, typename node_type> 
 		bool operator==(const map_iterator<T, Compare, node_type>& rhs, const map_iterator<T2, Compare, node_type>& lhs)	
