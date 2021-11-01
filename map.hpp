@@ -377,14 +377,8 @@ namespace ft
 
 			void erase (iterator first, iterator last)	
 			{
-
-				iterator next;
-				while (first != last)	{
-					next = first;
-					next++;
-					erase(first);
-					first = next;
-				}
+				while (first != last)
+					this->erase(first++);
 			}
 
 			void
@@ -449,11 +443,6 @@ namespace ft
             value_compare	value_comp() const	{ return value_compare(m_compare); }
             key_compare		key_comp() const		{ return key_compare(m_compare); }
 
-/******************************************************************************.
-.******************************************************************************.
-.*********** PRIVATE MEMBER FUNCTIONS AND HELPERS  ****************************.
-.******************************************************************************.
-.******************************************************************************/
 
  		private:
 
