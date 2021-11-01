@@ -5,7 +5,7 @@
 
 namespace ft	{
 
-	template< class T, class Compare, typename map_node>
+	template< class T, class Compare, typename node_type>
 	class map_iterator : public ft::iterator<ft::bidirectional_iterator_tag, T > 
 	{
 
@@ -23,17 +23,17 @@ namespace ft	{
 
 		private:
 
-			map_node*																				_ptr;
-			map_node*																				_btreeDumdNode;
+			node_type*																				_ptr;
+			node_type*																				_btreeDumdNode;
 			Compare																					_comp;
 
 		public:
 
-			map_iterator( map_node* ptr = NULL, map_node* dumbNode = NULL, const key_compare& comp = key_compare()) : _ptr(ptr),  _btreeDumdNode(dumbNode), _comp(comp)
+			map_iterator( node_type* ptr = NULL, node_type* dumbNode = NULL, const key_compare& comp = key_compare()) : _ptr(ptr),  _btreeDumdNode(dumbNode), _comp(comp)
 			{
 			};
 
-			map_iterator(const map_iterator<T, Compare, map_node> & itSrc) : _ptr(itSrc.base()), _btreeDumdNode(itSrc.getDumbNode()),_comp(itSrc.getComp())		
+			map_iterator(const map_iterator<T, Compare, node_type> & itSrc) : _ptr(itSrc.base()), _btreeDumdNode(itSrc.getDumbNode()),_comp(itSrc.getComp())		
 			{
 			};
 
@@ -41,9 +41,9 @@ namespace ft	{
 			{
 			};
 
-			operator map_iterator<const T, Compare, map_node>(void) const 
+			operator map_iterator<const T, Compare, node_type>(void) const 
 			{
-				return (map_iterator<const T, Compare, map_node>(this->_ptr, this->_btreeDumdNode , this->_comp));
+				return (map_iterator<const T, Compare, node_type>(this->_ptr, this->_btreeDumdNode , this->_comp));
 			};
 
 			map_iterator& operator=( const map_iterator &src)	
@@ -124,7 +124,7 @@ namespace ft	{
 				return (&_ptr->item); 
 			};
 
-			map_node *base() const
+			node_type *base() const
 			{
 				return (this->_ptr); 
 			};
@@ -135,10 +135,10 @@ namespace ft	{
 
 		private:
 
-			map_node*			getDumbNode(void) const { return (_btreeDumdNode);	}
+			node_type*			getDumbNode(void) const { return (_btreeDumdNode);	}
 			Compare				getComp(void) const 	{ return (_comp);	}
 
-			map_node*			getPosParent(void) const	
+			node_type*			getPosParent(void) const	
 			{
 
 				if (_ptr != NULL)
@@ -150,7 +150,7 @@ namespace ft	{
 			void
 			getNextBranch( void )	{
 
-				map_node*		cursor = _ptr->parent;
+				node_type*		cursor = _ptr->parent;
 
 				while (cursor != NULL && _comp(cursor->item.first, _ptr->item.first) == true)
 					cursor = cursor->parent;
@@ -160,23 +160,23 @@ namespace ft	{
 			void
 			getPreviousBranch( void )	{
 
-				map_node*		cursor = _ptr->parent;
+				node_type*		cursor = _ptr->parent;
 
 				while (cursor != NULL && _comp(_ptr->item.first, cursor->item.first) == true)
 					cursor = cursor->parent;
 				_ptr = cursor;
 			}
 
-			static	map_node*
-			getFarLeft( map_node* cursor )	{
+			static	node_type*
+			getFarLeft( node_type* cursor )	{
 
 				while (cursor != NULL && cursor->left != NULL)
 					cursor = cursor->left;
 				return (cursor);
 			}
 
-			static	map_node*
-			getFarRight( map_node* cursor )	{
+			static	node_type*
+			getFarRight( node_type* cursor )	{
 
 				while (cursor != NULL && cursor->right != NULL)
 					cursor = cursor->right;
@@ -184,31 +184,31 @@ namespace ft	{
 			}
 
 			bool
-			isFirstNode( map_node* p )	{
+			isFirstNode( node_type* p )	{
 				return (p == _btreeDumdNode->left);
 			}
 
 			bool
-			isLastNode( map_node* p )	{
+			isLastNode( node_type* p )	{
 				return (p == _btreeDumdNode->right);
 			}
 
 			static	bool
-			isLeaf(map_node* node)	{
+			isLeaf(node_type* node)	{
 				return (node->left == NULL && node->right == NULL);
 			}
 
 
 		}; //----------------- Class map_iterator
 
-		template <typename T, typename T2, typename Compare, typename map_node> 
-		bool operator==(const map_iterator<T, Compare, map_node>& rhs, const map_iterator<T2, Compare, map_node>& lhs)	
+		template <typename T, typename T2, typename Compare, typename node_type> 
+		bool operator==(const map_iterator<T, Compare, node_type>& rhs, const map_iterator<T2, Compare, node_type>& lhs)	
 		{ 
 			return (lhs.base() == rhs.base());
 		};
 
-		template <typename T, typename T2, typename Compare, typename map_node> 
-		bool operator!=(const map_iterator<T, Compare, map_node>& rhs, const map_iterator<T2, Compare, map_node>& lhs)		
+		template <typename T, typename T2, typename Compare, typename node_type> 
+		bool operator!=(const map_iterator<T, Compare, node_type>& rhs, const map_iterator<T2, Compare, node_type>& lhs)		
 		{ 
 			return (lhs.base() != rhs.base());
 		};

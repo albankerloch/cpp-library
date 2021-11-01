@@ -238,7 +238,7 @@ namespace ft	{
 					iterator ite = end();
 
 					for(; it != ite; ++it)	{
-						debugPrintNode(it.getPtr());
+						debugPrintNode(it.base());
 					}
 					std::cout << "***********************************" << std::endl;
 				}
@@ -429,7 +429,7 @@ namespace ft	{
 			iterator
 			insert (iterator position, const value_type& val)	{
 
-				node_type*	posPtr = position.getPtr();
+				node_type*	posPtr = position.base();
 				if (posPtr == NULL)
 					return (iterator());
 				if (position != end() && lower_bound(val.first) == position)	{
@@ -454,7 +454,7 @@ namespace ft	{
 			void
 			erase( iterator position )	{
 
-				node_type*	deadNode = position.getPtr();
+				node_type*	deadNode = position.base();
 				node_type*	deadNodeLeft = deadNode->left;
 				node_type*	deadNodeRight = deadNode->right;
 				node_type*	singleChild = getSingleChild(deadNode);
