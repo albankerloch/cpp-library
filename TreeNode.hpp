@@ -40,35 +40,6 @@ namespace ft
 			node = node->left;
 		return (node);
 	}
-
-	/*
-    template<typename T>
-   	class TreeNode
-	{
-		public :
-    
-			TreeNode 	*left;
-			TreeNode 	*right;
-			TreeNode 	*parent;
-			T			item;
-			bool		color;
-
-			TreeNode(): left(NULL), right(NULL), parent(NULL)
-			{
-			};
-			
-			TreeNode(T const & elem): left(NULL), right(NULL), parent(NULL), item(elem) 
-			{
-			};
-			
-			~TreeNode()
-			{
-			};
-			
-	};
-
-	*/
-
 }
 
 #endif

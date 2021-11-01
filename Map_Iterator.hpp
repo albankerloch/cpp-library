@@ -2,6 +2,7 @@
 # define DEF_MAP_ITERATOR_HPP
 
 # include "Utils.hpp"
+# include "TreeNode.hpp"
 
 namespace ft	{
 
@@ -73,7 +74,7 @@ namespace ft	{
 				else	
 				{
 					if (m_pointer->right != NULL)
-						m_pointer = getFarLeft(m_pointer->right);
+						m_pointer = seekFarLeft(m_pointer->right);
 					else
 						getNextBranch();
 				}
@@ -104,7 +105,7 @@ namespace ft	{
 				else	
 				{
 					if (m_pointer->left != NULL)
-						m_pointer = getFarRight(m_pointer->left);
+						m_pointer = seekFarRight(m_pointer->left);
 					else
 						getPreviousBranch();
 				}
@@ -175,27 +176,12 @@ namespace ft	{
 				m_pointer = cursor;
 			};
 
-			node_type* getFarLeft( node_type* cursor )	
-			{
-
-				while (cursor != NULL && cursor->left != NULL)
-					cursor = cursor->left;
-				return (cursor);
-			};
-
-			node_type* getFarRight( node_type* cursor )	
-			{
-				while (cursor != NULL && cursor->right != NULL)
-					cursor = cursor->right;
-				return (cursor);
-			};
-
-			bool isFirstNode( node_type* p )	
+			bool isFirstNode( node_type* p)	
 			{
 				return (p == m_ghost->left);
 			};
 
-			bool isLastNode( node_type* p )	
+			bool isLastNode( node_type* p)	
 			{
 				return (p == m_ghost->right);
 			};
