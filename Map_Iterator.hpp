@@ -165,8 +165,7 @@ namespace ft	{
 				m_pointer = cursor;
 			};
 
-			void
-			getPreviousBranch()	
+			void getPreviousBranch()	
 			{
 				node_type*		cursor;
 				

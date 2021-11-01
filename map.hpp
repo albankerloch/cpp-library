@@ -16,7 +16,7 @@
 # include "Utils.hpp"
 # include "Map_Iterator.hpp"
 # include "Reverse_Iterator.hpp"
-//# include "TreeNode.hpp"
+# include "TreeNode.hpp"
 
 # include <iostream>
 # include <limits>
@@ -28,27 +28,12 @@
 
 namespace ft	{
 
-	template< typename T>
-	class map_node	{
 
-		public:
-			map_node( const T& itemSrc ) :			item(itemSrc),
-													left(NULL),
-													parent(NULL),
-													right(NULL)	 {}
-			~map_node( void ) {}
-
-			T				item;
-			map_node*		left;
-			map_node*		parent;
-			map_node*		right;
-			bool			color;
-	};
 
 	template< 	class Key,
 				class T,
 				class Compare = std::less<Key>,
-				class Allocator = std::allocator< ft::map_node<ft::pair<const Key, T> > > >
+				class Allocator = std::allocator< ft::TreeNode<ft::pair<const Key, T> > > >
 	class map {
 
 		public:
@@ -67,15 +52,15 @@ namespace ft	{
 			typedef typename Allocator::pointer				pointer;
 			typedef typename Allocator::const_pointer		const_pointer;
 
-			typedef typename ft::map_iterator<value_type, Compare, ft::map_node<value_type> >	iterator;
-			typedef typename ft::map_iterator<const value_type, Compare, ft::map_node<value_type> >	const_iterator;
+			typedef typename ft::map_iterator<value_type, Compare, ft::TreeNode<value_type> >	iterator;
+			typedef typename ft::map_iterator<const value_type, Compare, ft::TreeNode<value_type> >	const_iterator;
 
-            typedef typename ft::reverse_iterator<map_iterator<value_type, Compare, ft::map_node<value_type> > > reverse_iterator;
-            typedef typename ft::reverse_iterator<map_iterator<const value_type, Compare, ft::map_node<value_type> > >  const_reverse_iterator;
+            typedef typename ft::reverse_iterator<map_iterator<value_type, Compare, ft::TreeNode<value_type> > > reverse_iterator;
+            typedef typename ft::reverse_iterator<map_iterator<const value_type, Compare, ft::TreeNode<value_type> > >  const_reverse_iterator;
 
 		private:
 
-			typedef typename ft::map_node<value_type>		node_type;
+			typedef typename ft::TreeNode<value_type>		node_type;
 
 /******************************************************************************.
 .******************************************************************************.
