@@ -13,33 +13,21 @@ namespace ft
 			TreeNode 	*m_left;
 			TreeNode 	*m_right;
 			TreeNode 	*m_parent;
-			int			m_height;
 			T			m_data;
+			bool		m_color;
 
-			TreeNode(): m_left(NULL), m_right(NULL), m_parent(NULL), m_height(1) 
+			TreeNode(): m_left(NULL), m_right(NULL), m_parent(NULL)
 			{
 			};
 			
-			TreeNode(T const & elem): m_left(NULL), m_right(NULL), m_parent(NULL), m_height(1), m_data(elem) 
+			TreeNode(T const & elem): m_left(NULL), m_right(NULL), m_parent(NULL), m_data(elem) 
 			{
 			};
 			
-	};
-
-	template <typename T>
-	int get_balance_factor(TreeNode<T> *node) 
-	{
-		if (node == NULL)
-			return (0);
-		return (get_height(node->m_left) - get_height(node->m_right));
-	};
-
-	template <typename T>
-	int get_height(TreeNode<T> *node) 
-	{
-		if (node == NULL)
-			return (0);
-		return (node->m_height);
+			~TreeNode()
+			{
+			};
+			
 	};
 
 	template <typename T>
