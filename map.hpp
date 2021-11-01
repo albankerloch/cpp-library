@@ -154,6 +154,16 @@ namespace ft
 				return (const_iterator(m_ghost, m_ghost, m_compare));
 			};
 
+			reverse_iterator rbegin()
+			{	
+				return (reverse_iterator(end())); 
+			};
+
+			const_reverse_iterator rbegin() const	
+			{	
+				return (const_reverse_iterator(end())); 
+			};
+
 			iterator end() 	 		
 			{
 				return (iterator(m_ghost, m_ghost, m_compare));
@@ -164,24 +174,14 @@ namespace ft
 				return (const_iterator(m_ghost, m_ghost, m_compare));
 			};
 
-			reverse_iterator rbegin()
-			{	
-				return reverse_iterator(end()); 
-			};
-
-			const_reverse_iterator rbegin() const	
-			{	
-				return const_reverse_iterator(end()); 
-			};
-
 			reverse_iterator rend()
 			{	
-				return reverse_iterator(begin()); 
+				return (reverse_iterator(begin())); 
 			};
 
 			const_reverse_iterator rend() const	
 			{	
-				return const_reverse_iterator(begin()); 
+				return (const_reverse_iterator(begin())); 
 			};
 
 			iterator find(const key_type &key) 
@@ -430,17 +430,16 @@ namespace ft
 				return (*this);
 			};
 
-			mapped_type& operator[]( const key_type& key )
+			mapped_type& operator[]( const key_type& key)
 			{
-
-				value_type					insertValue(key, mapped_type());
-				ft::pair<iterator, bool>	ret = insert(insertValue);
+				ft::pair<iterator, bool>	ret;
+				
+				ret = insert(value_type(key, mapped_type()));
 				return (ret.first->second);
 			};
 
 			void clear()			
 			{
-
 				freeAllNodes(m_root);
 				freeNode(m_ghost);
 				m_size = 0;
