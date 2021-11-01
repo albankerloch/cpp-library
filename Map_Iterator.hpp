@@ -69,24 +69,26 @@ namespace ft
 
 			MapIterator &operator++(void)
 			{
-				if (this->m_node->m_right == NULL)
+				node_type	*parent;
+
+				if (this->m_node->m_right != NULL)
 				{
-					std::cout << "test NULL"  << std::endl;
-					while(this->m_node->m_left)
-					{
-						std::cout << "this->m_node->m_left" << this->m_node->m_left->m_data.first << std::endl;
-						if (this->m_node->m_left->m_right)
-						{
-							this->m_node = this->m_node->m_left->m_right;
-							break;
-						}
-						this->m_node = this->m_node->m_left->m_right;
-					}
+					this->m_node = this->m_node->m_right;
+					while (this->m_node->m_left != NULL) 
+						this->m_node = this->m_node->m_left;
 				}
 				else
 				{
-					std::cout << "test right"  << std::endl;
-					this->m_node = this->m_node->m_right;
+					std::cout << "++" << std::endl;
+					parent = this->m_node->m_parent;
+					while (parent && this->m_node == parent->m_right)
+					{
+						std::cout << "+" << std::endl;
+						this->m_node = parent;
+						parent = this->m_node->m_parent;
+					}
+					this->m_node = parent;
+					std::cout << this->m_node->m_data.first << std::endl;
 				}
 				return (*this);
 			};

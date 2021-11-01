@@ -64,34 +64,23 @@ namespace ft
 			key_compare																						m_compare;
 			allocator_type																					m_allocator;
 			size_type																						m_size;
+			node_pointer																					m_ghost;
 
 			void ft_init_tree(void)
 			{
-				this->m_root = node_allocator.allocate(1);
-				node_allocator.construct(m_root, ft::TreeNode<value_type>());
+				this->m_ghost = node_allocator.allocate(1);
+				node_allocator.construct(this->m_ghost, ft::TreeNode<value_type>());
 			};
-
-			node_pointer ft_create_node(node_pointer parent, const value_type & data)
-			{
-				node_pointer new_node;
-				
-				new_node = node_allocator.allocate(1);
-				node_allocator.construct(new_node, ft::TreeNode<value_type>(data));
-				new_node->m_parent = parent;
-				this->m_size = this->m_size  + 1;
-				std::cout << " node created " << new_node->m_data.first << " - " << new_node->m_data.second << " - " << new_node->m_height << " - " << std::endl;
-				return (new_node);
-			};
-
 
 			node_pointer ft_right_rotate(node_pointer y) 
 			{
+
 				node_pointer x = y->m_left;
 				node_pointer T2 = x->m_right;
 
 				x->m_right = y;
+				x->m_parent = y->m_parent;
 				y->m_parent = x;
-				x->m_parent = NULL;
 				y->m_left = T2;
 				if (T2)
 					T2->m_parent = y;
@@ -106,8 +95,8 @@ namespace ft
 				node_pointer T2 = y->m_left;
 				
 				y->m_left = x;
+				y->m_parent = x->m_parent;
 				x->m_parent = y;
-				y->m_parent = NULL;
 				x->m_right = T2;
 				if (T2)
 					T2->m_parent = x;
@@ -116,18 +105,37 @@ namespace ft
 				return (y);
 			}
 
+			node_pointer ft_create_node(node_pointer node, node_pointer parent, const value_type & data)
+			{
+				node_pointer new_node;
+				
+				new_node = node_allocator.allocate(1);
+				node_allocator.construct(new_node, ft::TreeNode<value_type>(data));
+				new_node->m_parent = parent;
+				this->m_size = this->m_size  + 1;
+				if (node == this->m_ghost)
+				{
+					new_node->m_right = this->m_ghost;
+					this->m_ghost->m_parent = new_node;
+				}
+				std::cout << "new node " << new_node->m_data.first << " | " << new_node->m_data.second << " | " << new_node->m_height << std::endl;
+				return (new_node);
+			};
+
 			node_pointer ft_insert_node(node_pointer node, node_pointer parent, value_type value)
 			{
 				int balance_factor;
 
-				if (node == NULL)
-					return (ft_create_node(parent, value));
+				if (node == NULL || node == this->m_ghost)
+					return (ft_create_node(node, parent, value));
 				if (this->m_compare(value.first, node->m_data.first))
 				{
 					node->m_left = ft_insert_node(node->m_left, node, value);
 				}
 				else if (this->m_compare(node->m_data.first, value.first))
+				{
 					node->m_right = ft_insert_node(node->m_right, node, value);
+				}
 				else
 					return (node);
 				
@@ -142,23 +150,23 @@ namespace ft
 					} 
 					else if (this->m_compare(node->m_left->m_data.first, value.first))	
 					{
-						std::cout << "test" << std::endl;
 						node->m_left = ft_left_rotate(node->m_left);
 						return (ft_right_rotate(node));
 					}
 				}
-				if (balance_factor < -1) 
+				else if (balance_factor < -1) 
 				{
-					if (this->m_compare(value.first, node->m_left->m_data.first))
+					if (this->m_compare(node->m_right->m_data.first, value.first))
 					{
 						return (ft_left_rotate(node));
 					} 
-					else if (this->m_compare(node->m_left->m_data.first, value.first))
+					else if (this->m_compare(value.first, node->m_right->m_data.first))
 					{
 						node->m_right = ft_right_rotate(node->m_right);
 						return (ft_left_rotate(node));
 					}
 				}
+				std::cout << "end" << node->m_data.first  << " " << value.first << std::endl;
 				return (node);								
 			};
 
@@ -205,13 +213,15 @@ namespace ft
 
 			explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
 			{
-				this->m_root = NULL;
+				ft_init_tree();
+				this->m_root = this->m_ghost;
 			};
 
 			template <class Ite>
 			map(Ite first, Ite last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type(), typename ft::enable_if<!ft::is_integral_type<Ite>::value, Ite>::type* = NULL) : m_root(), m_compare(comp), m_allocator(alloc), m_size(0) 
 			{
-				this->m_root = NULL;
+				ft_init_tree();
+				this->m_root = this->m_ghost;
 				this->insert(first, last);
 			};
 
@@ -237,12 +247,12 @@ namespace ft
 
 			iterator end() 
 			{
-				return (iterator(SeekRight(this->m_root)));
+				return (iterator(this->m_ghost));
 			};
 
 			const_iterator end() const 
 			{
-				return (const_iterator(SeekRight(this->m_root)));
+				return (const_iterator(this->m_ghost));
 			};
 
 			reverse_iterator rbegin() 
@@ -284,10 +294,12 @@ namespace ft
 					throw (ft::InvalidIteratorException<typename ft::is_input_iterator_tagged<typename ft::iterator_traits<Ite>::iterator_category >::type>());
 				while (first != last)
 				{
+					std::cout << "insert" << std::endl;
 					this->insert(*first);
-					std::cout << "test1 " << (*first).first << " " << (*first).second  << std::endl;
+					print_tree();
+					std::cout << "test1 avant: " << (*first).first << " " << (*first).second  << std::endl;
 					first++;
-					std::cout << "test2 " << (*first).first << " " << (*first).second  << std::endl;
+					std::cout << "test2 apres: " << std::endl << std::endl;
 				}
 			};
 			
@@ -296,8 +308,11 @@ namespace ft
 				ft::pair<iterator, bool> ret;
 
 				ret.second = true;
+				std::cout << "insert2" << std::endl;
 				this->m_root = this->ft_insert_node(this->m_root, NULL, value);
+				std::cout << "insert3" << std::endl;
 				ret.first = iterator(this->m_root);
+				std::cout << "insert4" << std::endl;
 				return (ret);
 			};
 	
