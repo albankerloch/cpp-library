@@ -4,7 +4,7 @@
 template <typename Key, typename T>
 void PrintMap(NAMESPACE::map<Key, T> *stl, std::string str = "test") 
 {
-	/*typename NAMESPACE::map<Key, T>::iterator it_stl;
+/*	typename NAMESPACE::map<Key, T>::iterator it_stl;
 	size_t i;
 
 	std::cout << "------------------------------------ " << str << std::endl;
@@ -15,8 +15,8 @@ void PrintMap(NAMESPACE::map<Key, T> *stl, std::string str = "test")
 	{
 		std::cout << " Value : STL = " << it_stl->first << " and " << it_stl->second << " at position " << i++ << std::endl;
 		it_stl++;
-	}*/
-
+	}
+*/
 	std::cout << "------------------------------------ " << str << std::endl;
 	std::cout << " SIZES : = "<< stl->size() << std::endl;
 	stl->print_tree();
@@ -43,37 +43,37 @@ void ft_constructor(void)
 	V2[4]=4;
 	PrintMap(&V2, "Constructor - fill");
 	NAMESPACE::map<int, int> V3 (V2.begin(),V2.end());
-/*	PrintMap(&V2, "Constructor - range");
+	PrintMap(&V2, "Constructor - range");
 
 	NAMESPACE::map<int, int>V4(V3);
 	PrintMap(&V4,  "Constructor - copy");
 
+	//V4.clear();
+/*
 	V2 = V4;
 	PrintMap(&V2, "Constructor - operator = ");*/
 }
-/*
+
 void ft_insert_erase(void)
 {
-	std::map<int, int> V1STL;
 	NAMESPACE::map<int, int>  V1;
 
-	V1STL.insert(V1STL.begin(), std::make_pair(1,5));
 	V1.insert(V1.begin(),NAMESPACE::make_pair(1,5));
 	PrintMap(&V1, "Insert - one element");
 
-	V1STL.insert(V1STL.end(), std::make_pair(2,3));
 	V1.insert(V1.end(), NAMESPACE::make_pair(2,3));
 	PrintMap(&V1, "Insert again - one element");
 
-	V1STL.erase(V1STL.begin());
 	V1.erase(V1.begin());
 	PrintMap(&V1, "Erase - one element");
 
-	V1STL.erase(V1STL.begin(), (V1STL.begin()++));
-	V1.erase(V1.begin(), (V1.begin()++));
+	V1.insert(V1.end(), NAMESPACE::make_pair(6,3));
+	PrintMap(&V1, "Insert again - one element");
+
+	V1.erase(V1.begin(), V1.end());
 	PrintMap(&V1, "Erase - one range");
 }
-
+/*
 void ft_clear(void)
 {
 	NAMESPACE::map<int, int>  V1;
@@ -129,8 +129,8 @@ void ft_begin_end()
 void ft_test_map(void)
 {
    ft_constructor();
-  /* ft_insert_erase();
-   ft_swap();
+   ft_insert_erase();
+   /*ft_swap();
    ft_clear();
    ft_access();
    ft_begin_end();*/

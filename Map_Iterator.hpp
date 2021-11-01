@@ -71,24 +71,24 @@ namespace ft
 			{
 				node_type	*parent;
 
+				std::cout << this->m_node->m_data.first << " | " << this->m_node->m_data.second << " | " << this->m_node->m_height << std::endl;
 				if (this->m_node->m_right != NULL)
 				{
+					std::cout << "+" << this->m_node->m_right->m_data.first << std::endl;
 					this->m_node = this->m_node->m_right;
 					while (this->m_node->m_left != NULL) 
 						this->m_node = this->m_node->m_left;
 				}
 				else
 				{
-					std::cout << "++" << std::endl;
+					std::cout << "++" << this->m_node->m_data.first << std::endl;
 					parent = this->m_node->m_parent;
 					while (parent && this->m_node == parent->m_right)
 					{
-						std::cout << "+" << std::endl;
 						this->m_node = parent;
 						parent = this->m_node->m_parent;
 					}
 					this->m_node = parent;
-					std::cout << this->m_node->m_data.first << std::endl;
 				}
 				return (*this);
 			};
@@ -105,16 +105,16 @@ namespace ft
 			{
 				node_type	*child;
 
-				if (this->m_node->left != NULL)
-					this->m_node = SeekRight(this->m_node->left);
+				if (this->m_node->m_left != NULL)
+					this->m_node = SeekRight(this->m_node->m_left);
 				else
 				{
 					child = this->m_node;
-					this->m_node = this->m_node->parent;
-					while (this->m_node && child == this->m_node->left)
+					this->m_node = this->m_node->m_parent;
+					while (this->m_node && child == this->m_node->m_left)
 					{
 						child = this->m_node;
-						this->m_node = this->m_node->parent;
+						this->m_node = this->m_node->m_parent;
 					}
 				}
 				return (*this);

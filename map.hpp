@@ -16,7 +16,7 @@ namespace ft
 
 			typedef Key																key_type;
 			typedef T																mapped_type;
-			typedef ft::pair<const key_type, mapped_type>							value_type;
+			typedef ft::pair<key_type, mapped_type>							value_type;
 			typedef Compare															key_compare;
 			typedef Alloc															allocator_type;
 			typedef typename allocator_type::reference								reference;
@@ -70,6 +70,7 @@ namespace ft
 			{
 				this->m_ghost = node_allocator.allocate(1);
 				node_allocator.construct(this->m_ghost, ft::TreeNode<value_type>());
+				this->m_ghost->m_height = -1;
 			};
 
 			node_pointer ft_right_rotate(node_pointer y) 
@@ -118,7 +119,7 @@ namespace ft
 					new_node->m_right = this->m_ghost;
 					this->m_ghost->m_parent = new_node;
 				}
-				std::cout << "new node " << new_node->m_data.first << " | " << new_node->m_data.second << " | " << new_node->m_height << std::endl;
+				//std::cout << "new node " << new_node->m_data.first << " | " << new_node->m_data.second << " | " << new_node->m_height << std::endl;
 				return (new_node);
 			};
 
@@ -166,16 +167,110 @@ namespace ft
 						return (ft_left_rotate(node));
 					}
 				}
-				std::cout << "end" << node->m_data.first  << " " << value.first << std::endl;
+				//std::cout << "end" << node->m_data.first  << " " << value.first << std::endl;
 				return (node);								
 			};
 
-			void ft_delete_node(node_pointer node)
+			node_pointer nodeWithMimumValue(node_pointer node) 
 			{
-				ft_disconnect(node);
-				this->m_size = this->m_size  - 1;
-				node_allocator.destroy(node);
-				node_allocator.deallocate(node, 1);
+				node_pointer current;
+				
+				current = node;
+				while (current->m_right != NULL)
+					current = current->m_right;
+				return (current);
+			}
+
+			node_pointer nodeWithMaxValue(node_pointer node) 
+			{
+				node_pointer current;
+				
+				current = node;
+				while (current->m_left != NULL)
+					current = current->m_left;
+				return (current);
+			}
+
+			node_pointer ft_delete_node(node_pointer node, value_type value)
+			{
+				node_pointer 	tmp;
+				int 			balance_factor;
+
+				if (node == NULL || node == this->m_ghost)
+    				return (node);
+				if (this->m_compare(value.first, node->m_data.first))
+				{
+					node->m_left = ft_delete_node(node->m_left, value);
+				}
+				else if (this->m_compare(node->m_data.first, value.first))
+				{
+					node->m_right = ft_delete_node(node->m_right, value);
+				}
+				else
+				{
+					if (node->m_left != NULL && node->m_right != NULL)
+					{
+						tmp = nodeWithMaxValue(node->m_right);
+						tmp->m_parent = node->m_parent;
+						node->m_right->m_parent = tmp;
+					}
+					else if (node->m_right != NULL)
+					{
+						tmp = nodeWithMinValue(node->m_right);
+						if(node->m_left == NULL && node->m_right == NULL)
+						{
+							tmp = node->m_parent;
+						}
+						else if(node->m_left == NULL)
+						{
+							tmp = node->m_right;
+							tmp->m_parent = node->m_parent;
+						}
+						else if (node->m_right == NULL)
+						{
+							tmp = node->m_left;
+							tmp->m_parent = node->m_parent;
+						}
+					}
+					if(node == this->root)
+						this->root = this->m_ghost;
+					node_allocator.destroy(node);
+					node_allocator.deallocate(node, 1);
+					return (tmp);
+				}
+
+				if(node == NULL)
+            		return (node);
+
+				node->m_height = 1 + std::max(get_height(node->m_left), get_height(node->m_right));
+				balance_factor = get_balance_factor(node);
+
+				if (balance_factor > 1) 
+				{
+					if (this->m_compare(value.first, node->m_left->m_data.first))	
+					{
+						return (ft_right_rotate(node));
+					} 
+					else if (this->m_compare(node->m_left->m_data.first, value.first))	
+					{
+						node->m_left = ft_left_rotate(node->m_left);
+						return (ft_right_rotate(node));
+					}
+				}
+				else if (balance_factor < -1) 
+				{
+					if (this->m_compare(node->m_right->m_data.first, value.first))
+					{
+						return (ft_left_rotate(node));
+					} 
+					else if (this->m_compare(value.first, node->m_right->m_data.first))
+					{
+						node->m_right = ft_right_rotate(node->m_right);
+						return (ft_left_rotate(node));
+					}
+				}
+				
+				return (node);
 			};
 		
 		public:
@@ -225,9 +320,25 @@ namespace ft
 				this->insert(first, last);
 			};
 
+			map(const map &other) : m_root(), m_compare(key_compare()), m_allocator(allocator_type()), m_size(0) 
+			{
+				ft_init_tree();
+				this->m_root = this->m_ghost;
+				*this = other;
+			};
+
 			~map()
 			{
-//				this->clear();
+				//this->clear();
+			};
+
+			map& operator=(map const &other) 
+			{
+				if (this == &other)
+					return (*this);
+				this->clear();
+				this->insert(other.begin(), other.end());
+				return (*this);
 			};
 
 			allocator_type get_allocator() const
@@ -285,6 +396,17 @@ namespace ft
 				return (this->m_size);
 			};
 
+			void clear()
+			{
+				if (this->m_size > 0)
+					this->erase(this->begin(), this->end());
+			};
+
+			size_type max_size() const 
+			{
+				return (std::numeric_limits<size_type>::max() / (sizeof(TreeNode<value_type>)));
+			};
+
 			template <class Ite>
 			void insert(Ite first, Ite last) 
 			{
@@ -294,13 +416,15 @@ namespace ft
 					throw (ft::InvalidIteratorException<typename ft::is_input_iterator_tagged<typename ft::iterator_traits<Ite>::iterator_category >::type>());
 				while (first != last)
 				{
-					std::cout << "insert" << std::endl;
 					this->insert(*first);
-					print_tree();
-					std::cout << "test1 avant: " << (*first).first << " " << (*first).second  << std::endl;
 					first++;
-					std::cout << "test2 apres: " << std::endl << std::endl;
 				}
+			};
+
+			iterator insert(iterator position, const value_type &val) 
+			{
+				(void)(position);
+				return (this->insert(val).first);
 			};
 			
 			ft::pair<iterator, bool> insert(const value_type &value) 
@@ -308,13 +432,200 @@ namespace ft
 				ft::pair<iterator, bool> ret;
 
 				ret.second = true;
-				std::cout << "insert2" << std::endl;
 				this->m_root = this->ft_insert_node(this->m_root, NULL, value);
-				std::cout << "insert3" << std::endl;
 				ret.first = iterator(this->m_root);
-				std::cout << "insert4" << std::endl;
 				return (ret);
 			};
+
+			void erase(iterator pos)
+			{
+				iterator tmp;
+
+				tmp = pos;
+				std::cout << "erase pos" << pos->first << " " << tmp->first << std::endl;
+				this->m_root = this->ft_delete_node(pos.node(), *pos);
+				std::cout << "erase pos" << pos->first << " " << this->m_root->m_data.first << std::endl;
+				this->m_size--;
+			}
+
+			size_type erase(const key_type &value)
+			{
+				size_type i;
+				iterator it;
+
+				i = 0;
+				while ((it = this->find(value)) != this->end())
+				{
+					this->erase(it);
+					i++;
+				}
+				return (i);
+			}
+
+			void erase(iterator first, iterator last)
+			{
+				iterator it;
+
+				it = first;
+				while (it != last)
+				{
+					print_tree();
+					it = first;
+					it++;
+					std::cout << "erase" << first->first << " " << first.node()->m_right->m_data.first << std::endl;
+					this->erase(first);
+					print_tree();
+					std::cout << "erase" << first->first << " " << first.node()->m_right->m_data.first << std::endl;
+					first = it;
+					std::cout << "erase" << first->first << std::endl;
+				}
+			}
+
+			key_compare key_comp() const 
+			{
+				return (key_compare());
+			};
+
+			value_compare value_comp() const 
+			{
+				return (value_compare(key_compare()));
+			};
+
+			iterator find(const key_type &key) 
+			{
+				iterator it;
+				iterator ite;
+				
+				it = this->begin();
+				ite = this->end();
+				while (it != ite)
+				{
+					if (this->ft_key_compare(it->first, key))
+						break;
+					it++;
+				}
+				return (it);
+			};
+
+			const_iterator find(const key_type &key) const 
+			{
+				const_iterator it;
+				const_iterator ite;
+				
+				it = this->begin();
+				ite = this->end();
+				while (it != ite)
+				{
+					if (this->ft_key_compare(it->first, key))
+						break;
+					it++;
+				}
+				return (it);
+			};
+
+			size_type count(const key_type &key) const 
+			{
+				size_type		ret;
+				const_iterator it;
+				const_iterator ite;
+			
+				it = this->begin();
+				ite = this->end();
+				ret = 0;
+				while (it != ite)
+				{
+					if (this->ft_key_compare((it++)->first, key))
+					{
+						ret++;
+						break;
+					}
+				}
+				return (ret);
+			};
+
+			iterator lower_bound(const key_type &key) 
+			{
+				iterator it;
+				iterator ite;
+				
+				it = this->begin();
+				ite = this->end();
+				while (it != ite)
+				{
+					if (!this->m_compare(it->first, key))
+						break;
+					it++;
+				}
+				return (it);
+			};
+
+			const_iterator lower_bound(const key_type &key) const 
+			{
+				const_iterator it;
+				const_iterator ite;
+			
+				it = this->begin();
+				ite = this->end();
+				while (it != ite)
+				{
+					if (!this->m_compare(it->first, key))
+						break;
+					it++;
+				}
+				return (it);
+			};
+
+			iterator upper_bound(const key_type &key) 
+			{
+				iterator it;
+				iterator ite;
+				
+				it = this->begin();
+				ite = this->end();
+				while (it != ite)
+				{
+					if (this->m_compare(key, it->first))
+						break;
+					it++;
+				}
+				return (it);
+			};
+
+			const_iterator upper_bound(const key_type &key) const 
+			{
+				const_iterator it;
+				const_iterator ite;
+			
+				it = this->begin();
+				ite = this->end();
+				while (it != ite)
+				{
+					if (this->m_compare(key, it->first))
+						break;
+					it++;
+				}
+				return (it);
+			};
+
+			ft::pair<const_iterator,const_iterator> equal_range(const key_type &key) const 
+			{
+				ft::pair<const_iterator, const_iterator> ret;
+
+				ret.first = this->lower_bound(key);
+				ret.second = this->upper_bound(key);
+				return (ret);
+			};
+
+			ft::pair<iterator,iterator>	equal_range(const key_type &key) 
+			{
+				ft::pair<iterator, iterator> ret;
+
+				ret.first = this->lower_bound(key);
+				ret.second = this->upper_bound(key);
+				return (ret);
+			};
+
+
 	
 	};
 

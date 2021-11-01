@@ -224,6 +224,15 @@ namespace ft
 			{
 			};
 
+			pair& operator= (const pair& p)
+			{
+				if (*this == p)
+					return (*this);
+				this->first = p.first;
+				this->second = p.second;
+				return (*this);
+			}
+
 	};
     
     template <class T1, class T2>
