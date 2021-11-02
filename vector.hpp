@@ -144,7 +144,7 @@ namespace ft
 
 			size_type max_size() const 
 			{
-				return (std::numeric_limits<difference_type>::max() / (sizeof(value_type) / 2 ?: 1));
+				return (this->m_allocator.max_size());
 			};
 
 			void reserve(size_t length)
