@@ -67,7 +67,6 @@ namespace ft
 			allocator_type		 																				m_allocator;
 			Compare	const																						m_compare;
 
-		 	
 			void ft_init_tree()	
 			{
 				if (m_ghost == NULL)	
@@ -79,12 +78,12 @@ namespace ft
 				}
 			};
 
-			node_pointer ft_create_node(node_pointer parent, key_type k, mapped_type val)	
+			node_pointer ft_create_node(node_pointer parent, key_type key, mapped_type value)	
 			{
 				node_pointer	newNode;
 				
 				newNode = m_node_allocator.allocate(1);
-				m_node_allocator.construct(newNode, node_type(value_type(k ,val)));
+				m_node_allocator.construct(newNode, node_type(value_type(key ,value)));
 				newNode->parent = parent;
 				return (newNode);
 			}
@@ -126,12 +125,13 @@ namespace ft
 				return (!(this->m_compare(key1, key2)) && !(this->m_compare(key2, key1)));
 			};
 
-			void ft_detach_node( node_pointer node, node_pointer newChild = NULL )	
+			void ft_detach_node( node_pointer node, node_pointer newChild = NULL)	
 			{
 				node_pointer parent;
 				
 				parent = node->parent;
-				if (parent != NULL)	{
+				if (parent != NULL)	
+				{
 					if (parent->left == node)
 						parent->left = newChild;
 					else if (parent->right == node)
@@ -144,7 +144,7 @@ namespace ft
 				node->parent = NULL;
 			};
 
-			node_pointer ft_get_child( node_pointer node )	
+			node_pointer ft_get_child(node_pointer node)	
 			{
 				if (node->right != NULL && node->left == NULL)
 					return (node->right);
@@ -153,22 +153,6 @@ namespace ft
 				else
 					return (NULL);
 			};
-
-			void ft_update_ghost()	
-			{
-				if (m_ghost == NULL)
-					ft_init_tree();
-				if (empty() == true)	
-				{
-					m_ghost->left = m_root;
-					m_ghost->right = m_root;
-				}
-				else	
-				{
-					m_ghost->left = seekFarLeft(m_root);
-					m_ghost->right = seekFarRight(m_root);
-				}
-			}
 	
 			void ft_free_node( node_pointer node)	
 			{
@@ -411,7 +395,16 @@ namespace ft
 					farRight->right = deadNodeRight;
 				}
 				this->m_size--;
-				ft_update_ghost();
+				if (this->empty())	
+				{
+					m_ghost->left = m_root;
+					m_ghost->right = m_root;
+				}
+				else	
+				{
+					m_ghost->left = seekFarLeft(m_root);
+					m_ghost->right = seekFarRight(m_root);
+				}
 				ft_free_node(deadNode);
 			};
 
