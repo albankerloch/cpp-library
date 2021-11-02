@@ -67,57 +67,14 @@ namespace ft
 			allocator_type		 																				m_allocator;
 			Compare	const																						m_compare;
 
-			void ft_init_tree()	
-			{
-				if (m_ghost == NULL)	
-				{
-					m_ghost = m_node_allocator.allocate(1);
-					m_node_allocator.construct(m_ghost, node_type(value_type()));
-					m_ghost->left = m_root;
-					m_ghost->right = m_root;
-				}
-			};
-
-			node_pointer ft_create_node(node_pointer parent, key_type key, mapped_type value)	
+			node_pointer ft_create_node(node_pointer parent, value_type pair_value)	
 			{
 				node_pointer	newNode;
 				
-				newNode = m_node_allocator.allocate(1);
-				m_node_allocator.construct(newNode, node_type(value_type(key ,value)));
+				newNode = this->m_node_allocator.allocate(1);
+				m_node_allocator.construct(newNode, node_type(pair_value));
 				newNode->parent = parent;
 				return (newNode);
-			}
-
-			ft::pair<iterator, bool> ft_insert_node(node_pointer parent, node_pointer *root, value_type pairSrc)	
-			{
-				node_pointer tmp;
-
-				if (*root != NULL)	
-				{
-					tmp = *root;
-					if (m_compare(pairSrc.first, tmp->item.first) == true)
-						return (ft_insert_node(tmp, &tmp->left, pairSrc));
-					else if (!ft_key_compare(pairSrc.first, tmp->item.first))
-						return (ft_insert_node(tmp, &tmp->right, pairSrc));
-					else
-						return (ft::pair<iterator, bool>(iterator(*root, m_ghost, m_compare), false));
-				}
-				else	
-				{
-					*root = ft_create_node(parent, pairSrc.first, pairSrc.second);
-					this->m_size++;
-					if (this->empty() == true)	
-					{
-						m_ghost->left = m_root;
-						m_ghost->right = m_root;
-					}
-					else	
-					{
-						m_ghost->left = seekFarLeft(m_root);
-						m_ghost->right = seekFarRight(m_root);
-					}
-					return (ft::pair<iterator, bool>(iterator(*root, m_ghost, m_compare), true));
-				}
 			}
 
 			bool ft_key_compare(const key_type &key1, const key_type &key2)  const 
@@ -125,7 +82,39 @@ namespace ft
 				return (!(this->m_compare(key1, key2)) && !(this->m_compare(key2, key1)));
 			};
 
-			void ft_detach_node( node_pointer node, node_pointer newChild = NULL)	
+			ft::pair<iterator, bool> ft_insert_node(node_pointer parent, node_pointer *node, value_type pair_value)	
+			{
+				node_pointer tmp;
+
+				if (*node != NULL)	
+				{
+					tmp = *node;
+					if (this->m_compare(pair_value.first, tmp->item.first))
+						return (ft_insert_node(tmp, &tmp->left, pair_value));
+					else if (!ft_key_compare(pair_value.first, tmp->item.first))
+						return (ft_insert_node(tmp, &tmp->right, pair_value));
+					else
+						return (ft::pair<iterator, bool>(iterator(*node, this->m_ghost, this->m_compare), false));
+				}
+				else	
+				{
+					*node = ft_create_node(parent, pair_value);
+					this->m_size++;
+					if (this->empty() == true)	
+					{
+						this->m_ghost->left = this->m_root;
+						this->m_ghost->right = this->m_root;
+					}
+					else	
+					{
+						this->m_ghost->left = seekFarLeft(this->m_root);
+						this->m_ghost->right = seekFarRight(this->m_root);
+					}
+					return (ft::pair<iterator, bool>(iterator(*node, this->m_ghost, this->m_compare), true));
+				}
+			}
+
+			void ft_detach_node(node_pointer node, node_pointer newChild = NULL)	
 			{
 				node_pointer parent;
 				
@@ -137,8 +126,8 @@ namespace ft
 					else if (parent->right == node)
 						parent->right = newChild;
 				}
-				else if (node == m_root)
-					m_root = newChild;
+				else if (node == this->m_root)
+					this->m_root = newChild;
 				if (newChild != NULL)
 					newChild->parent = parent;
 				node->parent = NULL;
@@ -207,19 +196,19 @@ namespace ft
 
 			explicit map( const Compare& comp = key_compare(), const allocator_type & userAlloc = allocator_type())	: m_root(NULL), m_ghost(NULL), m_size(0), m_allocator(userAlloc), m_compare(comp)				
 			{
-				this->ft_init_tree();
+				this->m_ghost = ft_create_node(NULL, value_type());
 			};
 
 			template <class InputIterator>
 			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(),   const allocator_type& userAlloc = allocator_type() ) :	m_root(NULL), m_ghost(NULL), m_size(0), m_allocator(userAlloc), m_compare(comp)				
 			{
-				this->ft_init_tree();
+				this->m_ghost = ft_create_node(NULL, value_type());
 				this->insert(first, last);
 			}
 
 			map( map const & src ) : m_root(NULL), m_ghost(NULL), m_size(0), m_allocator(src.m_allocator), m_compare(src.m_compare)				
 			{
-				this->ft_init_tree();
+				this->m_ghost = ft_create_node(NULL, value_type());
 				this->insert(src.begin(), src.end());
 			}
 
@@ -234,7 +223,7 @@ namespace ft
 				{
 
 					this->clear();
-					this->ft_init_tree();
+					this->m_ghost = ft_create_node(NULL, value_type());
 					if (src.empty() == false)	
 					{
 						if (src.size() > 2)	
