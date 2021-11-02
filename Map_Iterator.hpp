@@ -25,6 +25,37 @@ namespace ft	{
 			node_type*																				m_ghost;
 			Compare																					m_compare;
 
+			node_type* getGhostNode() const 
+			{ 
+				return (m_ghost);	
+			};
+
+			Compare getCompare() const 	
+			{ 
+				return (m_compare);	
+			};
+
+			void getNextBranch()	
+			{
+				node_type*		cursor;
+				
+				cursor = m_pointer->parent;
+				while (cursor != NULL && m_compare(cursor->item.first, m_pointer->item.first) == true)
+					cursor = cursor->parent;
+				m_pointer = cursor;
+			};
+
+			void getPreviousBranch()	
+			{
+				node_type*		cursor;
+				
+				cursor = m_pointer->parent;
+				while (cursor != NULL && m_compare(m_pointer->item.first, cursor->item.first) == true)
+					cursor = cursor->parent;
+				m_pointer = cursor;
+			};
+
+
 		public:
 
 			bidirectional_iterator( node_type* ptr = NULL, node_type* dumbNode = NULL, const key_compare& comp = key_compare()) : m_pointer(ptr),  m_ghost(dumbNode), m_compare(comp)
@@ -130,47 +161,6 @@ namespace ft	{
 			reference operator*() const			
 			{ 
 				return (m_pointer->item); 
-			};
-
-
-		private:
-
-			node_type* getGhostNode() const 
-			{ 
-				return (m_ghost);	
-			};
-
-			Compare getCompare() const 	
-			{ 
-				return (m_compare);	
-			};
-
-			node_type* getPosParent() const	
-			{
-
-				if (m_pointer != NULL)
-					return (m_pointer->parent);
-				return (NULL);
-			};
-
-			void getNextBranch()	
-			{
-				node_type*		cursor;
-				
-				cursor = m_pointer->parent;
-				while (cursor != NULL && m_compare(cursor->item.first, m_pointer->item.first) == true)
-					cursor = cursor->parent;
-				m_pointer = cursor;
-			};
-
-			void getPreviousBranch()	
-			{
-				node_type*		cursor;
-				
-				cursor = m_pointer->parent;
-				while (cursor != NULL && m_compare(m_pointer->item.first, cursor->item.first) == true)
-					cursor = cursor->parent;
-				m_pointer = cursor;
 			};
 
 		};
