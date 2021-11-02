@@ -14,9 +14,9 @@ namespace ft
 			TreeNode*		left;
 			TreeNode*		parent;
 			TreeNode*		right;
-			bool			color;
+			int				height;
 
-			TreeNode( const T& itemSrc ) : item(itemSrc), left(NULL), parent(NULL), right(NULL)	 
+			TreeNode(const T& itemSrc ) : item(itemSrc), left(NULL), parent(NULL), right(NULL), height(0)	 
 			{
 			};
 
@@ -46,6 +46,22 @@ namespace ft
 	{
 		return (node->left == NULL && node->right == NULL);
 	}
+
+	template <typename T>
+	int get_balance_factor(TreeNode<T> *node) 
+	{
+		if (node == NULL)
+			return (0);
+		return (get_height(node->left) - get_height(node->right));
+	};
+
+	template <typename T>
+	int get_height(TreeNode<T> *node) 
+	{
+		if (node == NULL)
+			return (0);
+		return (node->height);
+	};
 }
 
 #endif

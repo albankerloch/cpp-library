@@ -110,9 +110,90 @@ namespace ft
 						this->m_ghost->left = seekFarLeft(this->m_root);
 						this->m_ghost->right = seekFarRight(this->m_root);
 					}
+					ft_equilibrium(this->m_root, this->m_root->item);
 					return (ft::pair<iterator, bool>(iterator(*node, this->m_ghost, this->m_compare), true));
 				}
 			}
+
+			node_pointer ft_right_rotate(node_pointer y) 
+			{
+
+				node_pointer x = y->left;
+				node_pointer T2 = x->right;
+
+				x->right = y;
+				x->parent = y->parent;
+				y->parent = x;
+				y->left = T2;
+				if (T2)
+					T2->parent = y;
+				y->height = std::max(get_height(y->left), get_height(y->right)) + 1;
+				x->height = std::max(get_height(x->left), get_height(x->right)) + 1;
+				return (x);
+			}
+
+			node_pointer ft_left_rotate(node_pointer x) 
+			{
+				node_pointer y = x->right;
+				node_pointer T2 = y->left;
+				
+				y->left = x;
+				y->parent = x->parent;
+				x->parent = y;
+				x->right = T2;
+				if (T2)
+					T2->parent = x;
+				x->height = std::max(get_height(x->left), get_height(x->right)) + 1;
+				y->height = std::max(get_height(y->left), get_height(y->right)) + 1;
+				return (y);
+			}
+
+			node_pointer ft_equilibrium(node_pointer node, value_type value)
+			{
+				int balance_factor;
+
+				if (node == NULL || node == this->m_ghost)
+					return (node);
+				if (this->m_compare(value.first, node->item.first))
+				{
+					node->left = ft_equilibrium(node->left, value);
+				}
+				else if (this->m_compare(node->item.first, value.first))
+				{
+					node->right = ft_equilibrium(node->right, value);
+				}
+				else
+					return (node);
+				
+				node->height = 1 + std::max(get_height(node->left), get_height(node->right));
+				balance_factor = get_balance_factor(node);
+
+				if (balance_factor > 1) 
+				{
+					if (this->m_compare(value.first, node->left->item.first))	
+					{
+						return (ft_right_rotate(node));
+					} 
+					else if (this->m_compare(node->left->item.first, value.first))	
+					{
+						node->left = ft_left_rotate(node->left);
+						return (ft_right_rotate(node));
+					}
+				}
+				else if (balance_factor < -1) 
+				{
+					if (this->m_compare(node->right->item.first, value.first))
+					{
+						return (ft_left_rotate(node));
+					} 
+					else if (this->m_compare(value.first, node->right->item.first))
+					{
+						node->right = ft_right_rotate(node->right);
+						return (ft_left_rotate(node));
+					}
+				}
+				return (node);								
+			};
 
 			void ft_detach_node(node_pointer node, node_pointer newChild = NULL)	
 			{
@@ -386,6 +467,7 @@ namespace ft
 					m_ghost->right = seekFarRight(m_root);
 				}
 				ft_free_node(deadNode);
+				ft_equilibrium(this->m_root, this->m_root->item);
 			};
 
 			size_type erase(const key_type& key)	

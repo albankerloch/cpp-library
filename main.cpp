@@ -13,7 +13,6 @@ int main(void)
     ft_test_vector();
     std::cout << "=====================================================> Vector time " << clock() - t << std::endl << std::endl;
 
-/*
     std::cout << "<====================================< Stack test >====================================>" << std::endl << std::endl;
     t = clock();
     ft_test_stack();
@@ -24,5 +23,5 @@ int main(void)
     t = clock();
     ft_test_map();
     std::cout << "=====================================================> Map    time " << clock() - t << std::endl << std::endl;
-*/
+
 }
