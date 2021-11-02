@@ -138,15 +138,15 @@ namespace ft
 				return (newNode);
 			}
 
-			ft::pair<iterator, bool> btree_insert_data(node_pointer parent, node_pointer *root, value_type pairSrc)	
+			ft::pair<iterator, bool> ft_insert_node(node_pointer parent, node_pointer *root, value_type pairSrc)	
 			{
 
 				if (*root != NULL)	{
 					node_pointer tree = *root;
 					if (m_compare(pairSrc.first, tree->item.first) == true)
-						return (btree_insert_data(tree, &tree->left, pairSrc));
-					else if (isEqualKey(pairSrc.first, tree->item.first) == false)
-						return (btree_insert_data(tree, &tree->right, pairSrc));
+						return (ft_insert_node(tree, &tree->left, pairSrc));
+					else if (!ft_key_compare(pairSrc.first, tree->item.first))
+						return (ft_insert_node(tree, &tree->right, pairSrc));
 					else
 						return (ft::pair<iterator, bool>(iterator(*root, m_ghost, m_compare), false));
 				}
@@ -157,26 +157,6 @@ namespace ft
 					ft_update_ghost();
 					return (ft::pair<iterator, bool>(iterator(*root, m_ghost, m_compare), true));
 				}
-			}
-
-			node_pointer btree_search_key(node_pointer root, const key_type& targetKey)	
-			{
-
-				if (root != NULL)	{
-					if (m_compare(targetKey, root->item.first) == true)
-						return (btree_search_key(root->left, targetKey));
-					else if (m_compare(root->item.first, targetKey) == true)
-						return (btree_search_key(root->right, targetKey));
-				}
-				return (root);
-			}
-
-			static bool isEqualKey(const Key& existingKey, const Key& newKey) 
-			{
-				typename ft::map<Key, T, Compare> tmp;
-				typename ft::map<Key, T, Compare>::key_compare cmpFunc = tmp.key_comp();
-				return (cmpFunc(existingKey, newKey) == false
-				&& cmpFunc(newKey, existingKey) == false);
 			}
 
 			size_t incSize( size_t inc = 1 ) 
@@ -190,7 +170,7 @@ namespace ft
 				m_size -= inc; return(m_size); 
 			}
 
-			void freeNode( node_pointer node)	
+			void ft_free_node( node_pointer node)	
 			{
 				if (node != NULL)	
 				{
@@ -199,13 +179,13 @@ namespace ft
 				}
 			}
 
-			void freeAllNodes( node_pointer root )	
+			void ft_clear_tree(node_pointer root)	
 			{
 				if (root == NULL)
 					return;
-				freeAllNodes(root->left);
-				freeAllNodes(root->right);
-				freeNode(root);
+				ft_clear_tree(root->left);
+				ft_clear_tree(root->right);
+				ft_free_node(root);
 			}	
 		
 		public:
@@ -377,8 +357,8 @@ namespace ft
 
 			void clear()			
 			{
-				freeAllNodes(m_root);
-				freeNode(m_ghost);
+				ft_clear_tree(m_root);
+				ft_free_node(m_ghost);
 				m_size = 0;
 				m_root = NULL;
 				m_ghost = NULL;
@@ -386,7 +366,7 @@ namespace ft
 
 			ft::pair<iterator, bool> insert(const value_type& val)	
 			{
-				return(btree_insert_data(NULL, &m_root, val));
+				return(ft_insert_node(NULL, &m_root, val));
 			}
 
 			iterator insert (iterator position, const value_type& val)	
@@ -429,7 +409,7 @@ namespace ft
 				}
 				decSize();
 				ft_update_ghost();
-				freeNode(deadNode);
+				ft_free_node(deadNode);
 			};
 
 			size_type erase(const key_type& key)	
