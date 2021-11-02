@@ -6,10 +6,6 @@
 # include "Reverse_Iterator.hpp"
 # include "TreeNode.hpp"
 
-# include <iostream>
-# include <limits>
-# include <cstddef>
-
 namespace ft	
 {
 
@@ -78,7 +74,9 @@ namespace ft
 
 			void detachFromParent( node_pointer node, node_pointer newChild = NULL )	
 			{
-				node_pointer parent = node->parent;
+				node_pointer parent;
+				
+				parent = node->parent;
 				if (parent != NULL)	{
 					if (parent->left == node)
 						parent->left = newChild;
@@ -92,9 +90,8 @@ namespace ft
 				node->parent = NULL;
 			};
 
-			static node_pointer getSingleChild( node_pointer node )	
+			node_pointer getSingleChild( node_pointer node )	
 			{
-
 				if (node->right != NULL && node->left == NULL)
 					return (node->right);
 				else if (node->right == NULL && node->left != NULL)
@@ -105,13 +102,15 @@ namespace ft
 
 			node_pointer locateBound( node_pointer root, const key_type& key, bool (*isBound)(node_pointer, const key_type&) ) const	
 			{
+				node_pointer candidate;
+				node_pointer bestCandidate;
+				
 				if (root == m_root && isBound(m_ghost->left, key) == true)
 					return (m_ghost->left);
 				else if (root == m_root && isBound(m_ghost->right, key) == false)
 					return (NULL);
-
-				node_pointer candidate = root;
-				node_pointer bestCandidate = NULL;
+				candidate = root;
+				bestCandidate = NULL;
 				while (candidate != NULL)	{
 					if (isBound(candidate, key) == true)	
 					{
@@ -126,7 +125,8 @@ namespace ft
 
 			node_pointer locateNode( node_pointer root, const key_type& key ) const	
 			{
-				if (root != NULL)	{
+				if (root != NULL)	
+				{
 					if (m_compare(key, root->item.first) == true)
 						return (locateNode(root->left, key));
 					else if (isEqualKey(key, root->item.first) == false)
@@ -134,8 +134,7 @@ namespace ft
 					else
 						return (root);
 				}
-				else
-					return (NULL);
+				return (NULL);
 			}
 
 			static bool isLowerBoundNode( node_pointer node, const key_type& key ) 

@@ -11,6 +11,7 @@
 # include <iterator>
 # include <stdexcept>
 # include <algorithm>  
+# include <cstddef>
 
 namespace ft 
 {
