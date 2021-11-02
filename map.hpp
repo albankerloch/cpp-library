@@ -61,12 +61,12 @@ namespace ft
 
 		private:
 
-			typedef typename allocator_type::template rebind<ft::TreeNode<ft::pair<const Key,T> > >::other		type_node_allocator;
-			typedef typename type_node_allocator::pointer														node_pointer;
 			typedef typename ft::TreeNode<value_type>															node_type;
+			typedef typename allocator_type::template rebind<node_type>::other									type_node_allocator;
+			typedef typename type_node_allocator::pointer														node_pointer;
 			type_node_allocator																					m_node_allocator;
-			node_type*																							m_root;
-			node_type*																							m_ghost;
+			node_pointer																						m_root;
+			node_pointer																						m_ghost;
 			size_type																							m_size;
 			allocator_type		 																				m_allocator;
 			Compare	const																						m_compare;
@@ -80,7 +80,7 @@ namespace ft
 				ft_print_tree(this->m_root, indent, true);
 			};
 
-			void ft_print_tree(node_type *root, std::string indent, bool last) 
+			void ft_print_tree(node_pointer root, std::string indent, bool last) 
 			{
 				if (root != NULL) 
 				{
@@ -344,10 +344,10 @@ namespace ft
 			void erase(iterator position)	
 			{
 
-				node_type*	deadNode = position.base();
-				node_type*	deadNodeLeft = deadNode->left;
-				node_type*	deadNodeRight = deadNode->right;
-				node_type*	singleChild = getSingleChild(deadNode);
+				node_pointer	deadNode = position.base();
+				node_pointer	deadNodeLeft = deadNode->left;
+				node_pointer	deadNodeRight = deadNode->right;
+				node_pointer	singleChild = getSingleChild(deadNode);
 
 				if (deadNode == NULL)
 					return;
@@ -357,7 +357,7 @@ namespace ft
 					detachFromParent(deadNode, singleChild);
 				else	{
 					detachFromParent(deadNode, deadNodeLeft);
-					node_type*	farRight = getFarRight(deadNodeLeft);
+					node_pointer	farRight = seekFarRight(deadNodeLeft);
 					deadNodeRight->parent = farRight;
 					farRight->right = deadNodeRight;
 				}
@@ -387,8 +387,8 @@ namespace ft
 			{
 				if (this->m_root != src.m_root)	
 				{
-					node_type*				tmpm_root;
-					node_type*				tmpm_ghost;
+					node_pointer				tmpm_root;
+					node_pointer				tmpm_ghost;
 					size_t					tmpm_size;
 					allocator_type 			tmpm_allocator;
 
@@ -466,9 +466,9 @@ namespace ft
 				return (!(this->m_compare(key1, key2)) && !(this->m_compare(key2, key1)));
 			};
 
-			void detachFromParent( node_type* node, node_type* newChild = NULL )	
+			void detachFromParent( node_pointer node, node_pointer newChild = NULL )	
 			{
-				node_type* parent = node->parent;
+				node_pointer parent = node->parent;
 				if (parent != NULL)	{
 					if (parent->left == node)
 						parent->left = newChild;
@@ -482,7 +482,7 @@ namespace ft
 				node->parent = NULL;
 			};
 
-			static node_type* getSingleChild( node_type* node )	
+			static node_pointer getSingleChild( node_pointer node )	
 			{
 
 				if (node->right != NULL && node->left == NULL)
@@ -493,15 +493,15 @@ namespace ft
 					return (NULL);
 			};
 
-			node_type* locateBound( node_type* root, const key_type& key, bool (*isBound)(node_type*, const key_type&) ) const	
+			node_pointer locateBound( node_pointer root, const key_type& key, bool (*isBound)(node_pointer, const key_type&) ) const	
 			{
 				if (root == m_root && isBound(m_ghost->left, key) == true)
 					return (m_ghost->left);
 				else if (root == m_root && isBound(m_ghost->right, key) == false)
 					return (NULL);
 
-				node_type* candidate = root;
-				node_type* bestCandidate = NULL;
+				node_pointer candidate = root;
+				node_pointer bestCandidate = NULL;
 				while (candidate != NULL)	{
 					if (isBound(candidate, key) == true)	
 					{
@@ -514,7 +514,7 @@ namespace ft
 				return (bestCandidate);
 			};
 
-			node_type* locateNode( node_type* root, const key_type& key ) const	
+			node_pointer locateNode( node_pointer root, const key_type& key ) const	
 			{
 				if (root != NULL)	{
 					if (m_compare(key, root->item.first) == true)
@@ -528,7 +528,7 @@ namespace ft
 					return (NULL);
 			}
 
-			static bool isLowerBoundNode( node_type* node, const key_type& key ) 
+			static bool isLowerBoundNode( node_pointer node, const key_type& key ) 
 			{
 				typename ft::map<Key, T, Compare> tmpObj;
 				typename ft::map<Key, T, Compare>::key_compare cmpFunc = tmpObj.keym_compare();
@@ -536,7 +536,7 @@ namespace ft
 				return (node != NULL && (cmpFunc(node->item.first, key) == false || isEqualKey(node->item.first, key) == true));
 			}
 
-			static bool	isUpperBoundNode( node_type* node, const key_type& key ) 
+			static bool	isUpperBoundNode( node_pointer node, const key_type& key ) 
 			{
 				typename ft::map<Key, T, Compare> tmpObj;
 				typename ft::map<Key, T, Compare>::key_compare cmpFunc = tmpObj.keym_compare();
@@ -555,8 +555,8 @@ namespace ft
 				}
 				else	
 				{
-					m_ghost->left = getFarLeft(m_root);
-					m_ghost->right = getFarRight(m_root);
+					m_ghost->left = seekFarLeft(m_root);
+					m_ghost->right = seekFarRight(m_root);
 				}
 			}
 
@@ -571,20 +571,20 @@ namespace ft
 				}
 			}
 
-			node_type* btree_create_node(node_type* parent, key_type k, mapped_type val)	
+			node_pointer btree_create_node(node_pointer parent, key_type k, mapped_type val)	
 			{
 
-				node_type*	newNode = m_node_allocator.allocate(1);
+				node_pointer	newNode = m_node_allocator.allocate(1);
 				m_node_allocator.construct(newNode, node_type(value_type(k ,val)));
 				newNode->parent = parent;
 				return (newNode);
 			}
 
-			ft::pair<iterator, bool> btree_insert_data(node_type* parent, node_type **root, value_type pairSrc)	
+			ft::pair<iterator, bool> btree_insert_data(node_pointer parent, node_pointer *root, value_type pairSrc)	
 			{
 
 				if (*root != NULL)	{
-					node_type* tree = *root;
+					node_pointer tree = *root;
 					if (m_compare(pairSrc.first, tree->item.first) == true)
 						return (btree_insert_data(tree, &tree->left, pairSrc));
 					else if (isEqualKey(pairSrc.first, tree->item.first) == false)
@@ -600,7 +600,7 @@ namespace ft
 				}
 			}
 
-			node_type* btree_search_key(node_type* root, const key_type& targetKey)	
+			node_pointer btree_search_key(node_pointer root, const key_type& targetKey)	
 			{
 
 				if (root != NULL)	{
@@ -610,27 +610,6 @@ namespace ft
 						return (btree_search_key(root->right, targetKey));
 				}
 				return (root);
-			}
-
-			static node_type* getFarLeft( node_type* cursor )  
-			{
-
-				while (cursor != NULL && cursor->left != NULL)
-					cursor = cursor->left;
-				return (cursor);
-			}
-
-			static node_type* getFarRight( node_type* cursor )  
-			{
-
-				while (cursor != NULL && cursor->right != NULL)
-					cursor = cursor->right;
-				return (cursor);
-			}
-
-			static bool isLeaf(node_type* node)  
-			{
-				return (node->left == NULL && node->right == NULL);
 			}
 
 			static bool isEqualKey(const Key& existingKey, const Key& newKey) 
@@ -652,7 +631,7 @@ namespace ft
 				m_size -= inc; return(m_size); 
 			}
 
-			void freeNode( node_type* node)	
+			void freeNode( node_pointer node)	
 			{
 				if (node != NULL)	
 				{
@@ -661,7 +640,7 @@ namespace ft
 				}
 			}
 
-			void freeAllNodes( node_type* root )	
+			void freeAllNodes( node_pointer root )	
 			{
 				if (root == NULL)
 					return;

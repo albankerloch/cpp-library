@@ -28,7 +28,7 @@ namespace ft
 	template <typename T>
 	TreeNode<T>	*seekFarRight(TreeNode<T> *node) 
 	{
-		while (node->right != NULL)
+		while (node != NULL && node->right != NULL)
 			node = node->right;
 		return (node);
 	}
@@ -36,9 +36,15 @@ namespace ft
 	template <typename T>
 	TreeNode<T>	*seekFarLeft(TreeNode<T> *node) 
 	{
-		while (node->left != NULL)
+		while (node != NULL && node->left != NULL)
 			node = node->left;
 		return (node);
+	}
+
+	template <typename T>
+	bool isLeaf(TreeNode<T> *node)  
+	{
+		return (node->left == NULL && node->right == NULL);
 	}
 }
 
