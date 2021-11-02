@@ -72,7 +72,7 @@ namespace ft
 				return (!(this->m_compare(key1, key2)) && !(this->m_compare(key2, key1)));
 			};
 
-			void detachFromParent( node_pointer node, node_pointer newChild = NULL )	
+			void ft_detach_node( node_pointer node, node_pointer newChild = NULL )	
 			{
 				node_pointer parent;
 				
@@ -90,7 +90,7 @@ namespace ft
 				node->parent = NULL;
 			};
 
-			node_pointer getSingleChild( node_pointer node )	
+			node_pointer get_child( node_pointer node )	
 			{
 				if (node->right != NULL && node->left == NULL)
 					return (node->right);
@@ -99,59 +99,6 @@ namespace ft
 				else
 					return (NULL);
 			};
-
-			node_pointer locateBound( node_pointer root, const key_type& key, bool (*isBound)(node_pointer, const key_type&) ) const	
-			{
-				node_pointer candidate;
-				node_pointer bestCandidate;
-				
-				if (root == m_root && isBound(m_ghost->left, key) == true)
-					return (m_ghost->left);
-				else if (root == m_root && isBound(m_ghost->right, key) == false)
-					return (NULL);
-				candidate = root;
-				bestCandidate = NULL;
-				while (candidate != NULL)	{
-					if (isBound(candidate, key) == true)	
-					{
-						bestCandidate = candidate;
-						candidate = candidate->left;
-					}
-					else
-						candidate = candidate->right;
-				}
-				return (bestCandidate);
-			};
-
-			node_pointer locateNode( node_pointer root, const key_type& key ) const	
-			{
-				if (root != NULL)	
-				{
-					if (m_compare(key, root->item.first) == true)
-						return (locateNode(root->left, key));
-					else if (isEqualKey(key, root->item.first) == false)
-						return (locateNode(root->right, key));
-					else
-						return (root);
-				}
-				return (NULL);
-			}
-
-			static bool isLowerBoundNode( node_pointer node, const key_type& key ) 
-			{
-				typename ft::map<Key, T, Compare> tmpObj;
-				typename ft::map<Key, T, Compare>::key_compare cmpFunc = tmpObj.keym_compare();
-
-				return (node != NULL && (cmpFunc(node->item.first, key) == false || isEqualKey(node->item.first, key) == true));
-			}
-
-			static bool	isUpperBoundNode( node_pointer node, const key_type& key ) 
-			{
-				typename ft::map<Key, T, Compare> tmpObj;
-				typename ft::map<Key, T, Compare>::key_compare cmpFunc = tmpObj.keym_compare();
-
-				return (node != NULL && cmpFunc(key, node->item.first) == true);
-			}
 
 			void btree_updatem_ghost()	
 			{
@@ -223,8 +170,8 @@ namespace ft
 
 			static bool isEqualKey(const Key& existingKey, const Key& newKey) 
 			{
-				typename ft::map<Key, T, Compare> tmpObj;
-				typename ft::map<Key, T, Compare>::key_compare cmpFunc = tmpObj.key_comp();
+				typename ft::map<Key, T, Compare> tmp;
+				typename ft::map<Key, T, Compare>::key_compare cmpFunc = tmp.key_comp();
 				return (cmpFunc(existingKey, newKey) == false
 				&& cmpFunc(newKey, existingKey) == false);
 			}
@@ -462,17 +409,17 @@ namespace ft
 				node_pointer	deadNode = position.base();
 				node_pointer	deadNodeLeft = deadNode->left;
 				node_pointer	deadNodeRight = deadNode->right;
-				node_pointer	singleChild = getSingleChild(deadNode);
+				node_pointer	singleChild = get_child(deadNode);
 
 				if (deadNode == NULL)
 					return;
 				if (isLeaf(deadNode) == true)
-					detachFromParent(deadNode);
+					ft_detach_node(deadNode);
 				else if (singleChild != NULL)
-					detachFromParent(deadNode, singleChild);
+					ft_detach_node(deadNode, singleChild);
 				else	
 				{
-					detachFromParent(deadNode, deadNodeLeft);
+					ft_detach_node(deadNode, deadNodeLeft);
 					node_pointer	farRight = seekFarRight(deadNodeLeft);
 					deadNodeRight->parent = farRight;
 					farRight->right = deadNodeRight;
