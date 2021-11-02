@@ -116,10 +116,52 @@ void ft_vector_swap(void)
 {
 	NAMESPACE::vector<int> V1 (3, 39);
 	NAMESPACE::vector<int> V2 (2,50);
+	NAMESPACE::vector<int>::iterator it;
+	NAMESPACE::vector<int>::iterator it2;
+	NAMESPACE::vector<int>::iterator it3;
+	NAMESPACE::vector<int>::iterator it4;
+	NAMESPACE::vector<int>::iterator it5;
+
+	V1.push_back(51);
+	V2.push_back(40);
+
+	it = V1.begin();
+	it2 = V1.begin();
+	it2++;
+	it3 = V1.end();
+	it3--;
+	it4 = V2.begin();
+	it5 = V2.end();
+	it5--;
+	
+	std::cout << "it = " << *it << std::endl;
+	std::cout << "it2 = " << *it2 << std::endl;
+	std::cout << "it3 = " << *it3 << std::endl;
+	std::cout << "it4 = " << *it4 << std::endl;
+	std::cout << "it5 = " << *it5 << std::endl;
 
 	V1.swap(V2);
 	Printvector(&V1, "Swap - first element");
 	Printvector(&V2, "Swap - second element");
+
+	std::cout << "it = " << *it << std::endl;
+	std::cout << "it2 = " << *it2 << std::endl;
+	std::cout << "it3 = " << *it3 << std::endl;
+	std::cout << "it4 = " << *it4 << std::endl;
+	std::cout << "it5 = " << *it5 << std::endl;
+
+	it++;
+	it2++;
+	it3--;
+	it4++;
+	it5--;
+
+	std::cout << "it = " << *it << std::endl;
+	std::cout << "it2 = " << *it2 << std::endl;
+	std::cout << "it3 = " << *it3 << std::endl;
+	std::cout << "it4 = " << *it4 << std::endl;
+	std::cout << "it5 = " << *it5 << std::endl;
+
 }
 
 void ft_vector_insert_erase(void)

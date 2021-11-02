@@ -12,7 +12,7 @@
 #include <ctime>
 
 //#define MAX_RAM 429496729
-#define MAX_RAM 429496
+#define MAX_RAM 42949672
 #define BUFFER_SIZE 4096
 struct Buffer
 {

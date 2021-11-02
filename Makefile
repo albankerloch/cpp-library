@@ -1,12 +1,12 @@
 
 
 CC = clang++
-# SRCS_FILES = main.cpp \
+SRCS_FILES = main.cpp \
 			 Test_Map.cpp \
 			 Test_Vector.cpp \
 			 Test_Stack.cpp
 
-SRCS_FILES = main_sujet.cpp
+#SRCS_FILES = main_sujet.cpp
 
 NAME = ft_containers
 OBJS_PATH = ./OBJS_FT/

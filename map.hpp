@@ -225,16 +225,7 @@ namespace ft
 					this->clear();
 					this->m_ghost = ft_create_node(NULL, value_type());
 					if (src.empty() == false)	
-					{
-						if (src.size() > 2)	
-						{
-							const_iterator	half = src.begin();
-							for (size_t i = 0; i < src.size() / 2; i++)
-								half++;
-							this->insert(*half);
-						}
 						this->insert(src.begin(), src.end());
-					}
 				}
 				return (*this);
 			};
