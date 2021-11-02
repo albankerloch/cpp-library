@@ -10,9 +10,6 @@ namespace ft	{
 	class bidirectional_iterator : public ft::iterator<ft::bidirectional_iterator_tag, T > 
 	{
 
-		template< typename _k, typename _t, typename _c, typename _a>
-		friend class map;
-
 		public:
 
 			typedef	Compare																			key_compare;
@@ -47,7 +44,7 @@ namespace ft	{
 				return (bidirectional_iterator<const T, Compare, node_type>(this->m_pointer, this->m_ghost , this->m_compare));
 			};
 
-			bidirectional_iterator& operator=( const bidirectional_iterator &src)	
+			bidirectional_iterator& operator=(const bidirectional_iterator &src)	
 			{
 				if (*this != src)	
 				{
@@ -62,7 +59,7 @@ namespace ft	{
 			{
 				if (m_pointer == m_ghost)
 					m_pointer = m_ghost->left;
-				else if (isLastNode(m_pointer) == true)
+				else if (m_pointer == m_ghost->right)
 					m_pointer = m_ghost;
 				else if (isLeaf(m_pointer) == true)	
 				{
@@ -93,7 +90,7 @@ namespace ft	{
 			{
 				if (m_pointer == m_ghost)
 					m_pointer = m_ghost->right;
-				else if (isFirstNode(m_pointer) == true)
+				else if (m_pointer == m_ghost->left)
 					m_pointer = m_ghost;
 				else if (isLeaf(m_pointer) == true)	
 				{
@@ -176,21 +173,6 @@ namespace ft	{
 				m_pointer = cursor;
 			};
 
-			bool isFirstNode( node_type* p)	
-			{
-				return (p == m_ghost->left);
-			};
-
-			bool isLastNode( node_type* p)	
-			{
-				return (p == m_ghost->right);
-			};
-
-			bool isLeaf(node_type* node)	
-			{
-				return (node->left == NULL && node->right == NULL);
-			};
-
 		};
 
 		template <typename T, typename T2, typename Compare, typename node_type> 
@@ -205,8 +187,6 @@ namespace ft	{
 			return (lhs.base() != rhs.base());
 		};
 
-
-} // ----------------- ft namespace
-
+}
 
 #endif
