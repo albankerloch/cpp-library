@@ -67,7 +67,19 @@ namespace ft
 			allocator_type		 																				m_allocator;
 			Compare	const																						m_compare;
 
-		 	bool ft_key_compare(const key_type &key1, const key_type &key2)  const 
+		 	
+			void ft_init_tree()	
+			{
+				if (m_ghost == NULL)	
+				{
+					m_ghost = m_node_allocator.allocate(1);
+					m_node_allocator.construct(m_ghost, node_type(value_type()));
+					m_ghost->left = m_root;
+					m_ghost->right = m_root;
+				}
+			};
+
+			bool ft_key_compare(const key_type &key1, const key_type &key2)  const 
 			{
 				return (!(this->m_compare(key1, key2)) && !(this->m_compare(key2, key1)));
 			};
@@ -90,7 +102,7 @@ namespace ft
 				node->parent = NULL;
 			};
 
-			node_pointer get_child( node_pointer node )	
+			node_pointer ft_get_child( node_pointer node )	
 			{
 				if (node->right != NULL && node->left == NULL)
 					return (node->right);
@@ -100,10 +112,10 @@ namespace ft
 					return (NULL);
 			};
 
-			void btree_updatem_ghost()	
+			void ft_update_ghost()	
 			{
 				if (m_ghost == NULL)
-					btree_initm_ghost();
+					ft_init_tree();
 				if (empty() == true)	
 				{
 					m_ghost->left = m_root;
@@ -116,21 +128,11 @@ namespace ft
 				}
 			}
 
-			void btree_initm_ghost()	
+			node_pointer ft_create_node(node_pointer parent, key_type k, mapped_type val)	
 			{
-				if (m_ghost == NULL)	
-				{
-					m_ghost = m_node_allocator.allocate(1);
-					m_node_allocator.construct(m_ghost, node_type(value_type()));
-					m_ghost->left = m_root;
-					m_ghost->right = m_root;
-				}
-			}
-
-			node_pointer btree_create_node(node_pointer parent, key_type k, mapped_type val)	
-			{
-
-				node_pointer	newNode = m_node_allocator.allocate(1);
+				node_pointer	newNode;
+				
+				newNode = m_node_allocator.allocate(1);
 				m_node_allocator.construct(newNode, node_type(value_type(k ,val)));
 				newNode->parent = parent;
 				return (newNode);
@@ -148,10 +150,11 @@ namespace ft
 					else
 						return (ft::pair<iterator, bool>(iterator(*root, m_ghost, m_compare), false));
 				}
-				else	{
-					*root = btree_create_node(parent, pairSrc.first, pairSrc.second);
+				else	
+				{
+					*root = ft_create_node(parent, pairSrc.first, pairSrc.second);
 					incSize();
-					btree_updatem_ghost();
+					ft_update_ghost();
 					return (ft::pair<iterator, bool>(iterator(*root, m_ghost, m_compare), true));
 				}
 			}
@@ -240,7 +243,7 @@ namespace ft
 
 			explicit map( const Compare& comp = key_compare(), const allocator_type & userAlloc = allocator_type())	: m_root(NULL), m_ghost(NULL), m_size(0), m_allocator(userAlloc), m_compare(comp)				
 			{
-				btree_initm_ghost();
+				ft_init_tree();
 			};
 
 			template <class InputIterator>
@@ -409,7 +412,7 @@ namespace ft
 				node_pointer	deadNode = position.base();
 				node_pointer	deadNodeLeft = deadNode->left;
 				node_pointer	deadNodeRight = deadNode->right;
-				node_pointer	singleChild = get_child(deadNode);
+				node_pointer	singleChild = ft_get_child(deadNode);
 
 				if (deadNode == NULL)
 					return;
@@ -425,7 +428,7 @@ namespace ft
 					farRight->right = deadNodeRight;
 				}
 				decSize();
-				btree_updatem_ghost();
+				ft_update_ghost();
 				freeNode(deadNode);
 			};
 
