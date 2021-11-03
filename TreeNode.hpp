@@ -16,7 +16,7 @@ namespace ft
 			TreeNode*		right;
 			int				height;
 
-			TreeNode(const T& itemSrc ) : item(itemSrc), left(NULL), parent(NULL), right(NULL), height(0)	 
+			TreeNode(const T& itemSrc ) : item(itemSrc), left(NULL), parent(NULL), right(NULL), height(1)	 
 			{
 			};
 

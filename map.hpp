@@ -67,6 +67,88 @@ namespace ft
 			allocator_type		 																				m_allocator;
 			Compare	const																						m_compare;
 
+			
+			void ft_update_height(node_pointer node)
+			{
+				int ret;
+
+				if (node)
+				{
+					ret = 1;
+					if (node->left)
+						ret = node->left->heigth + 1;
+					if (node->right)
+						ret = std::max(ret, node->right->heigth);
+					node->heigth = ret;
+				}
+			}
+
+			node_pointer ft_llr(node_pointer node)
+			{
+				node_pointer tmp;
+
+				tmp = node->left;
+				node->left = tmp->right;
+				if (tmp->right)
+					tmp->right->parent = node;
+				tmp->right = node;
+				tmp->parent = node->parent;
+				node->parent = tmp;
+				if (tmp->parent && this->m_compare(node->item->first, tmp->parent->item->first))
+					tmp->parent->left = tmp;
+				else
+				{
+					if (tmp->parent)
+						tmp->parent->right = tmp;
+				}
+				node = tmp;
+				ft_update_height(node->left);
+				ft_update_height(node->right);
+				ft_update_height(node);
+				ft_update_height(node->parent);
+				return (node);
+			}
+
+			node_pointer ft_rrr(node_pointer node)
+			{
+				node_pointer tmp;
+
+				tmp = node->right;
+				node->right = tmp->left;
+				if (tmp->left)
+					tmp->left->parent = node;
+				tmp->left = node;
+				tmp->parent = node->parent;
+				node->parent = tmp;
+				if (tmp->parent && this->m_compare(node->item->first, tmp->parent->item->first))
+					tmp->parent->left = tmp;
+				else
+				{
+					if (tmp->parent)
+						tmp->parent->right = tmp;
+				}
+				node = tmp;
+				ft_update_height(node->left);
+				ft_update_height(node->right);
+				ft_update_height(node);
+				ft_update_height(node->parent);
+				return (node);
+			}
+
+			node_pointer ft_lrr(node_pointer node)
+			{
+				node->right = ft_rrr(node->left);
+				return (ft_llr(node));
+			}
+				
+			
+			node_pointer ft_rlr(node_pointer node)
+			{
+				node->right = ft_llr(node->right);
+				return (ft_rrr(node));
+			}
+					
+			
 			node_pointer ft_create_node(node_pointer parent, value_type pair_value)	
 			{
 				node_pointer	newNode;
@@ -110,7 +192,6 @@ namespace ft
 						this->m_ghost->left = seekFarLeft(this->m_root);
 						this->m_ghost->right = seekFarRight(this->m_root);
 					}
-					ft_equilibrium(this->m_root, this->m_root->item);
 					return (ft::pair<iterator, bool>(iterator(*node, this->m_ghost, this->m_compare), true));
 				}
 			}
@@ -155,18 +236,19 @@ namespace ft
 				if (node == NULL || node == this->m_ghost)
 					return (node);
 				if (this->m_compare(value.first, node->item.first))
-				{
 					node->left = ft_equilibrium(node->left, value);
-				}
-				else if (this->m_compare(node->item.first, value.first))
-				{
-					node->right = ft_equilibrium(node->right, value);
-				}
+				else if (!ft_key_compare(value.first, node->item.first))
+					return (node->right = ft_equilibrium(node->right, value));
 				else
 					return (node);
-				
+
+				if (node == NULL)
+					return (node);
+
+				std::cout << node->item.first << " | " << node->item.second << " | " << node->height << std::endl;
 				node->height = 1 + std::max(get_height(node->left), get_height(node->right));
 				balance_factor = get_balance_factor(node);
+				std::cout << node->item.first << " | " << node->item.second << " | " << node->height  << " " << balance_factor << std::endl;
 
 				if (balance_factor > 1) 
 				{
@@ -267,9 +349,9 @@ namespace ft
 						indent += "|  ";
 					}
 					if (root->parent)
-						std::cout << root->item.first << " | " << root->item.second << " << " << root->parent->item.first << std::endl;
+						std::cout << root->item.first << " | " << root->item.second << " H" << root->height << " << " << root->parent->item.first << std::endl;
 					else
-						std::cout << root->item.first << " | " << root->item.second << std::endl;
+						std::cout << root->item.first << " | " << root->item.second << " H" << root->height << std::endl;
 					ft_print_tree(root->left, indent, false);
 					ft_print_tree(root->right, indent, true);
 				}
@@ -414,7 +496,14 @@ namespace ft
 
 			ft::pair<iterator, bool> insert(const value_type& val)	
 			{
-				return(ft_insert_node(NULL, &m_root, val));
+				ft::pair<iterator, bool> res;
+
+				res = ft_insert_node(NULL, &m_root, val);
+				std::cout << "ESSAI" << std::endl;
+				print_tree();
+				this->m_root = ft_equilibrium(this->m_root, val);
+				print_tree();
+				return(res);
 			}
 
 			iterator insert (iterator position, const value_type& val)	
@@ -463,11 +552,10 @@ namespace ft
 				}
 				else	
 				{
-					m_ghost->left = seekFarLeft(m_root);
-					m_ghost->right = seekFarRight(m_root);
+					this->m_ghost->left = seekFarLeft(m_root);
+					this->m_ghost->right = seekFarRight(m_root);
 				}
 				ft_free_node(deadNode);
-				ft_equilibrium(this->m_root, this->m_root->item);
 			};
 
 			size_type erase(const key_type& key)	
