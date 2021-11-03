@@ -67,94 +67,26 @@ namespace ft
 			allocator_type		 																				m_allocator;
 			Compare	const																						m_compare;
 
-			
-			void ft_update_height(node_pointer node)
+			void ft_update_ghost()
 			{
-				int ret;
-
-				if (node)
+				if (this->empty() == true)	
 				{
-					ret = 1;
-					if (node->left)
-						ret = node->left->heigth + 1;
-					if (node->right)
-						ret = std::max(ret, node->right->heigth);
-					node->heigth = ret;
+					this->m_ghost->left = this->m_root;
+					this->m_ghost->right = this->m_root;
 				}
-			}
-
-			node_pointer ft_llr(node_pointer node)
-			{
-				node_pointer tmp;
-
-				tmp = node->left;
-				node->left = tmp->right;
-				if (tmp->right)
-					tmp->right->parent = node;
-				tmp->right = node;
-				tmp->parent = node->parent;
-				node->parent = tmp;
-				if (tmp->parent && this->m_compare(node->item->first, tmp->parent->item->first))
-					tmp->parent->left = tmp;
-				else
+				else	
 				{
-					if (tmp->parent)
-						tmp->parent->right = tmp;
+					this->m_ghost->left = seekFarLeft(this->m_root);
+					this->m_ghost->right = seekFarRight(this->m_root);
 				}
-				node = tmp;
-				ft_update_height(node->left);
-				ft_update_height(node->right);
-				ft_update_height(node);
-				ft_update_height(node->parent);
-				return (node);
-			}
-
-			node_pointer ft_rrr(node_pointer node)
-			{
-				node_pointer tmp;
-
-				tmp = node->right;
-				node->right = tmp->left;
-				if (tmp->left)
-					tmp->left->parent = node;
-				tmp->left = node;
-				tmp->parent = node->parent;
-				node->parent = tmp;
-				if (tmp->parent && this->m_compare(node->item->first, tmp->parent->item->first))
-					tmp->parent->left = tmp;
-				else
-				{
-					if (tmp->parent)
-						tmp->parent->right = tmp;
-				}
-				node = tmp;
-				ft_update_height(node->left);
-				ft_update_height(node->right);
-				ft_update_height(node);
-				ft_update_height(node->parent);
-				return (node);
-			}
-
-			node_pointer ft_lrr(node_pointer node)
-			{
-				node->right = ft_rrr(node->left);
-				return (ft_llr(node));
-			}
-				
-			
-			node_pointer ft_rlr(node_pointer node)
-			{
-				node->right = ft_llr(node->right);
-				return (ft_rrr(node));
-			}
-					
-			
+			};
+							
 			node_pointer ft_create_node(node_pointer parent, value_type pair_value)	
 			{
 				node_pointer	newNode;
 				
 				newNode = this->m_node_allocator.allocate(1);
-				m_node_allocator.construct(newNode, node_type(pair_value));
+				this->m_node_allocator.construct(newNode, node_type(pair_value));
 				newNode->parent = parent;
 				return (newNode);
 			}
@@ -164,36 +96,55 @@ namespace ft
 				return (!(this->m_compare(key1, key2)) && !(this->m_compare(key2, key1)));
 			};
 
-			ft::pair<iterator, bool> ft_insert_node(node_pointer parent, node_pointer *node, value_type pair_value)	
+			node_pointer ft_insert_node(node_pointer node, node_pointer parent, value_type pair_value)	
 			{
-				node_pointer tmp;
+				int balance_factor;
 
-				if (*node != NULL)	
+				if (node == NULL)	
 				{
-					tmp = *node;
-					if (this->m_compare(pair_value.first, tmp->item.first))
-						return (ft_insert_node(tmp, &tmp->left, pair_value));
-					else if (!ft_key_compare(pair_value.first, tmp->item.first))
-						return (ft_insert_node(tmp, &tmp->right, pair_value));
-					else
-						return (ft::pair<iterator, bool>(iterator(*node, this->m_ghost, this->m_compare), false));
-				}
-				else	
-				{
-					*node = ft_create_node(parent, pair_value);
+					node = ft_create_node(parent, pair_value);
 					this->m_size++;
-					if (this->empty() == true)	
-					{
-						this->m_ghost->left = this->m_root;
-						this->m_ghost->right = this->m_root;
-					}
-					else	
-					{
-						this->m_ghost->left = seekFarLeft(this->m_root);
-						this->m_ghost->right = seekFarRight(this->m_root);
-					}
-					return (ft::pair<iterator, bool>(iterator(*node, this->m_ghost, this->m_compare), true));
+					return (node);
 				}
+				if (this->m_compare(pair_value.first, node->item.first))
+				{
+					node->left = ft_insert_node(node->left, node, pair_value);
+				}
+				else if (this->m_compare(node->item.first, pair_value.first))
+				{
+					node->right = ft_insert_node(node->right, node, pair_value);
+				}
+				else
+					return (node);
+
+				node->height = 1 + std::max(get_height(node->left), get_height(node->right));
+				balance_factor = get_balance_factor(node);
+
+				if (balance_factor > 1) 
+				{
+					if (this->m_compare(pair_value.first, node->left->item.first))	
+					{
+						return (ft_right_rotate(node));
+					} 
+					else if (this->m_compare(node->left->item.first, pair_value.first))	
+					{
+						node->left = ft_left_rotate(node->left);
+						return (ft_right_rotate(node));
+					}
+				}
+				else if (balance_factor < -1) 
+				{
+					if (this->m_compare(node->right->item.first, pair_value.first))
+					{
+						return (ft_left_rotate(node));
+					} 
+					else if (this->m_compare(pair_value.first, node->right->item.first))
+					{
+						node->right = ft_right_rotate(node->right);
+						return (ft_left_rotate(node));
+					}
+				}
+				return (node);
 			}
 
 			node_pointer ft_right_rotate(node_pointer y) 
@@ -245,10 +196,8 @@ namespace ft
 				if (node == NULL)
 					return (node);
 
-				std::cout << node->item.first << " | " << node->item.second << " | " << node->height << std::endl;
 				node->height = 1 + std::max(get_height(node->left), get_height(node->right));
 				balance_factor = get_balance_factor(node);
-				std::cout << node->item.first << " | " << node->item.second << " | " << node->height  << " " << balance_factor << std::endl;
 
 				if (balance_factor > 1) 
 				{
@@ -494,16 +443,16 @@ namespace ft
 				m_ghost = NULL;
 			};
 
-			ft::pair<iterator, bool> insert(const value_type& val)	
+			ft::pair<iterator, bool> insert(const value_type& value)	
 			{
-				ft::pair<iterator, bool> res;
+				ft::pair<iterator, bool> ret;
 
-				res = ft_insert_node(NULL, &m_root, val);
-				std::cout << "ESSAI" << std::endl;
-				print_tree();
-				this->m_root = ft_equilibrium(this->m_root, val);
-				print_tree();
-				return(res);
+				ret.second = !this->count(value.first);
+				if (ret.second)
+					this->m_root = this->ft_insert_node(this->m_root, NULL, value);
+				ft_update_ghost();
+				ret.first = this->find(value.first);
+				return (ret);
 			}
 
 			iterator insert (iterator position, const value_type& val)	

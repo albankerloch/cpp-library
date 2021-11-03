@@ -16,7 +16,7 @@ CFLAGS = -Wall -Wextra -Werror -std=c++98 -DNAMESPACE=ft
 STD_NAME = std_containers
 STD_OBJS_PATH = ./OBJS_STD/
 STD_OBJS = ${addprefix ${STD_OBJS_PATH}, ${SRCS_FILES:.cpp=.o}}
-STD_CFLAGS = -Wall -Wextra -Werror -std=c++98 -DNAMESPACE=std
+STD_CFLAGS = -Wall -Wextra -Werror -std=c++98 -DNAMESPACE=ft
 
 all: ${NAME}
 

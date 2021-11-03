@@ -4,9 +4,8 @@
 template <typename Key, typename T>
 void PrintMap(NAMESPACE::map<Key, T> *stl, std::string str = "test") 
 {
-	typename NAMESPACE::map<Key, T>::iterator it_stl;
+	/*typename NAMESPACE::map<Key, T>::iterator it_stl;
 	size_t i;
-
 	std::cout << "------------------------------------ " << str << std::endl;
 	std::cout << " SIZES : = "<< stl->size() << std::endl;
 	it_stl = stl->begin();
@@ -15,17 +14,29 @@ void PrintMap(NAMESPACE::map<Key, T> *stl, std::string str = "test")
 	{
 		std::cout << " Value : STL = " << it_stl->first << " and " << it_stl->second << " at position " << i++ << std::endl;
 		it_stl++;
-	}
+	}*/
+
+	std::cout << "------------------------------------ " << str << std::endl;
+	std::cout << " SIZES : = "<< stl->size() << std::endl;
+	stl->print_tree();
 }
 
 void ft_constructor(void)
 {
+	NAMESPACE::map<char, float> mp;
 
-	NAMESPACE::map<std::string, int> V1_STL;
+	mp['a'] = 2.3;
+	mp['b'] = 1.4;
+/*	mp['c'] = 0.3;
+	mp['d'] = 4.2;*/
+	PrintMap(&mp, "Constructor - default");
+
+/*	NAMESPACE::map<std::string, int> V1_STL;
 	PrintMap(&V1_STL, "Constructor - default");
  
 	NAMESPACE::map<int, char> VCHAR2;
 	VCHAR2[1]='B';
+	VCHAR2[2]='C';
 	PrintMap(&VCHAR2, "Constructor - default with char");
 
 	NAMESPACE::map<int, int> V2;
@@ -44,7 +55,7 @@ void ft_constructor(void)
 	PrintMap(&V4,  "Constructor - copy");
 
 	V2 = V4;
-	PrintMap(&V2, "Constructor - operator = ");
+	PrintMap(&V2, "Constructor - operator = ");*/
 }
 
 void ft_insert_erase(void)
@@ -184,9 +195,9 @@ void ft_begin_end()
 void ft_test_map(void)
 {
    ft_constructor();
-   ft_insert_erase();
+ /*  ft_insert_erase();
    ft_swap();
    ft_clear();
    ft_access();
-   ft_begin_end();
+   ft_begin_end();*/
 }
