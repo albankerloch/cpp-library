@@ -185,14 +185,14 @@ namespace ft
 					if (this->m_compare(pair_value.first, node->left->item.first))	
 					{
 						ptr = ft_right_rotate(node);
-						pair = ft::pair<node_pointer, node_pointer>(ptr, ptr);
+						pair = ft::pair<node_pointer, node_pointer>(ptr, ret.first.second);
 						return (ft::pair<ft::pair<node_pointer, node_pointer>, bool>(pair, ret.second));
 					} 
 					else if (this->m_compare(node->left->item.first, pair_value.first))	
 					{
 						node->left = ft_left_rotate(node->left);
 						ptr = ft_right_rotate(node);
-						pair = ft::pair<node_pointer, node_pointer>(ptr, ptr);
+						pair = ft::pair<node_pointer, node_pointer>(ptr, ret.first.second);
 						return (ft::pair<ft::pair<node_pointer, node_pointer>, bool>(pair, ret.second));
 					}
 				}
@@ -201,18 +201,18 @@ namespace ft
 					if (this->m_compare(node->right->item.first, pair_value.first))
 					{
 						ptr = ft_left_rotate(node);
-						pair = ft::pair<node_pointer, node_pointer>(ptr, ptr);
+						pair = ft::pair<node_pointer, node_pointer>(ptr, ret.first.second);
 						return (ft::pair<ft::pair<node_pointer, node_pointer>, bool>(pair, ret.second));
 					} 
 					else if (this->m_compare(pair_value.first, node->right->item.first))
 					{
 						node->right = ft_right_rotate(node->right);
 						ptr = ft_left_rotate(node);
-						pair = ft::pair<node_pointer, node_pointer>(ptr, ptr);
+						pair = ft::pair<node_pointer, node_pointer>(ptr, ret.first.second);
 						return (ft::pair<ft::pair<node_pointer, node_pointer>, bool>(pair, ret.second));
 					}
 				}
-				pair = ft::pair<node_pointer, node_pointer>(node, node);
+				pair = ft::pair<node_pointer, node_pointer>(node, ret.first.second);
 				return (ft::pair<ft::pair<node_pointer, node_pointer>, bool>(pair, ret.second));
 			};
 
@@ -530,8 +530,6 @@ namespace ft
 					ft_update_ghost();
 					ret = ft::pair<iterator, bool>(iterator(res.first.second), true);
 				}
-				it = this->find(value.first);
-				ret = ft::pair<iterator, bool>(it, res.second);
 				return (ret);
 				/*
 				ft::pair<iterator, bool> 		ret;
