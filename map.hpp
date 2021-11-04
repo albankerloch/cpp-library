@@ -514,7 +514,7 @@ namespace ft
 
 			ft::pair<iterator, bool> insert(const value_type& value)	
 			{
-				/*
+				
 				ft::pair<iterator, bool> 		ret;
 				iterator 						it;
 				ft::pair<ft::pair<node_pointer, node_pointer>, bool> res;
@@ -528,10 +528,12 @@ namespace ft
 				{
 					this->m_root = res.first.first;
 					ft_update_ghost();
-					ret = ft::pair<iterator, bool>(iterator(res.first.second), false);
+					ret = ft::pair<iterator, bool>(iterator(res.first.second), true);
 				}
+				it = this->find(value.first);
+				ret = ft::pair<iterator, bool>(it, res.second);
 				return (ret);
-				*/
+				/*
 				ft::pair<iterator, bool> 		ret;
 				iterator 						it;
 
@@ -547,7 +549,7 @@ namespace ft
 					it = this->find(value.first);
 					ret = ft::pair<iterator, bool>(it, true);
 				}
-				return (ret);
+				return (ret);*/
 			}
 
 			iterator insert (iterator position, const value_type& val)	
