@@ -145,7 +145,70 @@ namespace ft
 					}
 				}
 				return (node);
-			}
+			};
+
+			ft::pair<ft::pair<node_pointer, node_pointer>, bool> ft_insert_node2(node_pointer node, node_pointer parent, value_type pair_value)	
+			{
+				ft::pair<node_pointer, node_pointer> 					pair;
+				ft::pair<ft::pair<node_pointer, node_pointer>, bool>	ret;
+				int 													balance_factor;
+
+				if (node == NULL)	
+				{
+					node = ft_create_node(parent, pair_value);
+					this->m_size++;
+					pair = ft::pair<node_pointer, node_pointer>(node, node);
+					return (ft::pair<ft::pair<node_pointer, node_pointer>, bool>(pair, true));
+				}
+				if (this->m_compare(pair_value.first, node->item.first))
+				{
+					ret = ft_insert_node2(node->left, node, pair_value);
+					node->left = ret.first.first;
+				}
+				else if (this->m_compare(node->item.first, pair_value.first))
+				{
+					ret = ft_insert_node2(node->right, node, pair_value);
+					node->right = ret.first.first;
+				}
+				else
+				{
+					pair = ft::pair<node_pointer, node_pointer>(node, node);
+					return (ft::pair<ft::pair<node_pointer, node_pointer>, bool>(pair, true));
+				}
+
+				node->height = 1 + std::max(get_height(node->left), get_height(node->right));
+				balance_factor = get_balance_factor(node);
+
+				if (balance_factor > 1) 
+				{
+					if (this->m_compare(pair_value.first, node->left->item.first))	
+					{
+						pair = ft::pair<node_pointer, node_pointer>(ft_right_rotate(node), node);
+						return (ft::pair<ft::pair<node_pointer, node_pointer>, bool>(pair, true));
+					} 
+					else if (this->m_compare(node->left->item.first, pair_value.first))	
+					{
+						node->left = ft_left_rotate(node->left);
+						pair = ft::pair<node_pointer, node_pointer>(ft_right_rotate(node), node);
+						return (ft::pair<ft::pair<node_pointer, node_pointer>, bool>(pair, true));
+					}
+				}
+				else if (balance_factor < -1) 
+				{
+					if (this->m_compare(node->right->item.first, pair_value.first))
+					{
+						pair = ft::pair<node_pointer, node_pointer>(ft_left_rotate(node), node);
+						return (ft::pair<ft::pair<node_pointer, node_pointer>, bool>(pair, true));
+					} 
+					else if (this->m_compare(pair_value.first, node->right->item.first))
+					{
+						pair = ft::pair<node_pointer, node_pointer>(ft_left_rotate(node), node);
+						return (ft::pair<ft::pair<node_pointer, node_pointer>, bool>(pair, true));
+					}
+				}
+				pair = ft::pair<node_pointer, node_pointer>(node, node);
+				return (ft::pair<ft::pair<node_pointer, node_pointer>, bool>(pair, true));
+			};
 
 			node_pointer ft_right_rotate(node_pointer y) 
 			{
@@ -445,13 +508,21 @@ namespace ft
 
 			ft::pair<iterator, bool> insert(const value_type& value)	
 			{
-				ft::pair<iterator, bool> ret;
+				ft::pair<iterator, bool> 		ret;
+				iterator 						it;
 
-				ret.second = !this->count(value.first);
-				if (ret.second)
-					this->m_root = this->ft_insert_node(this->m_root, NULL, value);
-				ft_update_ghost();
-				ret.first = this->find(value.first);
+				it = this->find(value.first);
+				if (it != this->end())
+				{
+					ret = ft::pair<iterator, bool>(it, false);
+				}
+				else
+				{
+					this->m_root = this->ft_insert_node2(this->m_root, NULL, value).first.first;
+					ft_update_ghost();
+					it = this->find(value.first);
+					ret = ft::pair<iterator, bool>(it, true);
+				}
 				return (ret);
 			}
 
