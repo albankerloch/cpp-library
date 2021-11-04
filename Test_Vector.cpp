@@ -25,10 +25,12 @@ void ft_vector_capacity()
 {
 	NAMESPACE::vector<int> V1 (3, 39);
 	NAMESPACE::vector<int> V2;
+	NAMESPACE::vector<float> V3;
 	Printvector(&V1, "Capacity");
 
 	std::cout << "Size " <<  V1.size() << std::endl;
 	std::cout << "max_Size " <<  V1.max_size() << std::endl;
+	std::cout << "max_Size " <<  V3.max_size() << std::endl;
 	std::cout << "Capacity " <<  V1.capacity() << std::endl;
 	std::cout << "Empty " <<  V1.empty() << std::endl;
 	std::cout << "Empty " <<  V2.empty() << std::endl;

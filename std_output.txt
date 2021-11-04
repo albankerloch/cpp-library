@@ -1,5 +1,399 @@
-should be constant with the same seed: 0
+<====================================< Vector test >====================================>
+
+------------------------------------ Constructor - default
+ SIZES : = 0
+------------------------------------ Constructor - default with char
+ SIZES : = 5
+ SHOW : at pos 0 got A
+ SHOW : at pos 1 got A
+ SHOW : at pos 2 got A
+ SHOW : at pos 3 got A
+ SHOW : at pos 4 got A
+------------------------------------ Constructor - fill
+ SIZES : = 3
+ SHOW : at pos 0 got 39
+ SHOW : at pos 1 got 39
+ SHOW : at pos 2 got 39
+------------------------------------ Constructor - range
+ SIZES : = 3
+ SHOW : at pos 0 got 39
+ SHOW : at pos 1 got 39
+ SHOW : at pos 2 got 39
+------------------------------------ Constructor - copy
+ SIZES : = 3
+ SHOW : at pos 0 got 39
+ SHOW : at pos 1 got 39
+ SHOW : at pos 2 got 39
+------------------------------------ Constructor - operator = 
+ SIZES : = 3
+ SHOW : at pos 0 got 39
+ SHOW : at pos 1 got 39
+ SHOW : at pos 2 got 39
+------------------------------------ Assign - with iterator
+ SIZES : = 2
+ SHOW : at pos 0 got 50
+ SHOW : at pos 1 got 50
+------------------------------------ Assign - with value
+ SIZES : = 7
+ SHOW : at pos 0 got 21
+ SHOW : at pos 1 got 21
+ SHOW : at pos 2 got 21
+ SHOW : at pos 3 got 21
+ SHOW : at pos 4 got 21
+ SHOW : at pos 5 got 21
+ SHOW : at pos 6 got 21
+------------------------------------ Assign - with string value
+ SIZES : = 1
+ SHOW : at pos 0 got Test
+------------------------------------ Assign - with size at 0
+ SIZES : = 0
+------------------------------------ Push_back - default
+ SIZES : = 4
+ SHOW : at pos 0 got 39
+ SHOW : at pos 1 got 39
+ SHOW : at pos 2 got 39
+ SHOW : at pos 3 got 55
+------------------------------------ Push_back again - default
+ SIZES : = 5
+ SHOW : at pos 0 got 39
+ SHOW : at pos 1 got 39
+ SHOW : at pos 2 got 39
+ SHOW : at pos 3 got 55
+ SHOW : at pos 4 got 51
+------------------------------------ Pop_back - default
+ SIZES : = 4
+ SHOW : at pos 0 got 39
+ SHOW : at pos 1 got 39
+ SHOW : at pos 2 got 39
+ SHOW : at pos 3 got 55
+------------------------------------ Pop_back again - default
+ SIZES : = 2
+ SHOW : at pos 0 got 39
+ SHOW : at pos 1 got 39
+------------------------------------ Insert - one element
+ SIZES : = 4
+ SHOW : at pos 0 got 39
+ SHOW : at pos 1 got 5
+ SHOW : at pos 2 got 39
+ SHOW : at pos 3 got 39
+------------------------------------ Insert again - one element
+ SIZES : = 5
+ SHOW : at pos 0 got 39
+ SHOW : at pos 1 got 5
+ SHOW : at pos 2 got 39
+ SHOW : at pos 3 got 39
+ SHOW : at pos 4 got 6
+------------------------------------ Insert again - one range
+ SIZES : = 7
+ SHOW : at pos 0 got 14
+ SHOW : at pos 1 got 14
+ SHOW : at pos 2 got 39
+ SHOW : at pos 3 got 5
+ SHOW : at pos 4 got 39
+ SHOW : at pos 5 got 39
+ SHOW : at pos 6 got 6
+------------------------------------ Erase - one element
+ SIZES : = 6
+ SHOW : at pos 0 got 14
+ SHOW : at pos 1 got 39
+ SHOW : at pos 2 got 5
+ SHOW : at pos 3 got 39
+ SHOW : at pos 4 got 39
+ SHOW : at pos 5 got 6
+------------------------------------ Erase - one range
+ SIZES : = 4
+ SHOW : at pos 0 got 5
+ SHOW : at pos 1 got 39
+ SHOW : at pos 2 got 39
+ SHOW : at pos 3 got 6
+it = 39
+it2 = 39
+it3 = 51
+it4 = 50
+it5 = 40
+------------------------------------ Swap - first element
+ SIZES : = 3
+ SHOW : at pos 0 got 50
+ SHOW : at pos 1 got 50
+ SHOW : at pos 2 got 40
+------------------------------------ Swap - second element
+ SIZES : = 4
+ SHOW : at pos 0 got 39
+ SHOW : at pos 1 got 39
+ SHOW : at pos 2 got 39
+ SHOW : at pos 3 got 51
+it = 39
+it2 = 39
+it3 = 51
+it4 = 50
+it5 = 40
+it = 39
+it2 = 39
+it3 = 39
+it4 = 50
+it5 = 50
+------------------------------------ Clear - default
+ SIZES : = 0
+------------------------------------ Operator - default
+ SIZES : = 4
+ SHOW : at pos 0 got 39
+ SHOW : at pos 1 got 39
+ SHOW : at pos 2 got 39
+ SHOW : at pos 3 got 5
+Operator [] : 5 at 3
+Operator [] : 39 at 0
+Operator at : 5 at 3
+Operator at : 39 at 0
+Front : 39 at 3
+Back : 5 at 0
+------------------------------------ Relationnal operator
+Operator == 1
+Operator != 0
+Operator == 0
+Operator != 1
+Operator == 0
+Operator != 1
+Operator == 0
+Operator != 1
+------------------------------------ Begin / End
+ SIZES : = 4
+ SHOW : at pos 0 got 39
+ SHOW : at pos 1 got 39
+ SHOW : at pos 2 got 39
+ SHOW : at pos 3 got 3
+Begin 39
+rBegin 3
+End 3
+rEnd 0
+------------------------------------ Capacity
+ SIZES : = 3
+ SHOW : at pos 0 got 39
+ SHOW : at pos 1 got 39
+ SHOW : at pos 2 got 39
+Size 3
+max_Size 4611686018427387903
+max_Size 4611686018427387903
+Capacity 3
+Empty 0
+Empty 1
+Reserve 50
+Reserve 50
+Resize 100
+Resize 100
+------------------------------------ Resize - 2
+ SIZES : = 2
+ SHOW : at pos 0 got 39
+ SHOW : at pos 1 got 39
+Resize 100
+------------------------------------ Resize - 11
+ SIZES : = 11
+ SHOW : at pos 0 got 39
+ SHOW : at pos 1 got 39
+ SHOW : at pos 2 got 0
+ SHOW : at pos 3 got 0
+ SHOW : at pos 4 got 0
+ SHOW : at pos 5 got 0
+ SHOW : at pos 6 got 0
+ SHOW : at pos 7 got 0
+ SHOW : at pos 8 got 0
+ SHOW : at pos 9 got 0
+ SHOW : at pos 10 got 0
+Resize 100
+------------------------------------ Resize - 11
+ SIZES : = 15
+ SHOW : at pos 0 got 39
+ SHOW : at pos 1 got 39
+ SHOW : at pos 2 got 0
+ SHOW : at pos 3 got 0
+ SHOW : at pos 4 got 0
+ SHOW : at pos 5 got 0
+ SHOW : at pos 6 got 0
+ SHOW : at pos 7 got 0
+ SHOW : at pos 8 got 0
+ SHOW : at pos 9 got 0
+ SHOW : at pos 10 got 0
+ SHOW : at pos 11 got 666
+ SHOW : at pos 12 got 666
+ SHOW : at pos 13 got 666
+ SHOW : at pos 14 got 666
+<====================================< Stack test >====================================>
+
+------------------------------------ Constructor - default
+ SIZE : = 0
+------------------------------------ Constructor - default with char
+ SIZE : = 0
+------------------------------------ Constructor - copy
+ SIZE : = 1
+ SHOW : at pos 0 got 1
+------------------------------------ Constructor - operator = 
+ SIZE : = 1
+ SHOW : at pos 0 got 1
+------------------------------------ Push_back - default
+ SIZE : = 2
+ SHOW : at pos 0 got 55
+ SHOW : at pos 1 got 5
+------------------------------------ Push_back again - default
+ SIZE : = 4
+ SHOW : at pos 0 got 51
+ SHOW : at pos 1 got 51
+ SHOW : at pos 2 got 55
+ SHOW : at pos 3 got 5
+------------------------------------ Pop_back - default
+ SIZE : = 3
+ SHOW : at pos 0 got 51
+ SHOW : at pos 1 got 55
+ SHOW : at pos 2 got 5
+------------------------------------ Pop_back again - default
+ SIZE : = 1
+ SHOW : at pos 0 got 5
+------------------------------------ Relationnal operator
+Operator == 1
+Operator != 0
+Operator == 0
+Operator != 1
+Operator == 0
+Operator != 1
+Operator == 0
+Operator != 1
+------------------------------------ Capacity
+ SIZE : = 1
+ SHOW : at pos 0 got 3
+Size 1
+Empty 0
+Size 0
+Empty 1
+<====================================< Map test >====================================>
+
+------------------------------------ Constructor - default
+ SIZES : = 4
+ Value : STL = a and 2.3 at position 0
+ Value : STL = b and 1.4 at position 1
+ Value : STL = c and 0.3 at position 2
+ Value : STL = d and 4.2 at position 3
+------------------------------------ Constructor - default
+ SIZES : = 0
+------------------------------------ Constructor - default with char
+ SIZES : = 2
+ Value : STL = 1 and B at position 0
+ Value : STL = 2 and C at position 1
+------------------------------------ Constructor - fill
+ SIZES : = 1
+ Value : STL = 2 and 3 at position 0
+------------------------------------ Constructor - fill
+ SIZES : = 5
+ Value : STL = -2 and 4 at position 0
+ Value : STL = -1 and 4 at position 1
+ Value : STL = 0 and 4 at position 2
+ Value : STL = 2 and 3 at position 3
+ Value : STL = 4 and 4 at position 4
+------------------------------------ Constructor - range
+ SIZES : = 5
+ Value : STL = -2 and 4 at position 0
+ Value : STL = -1 and 4 at position 1
+ Value : STL = 0 and 4 at position 2
+ Value : STL = 2 and 3 at position 3
+ Value : STL = 4 and 4 at position 4
+------------------------------------ Constructor - copy
+ SIZES : = 5
+ Value : STL = -2 and 4 at position 0
+ Value : STL = -1 and 4 at position 1
+ Value : STL = 0 and 4 at position 2
+ Value : STL = 2 and 3 at position 3
+ Value : STL = 4 and 4 at position 4
+------------------------------------ Constructor - operator = 
+ SIZES : = 5
+ Value : STL = -2 and 4 at position 0
+ Value : STL = -1 and 4 at position 1
+ Value : STL = 0 and 4 at position 2
+ Value : STL = 2 and 3 at position 3
+ Value : STL = 4 and 4 at position 4
+------------------------------------ Insert - one element
+ SIZES : = 1
+ Value : STL = 1 and 5 at position 0
+------------------------------------ Insert again - one element
+ SIZES : = 2
+ Value : STL = 1 and 5 at position 0
+ Value : STL = 4 and 3 at position 1
+------------------------------------ Insert again - one element
+ SIZES : = 3
+ Value : STL = 1 and 5 at position 0
+ Value : STL = 4 and 3 at position 1
+ Value : STL = 5 and 3 at position 2
+it = 1 5
+it2 = 5 3
+------------------------------------ Insert again - one element
+ SIZES : = 4
+ Value : STL = 1 and 5 at position 0
+ Value : STL = 2 and 3 at position 1
+ Value : STL = 4 and 3 at position 2
+ Value : STL = 5 and 3 at position 3
+it = 1 5
+it2 = 5 3
+------------------------------------ Erase - one element
+ SIZES : = 3
+ Value : STL = 1 and 5 at position 0
+ Value : STL = 4 and 3 at position 1
+ Value : STL = 5 and 3 at position 2
+it = 1 5
+it2 = 5 3
+------------------------------------ Insert again - one element
+ SIZES : = 4
+ Value : STL = 1 and 5 at position 0
+ Value : STL = 4 and 3 at position 1
+ Value : STL = 5 and 3 at position 2
+ Value : STL = 6 and 3 at position 3
+------------------------------------ Erase - one range
+ SIZES : = 2
+ Value : STL = 1 and 5 at position 0
+ Value : STL = 6 and 3 at position 1
+it = 1 5
+it2 = 6 3
+it = -1 8
+it2 = 1 5
+it3 = 2 7
+it4 = -2 7
+it5 = 51 8
+------------------------------------ Swap - first element
+ SIZES : = 2
+ Value : STL = -2 and 7 at position 0
+ Value : STL = 51 and 8 at position 1
+------------------------------------ Swap - second element
+ SIZES : = 3
+ Value : STL = -1 and 8 at position 0
+ Value : STL = 1 and 5 at position 1
+ Value : STL = 2 and 7 at position 2
+it = -1 8
+it2 = 1 5
+it3 = 2 7
+it4 = -2 7
+it5 = 51 8
+it = 1 5
+it2 = 2 7
+it3 = 1 5
+it4 = 51 8
+it5 = -2 7
+------------------------------------ Clear - default
+ SIZES : = 0
+------------------------------------ Size of plenty
+Max_Size 461168601842738790
+Max_Size 461168601842738790
+Max_Size 461168601842738790
+Empty 0
+Empty 1
+------------------------------------ A begin and an end
+Begin (1 | 5)
+Rbegin (2 | 6)
+End (2 | 6)
+Rend (1 | 5)
+should be constant with the same seed: 1333424401
 abcdefghijklmnopqrstuvwxyz
-Start time : 1635810032
-End time   : 1635810032
-Elapsed time : 0
+Start time : 1635992576
+End time   : 1635992577
+Elapsed time : 1
+
+=====================================================> Vector time 505
+
+=====================================================> Stack  time 0
+
+=====================================================> Map    time 304
+

@@ -1,13 +1,11 @@
 
 
 CC = clang++
-#SRCS_FILES = main.cpp \
+SRCS_FILES = main_sujet.cpp \
 			 Test_Map.cpp \
 			 Test_Vector.cpp \
-			 Test_Stack.cpp
-
-SRCS_FILES = main_sujet.cpp
-
+			 Test_Stack.cpp 
+			 
 NAME = ft_containers
 OBJS_PATH = ./OBJS_FT/
 OBJS = ${addprefix ${OBJS_PATH}, ${SRCS_FILES:.cpp=.o}}

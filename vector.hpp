@@ -288,7 +288,7 @@ namespace ft
 			void push_back(value_type value)
 			{
 				if (this->m_size == this->m_capacity)
-					this->reserve(this->m_capacity + 1000);
+					this->reserve((this->m_capacity + 1) * 10);
 				m_allocator.construct(&m_array[this->m_size], value);
 				this->m_size++;
 			};

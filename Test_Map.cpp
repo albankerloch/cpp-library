@@ -4,7 +4,7 @@
 template <typename Key, typename T>
 void PrintMap(NAMESPACE::map<Key, T> *stl, std::string str = "test") 
 {
-	/*typename NAMESPACE::map<Key, T>::iterator it_stl;
+	typename NAMESPACE::map<Key, T>::iterator it_stl;
 	size_t i;
 	std::cout << "------------------------------------ " << str << std::endl;
 	std::cout << " SIZES : = "<< stl->size() << std::endl;
@@ -14,11 +14,7 @@ void PrintMap(NAMESPACE::map<Key, T> *stl, std::string str = "test")
 	{
 		std::cout << " Value : STL = " << it_stl->first << " and " << it_stl->second << " at position " << i++ << std::endl;
 		it_stl++;
-	}*/
-
-	std::cout << "------------------------------------ " << str << std::endl;
-	std::cout << " SIZES : = "<< stl->size() << std::endl;
-	stl->print_tree();
+	}
 }
 
 void ft_constructor(void)
@@ -27,11 +23,11 @@ void ft_constructor(void)
 
 	mp['a'] = 2.3;
 	mp['b'] = 1.4;
-/*	mp['c'] = 0.3;
-	mp['d'] = 4.2;*/
+	mp['c'] = 0.3;
+	mp['d'] = 4.2;
 	PrintMap(&mp, "Constructor - default");
 
-/*	NAMESPACE::map<std::string, int> V1_STL;
+	NAMESPACE::map<std::string, int> V1_STL;
 	PrintMap(&V1_STL, "Constructor - default");
  
 	NAMESPACE::map<int, char> VCHAR2;
@@ -55,7 +51,7 @@ void ft_constructor(void)
 	PrintMap(&V4,  "Constructor - copy");
 
 	V2 = V4;
-	PrintMap(&V2, "Constructor - operator = ");*/
+	PrintMap(&V2, "Constructor - operator = ");
 }
 
 void ft_insert_erase(void)
@@ -167,15 +163,19 @@ void ft_access(void)
 {
 	std::cout << "------------------------------------ " << "Size of plenty" << std::endl;
 	NAMESPACE::map<int, int>  V1;
+	NAMESPACE::map<char, float>  V2;
+	NAMESPACE::map<char, char>  V3;
 
 	V1.insert(V1.begin(),NAMESPACE::make_pair(1,5));
 	
 	std::cout << "Max_Size " <<  V1.max_size() << std::endl;
+	std::cout << "Max_Size " <<  V2.max_size() << std::endl;
+	std::cout << "Max_Size " <<  V3.max_size() << std::endl;
 	std::cout << "Empty " <<  V1.empty() << std::endl;
 
-	NAMESPACE::map<int, int> V2;
+	NAMESPACE::map<int, int> V4;
 
-	std::cout << "Empty " <<  V2.empty() << std::endl;
+	std::cout << "Empty " <<  V4.empty() << std::endl;
 }
 
 void ft_begin_end()
@@ -195,9 +195,9 @@ void ft_begin_end()
 void ft_test_map(void)
 {
    ft_constructor();
- /*  ft_insert_erase();
+   ft_insert_erase();
    ft_swap();
    ft_clear();
    ft_access();
-   ft_begin_end();*/
+   ft_begin_end();
 }

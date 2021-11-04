@@ -4,14 +4,15 @@
 #include <map>
 #include <stack>
 #include <vector>
+#include <ctime>
 #include "map.hpp"
 #include "stack.hpp"
 #include "vector.hpp"
+void ft_test_vector(void);
+void ft_test_map(void);
+void ft_test_stack(void);
+void main_sujet(void);
 
-#include <stdlib.h>
-#include <ctime>
-
-//#define MAX_RAM 429496729
 #define MAX_RAM 429496729
 #define BUFFER_SIZE 4096
 struct Buffer
@@ -42,7 +43,30 @@ public:
 	iterator end() { return this->c.end(); }
 };
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) 
+{
+	clock_t tv;
+	clock_t tv2;
+	clock_t ts;
+	clock_t ts2;
+	clock_t tm;
+	clock_t tm2;
+
+    std::cout << "<====================================< Vector test >====================================>" << std::endl << std::endl;
+    tv = clock();
+    ft_test_vector();
+	tv2 = clock();
+
+    std::cout << "<====================================< Stack test >====================================>" << std::endl << std::endl;
+    ts = clock();
+    ft_test_stack();
+	ts2 = clock();
+
+    std::cout << "<====================================< Map test >====================================>" << std::endl << std::endl;  
+    tm = clock();
+    ft_test_map();
+	tm2 = clock();
+
 	std::time_t tbegin = std::time(NULL);
 	int ran;
 	int ran2;
@@ -76,7 +100,6 @@ int main(int argc, char** argv) {
 	for (int i = 0; i < COUNT; i++)
 	{
 		ran = rand();
-		//std::cout << ran << std::endl;
 		const int idx = ran % COUNT;
 		vector_buffer[idx].idx = 5;
 	}
@@ -85,14 +108,13 @@ int main(int argc, char** argv) {
 
 	try
 	{
-	//	for (int i = 0; i < COUNT; i++)
-//		{
+		for (int i = 0; i < COUNT; i++)
+		{
 			ran = rand();
-			//std::cout << ran << std::endl;
 			const int idx = ran % COUNT;
 			vector_buffer.at(idx);
-			//std::cerr << "Error: THIS VECTOR SHOULD BE EMPTY!!" <<std::endl;
-	//	}
+			std::cerr << "Error: THIS VECTOR SHOULD BE EMPTY!!" <<std::endl;
+		}
 	}
 	catch(const std::exception& e)
 	{
@@ -102,7 +124,6 @@ int main(int argc, char** argv) {
 	{
 		ran = rand();
 		ran2 = rand();
-		//std::cout << "insert " << ran << " value " << ran2 << std::endl;
 		map_int.insert(NAMESPACE::make_pair(ran, ran2));
 	}
 
@@ -110,10 +131,8 @@ int main(int argc, char** argv) {
 	for (int i = 0; i < 10000; i++)
 	{
 		ran = rand();
-		//std::cout << ran << std::endl;
 		int access = ran;
 		sum += map_int[access];
-		//std::cout << "access " << access << " value " << map_int[access] << std::endl;
 	}
 	std::cout << "should be constant with the same seed: " << sum << std::endl;
 	{
@@ -130,6 +149,11 @@ int main(int argc, char** argv) {
 	std::time_t tend = std::time(NULL);
 	std::cout << "Start time : " << tbegin << std::endl;
 	std::cout << "End time   : " << tend << std::endl;
-	std::cout << "Elapsed time : " << tend - tbegin << std::endl;
+	std::cout << "Elapsed time : " << tend - tbegin << std::endl << std::endl;
+
+    std::cout << "=====================================================> Vector time " << tv2 - tv << std::endl << std::endl;
+    std::cout << "=====================================================> Stack  time " << ts2 - ts2 << std::endl << std::endl;
+    std::cout << "=====================================================> Map    time " << tm2 - tm << std::endl << std::endl;
+
 	return (0);
 }
