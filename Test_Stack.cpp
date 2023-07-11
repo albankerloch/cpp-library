@@ -1,6 +1,8 @@
-#include "stack.hpp"
+#include "Stack.hpp"
 # include <stack>
-#include <cstring>
+# include <cstring>
+# include <list>
+# include <deque>
 
 template <typename T>
 bool Printstack(NAMESPACE::stack<T> *stl, std::string str = "test") 
@@ -22,11 +24,11 @@ bool Printstack(NAMESPACE::stack<T> *stl, std::string str = "test")
 
 void ft_stack_capacity()
 {
-	NAMESPACE::stack<int> V1;
-	NAMESPACE::stack<char> V2;
+	std::cout << "------------------------------------ " << "Size and Empty" << std::endl;
+	NAMESPACE::stack<int, std::list<int> > V1;
+	NAMESPACE::stack<char, std::deque<int> > V2;
 
 	V1.push(3);
-	Printstack(&V1, "Capacity");
 
 	std::cout << "Size " <<  V1.size() << std::endl;
 	std::cout << "Empty " <<  V1.empty() << std::endl;

@@ -1,7 +1,7 @@
 
 
 CC = clang++
-SRCS_FILES = main_sujet.cpp \
+SRCS_FILES = main.cpp \
 			 Test_Map.cpp \
 			 Test_Vector.cpp \
 			 Test_Stack.cpp 
