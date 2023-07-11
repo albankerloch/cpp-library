@@ -8,6 +8,7 @@ For pedagogical purposes, I recoded 4 C++ containers :
 
 Features:
 - Same behavior as the C++ containers
+- Testing files
 - No memory leak
 
 ## Installation
