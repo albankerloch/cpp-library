@@ -1,3 +1,10 @@
+/**
+ * @file Vector_Iterator.hpp
+ * @author alban kerloc'h
+ * @date 11/04/2021
+ * @version 1.0
+ */
+
 #ifndef DEF_VECTOR_ITERATOR_HPP
 # define DEF_VECTOR_ITERATOR_HPP
 

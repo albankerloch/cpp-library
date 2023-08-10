@@ -1,3 +1,10 @@
+/**
+ * @file TreeNode.hpp
+ * @author alban kerloc'h
+ * @date 11/04/2021
+ * @version 1.0
+ */
+
 #ifndef DEF_TREE_NODE_HPP
 # define DEF_TREE_NODE_HPP
 

@@ -1,3 +1,10 @@
+/**
+ * @file Utils.hpp
+ * @author alban kerloc'h
+ * @date 11/04/2021
+ * @version 1.0
+ */
+
 #ifndef DEF_UTILS_HPP
 # define DEF_UTILS_HPP
 

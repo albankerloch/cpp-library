@@ -1,3 +1,10 @@
+/**
+ * @file Test_Map.cpp
+ * @author alban kerloc'h
+ * @date 11/04/2021
+ * @version 1.0
+ */
+
 #include <map>
 #include "Map.hpp"
 

@@ -1,3 +1,10 @@
+/**
+ * @file Map_Iterator.hpp
+ * @author alban kerloc'h
+ * @date 11/04/2021
+ * @version 1.0
+ */
+
 #ifndef DEF_MAP_ITERATOR_HPP
 # define DEF_MAP_ITERATOR_HPP
 
